@@ -1,0 +1,20 @@
+# BBPool App Icons
+
+This directory contains all the icons used in the BBPool app.
+
+## Required Icons:
+- app_icon.png - App icon (multiple sizes)
+- google_icon.png - Google sign-in icon
+- apple_icon.png - Apple sign-in icon
+- car_icon.png - Car/vehicle icon
+- schedule_icon.png - Schedule icon
+- chat_icon.png - Chat icon
+- safety_icon.png - Safety icon
+- profile_icon.png - Profile icon
+- settings_icon.png - Settings icon
+
+## Icon Specifications:
+- Use SVG format for scalable icons
+- Use PNG format for fixed-size icons
+- Recommended sizes: 24x24, 32x32, 48x48, 64x64px
+- Use consistent style and color scheme

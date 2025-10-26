@@ -1,0 +1,15 @@
+# BBPool App Animations
+
+This directory contains all the animations used in the BBPool app.
+
+## Required Animations:
+- splash_animation.json - Splash screen animation
+- loading_animation.json - Loading animation
+- success_animation.json - Success animation
+- error_animation.json - Error animation
+
+## Animation Specifications:
+- Use Lottie format (.json)
+- Keep file sizes small for mobile
+- Use consistent color scheme
+- Optimize for 60fps playback
