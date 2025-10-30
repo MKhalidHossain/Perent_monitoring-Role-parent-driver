@@ -1,6 +1,8 @@
 import 'package:bbpool/providers/auth_provider.dart';
 import 'package:bbpool/providers/select_user_type_provider.dart';
 import 'package:bbpool/providers/dashboard_provider.dart';
+import 'package:bbpool/controllers/message_controller.dart';
+import 'package:bbpool/controllers/notification_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bbpool/config/app_theme.dart';
@@ -26,6 +28,8 @@ class BBPoolApp extends StatelessWidget {
             create: (context) => OnboardingProvider()..initialize()),
         ChangeNotifierProvider(create: (context) => SelectUserTypeProvider()),
         ChangeNotifierProvider(create: (context) => DashboardProvider()),
+        ChangeNotifierProvider(create: (context) => MessageController()),
+        ChangeNotifierProvider(create: (context) => NotificationController()),
 
         // Add other providers here as needed
       ],

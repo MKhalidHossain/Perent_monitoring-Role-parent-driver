@@ -1,3 +1,7 @@
+import 'package:bbpool/views/driver/driver_profile_screen.dart';
+import 'package:bbpool/views/messages/message_list_screen.dart';
+import 'package:bbpool/views/messages/message_demo_screen.dart';
+import 'package:bbpool/views/notifications/notification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/views/splash/splash_screen.dart';
 import 'package:bbpool/views/onboarding/onboarding_screen.dart';
@@ -28,6 +32,10 @@ class AppRoutes {
   static const String groups = '/groups';
   static const String location = '/location';
   static const String roleTest = '/role-test';
+  static const String driverProfile = '/driver-profile';
+  static const String messageList = '/message-list';
+  static const String messageDemo = '/message-demo';
+  static const String notifications = '/notifications';
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => const SplashScreen(),
@@ -39,9 +47,15 @@ class AppRoutes {
     authWrapper: (context) => const AuthWrapper(),
     driverDashboard: (context) => const DriverDashboardScreen(),
     parentDashboard: (context) => const ParentDashboardScreen(),
-    calendar: (context) => const Scaffold(body: Center(child: Text('Calendar'))),
+    calendar: (context) =>
+        const Scaffold(body: Center(child: Text('Calendar'))),
     groups: (context) => const Scaffold(body: Center(child: Text('Groups'))),
-    location: (context) => const Scaffold(body: Center(child: Text('Location'))),
+    location: (context) =>
+        const Scaffold(body: Center(child: Text('Location'))),
     roleTest: (context) => const RoleTestScreen(),
+    driverProfile: (context) => const DriverProfileScreen(),
+    messageList: (context) => const MessageListScreen(),
+    messageDemo: (context) => const MessageDemoScreen(),
+    notifications: (context) => const NotificationScreen(),
   };
 }
