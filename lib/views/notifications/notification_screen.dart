@@ -118,55 +118,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
           );
         },
       ),
-      floatingActionButton: Container(
-        width: 56,
-        height: 56,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFB39DDB), Color(0xFF9C88FF)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          shape: BoxShape.circle,
-        ),
-        child: FloatingActionButton(
-          onPressed: () {
-            // Handle add action
-          },
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 24,
-          ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        height: 80,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.1),
-              spreadRadius: 1,
-              blurRadius: 10,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildBottomNavItem(Icons.home_outlined, false),
-            _buildBottomNavItem(Icons.calendar_today_outlined, false),
-            const SizedBox(width: 56), // Space for FAB
-            _buildBottomNavItem(Icons.people_outline, false),
-            _buildBottomNavItem(Icons.location_on_outlined, false),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 

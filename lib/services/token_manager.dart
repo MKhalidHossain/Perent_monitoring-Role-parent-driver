@@ -78,7 +78,7 @@ class TokenManager {
   }
 
   /// Clear all saved user session data (Logout)
-static Future<bool> clearUserData() async {
+  static Future<bool> clearUserData() async {
   try {
     final prefs = await SharedPreferences.getInstance();
 

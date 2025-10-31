@@ -1,4 +1,6 @@
+import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/routes/app_routes.dart';
+import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
 import 'package:bbpool/models/dashboard_model.dart';
@@ -161,15 +163,20 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
               // Week Calendar
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: _weekDays.map((dayData) {
-                    return _buildDayItem(
-                      dayData['day'],
-                      dayData['date'],
-                      dayData['date'] == _selectedDay,
-                    );
-                  }).toList(),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: _weekDays.map((dayData) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: _buildDayItem(
+                          dayData['day'],
+                          dayData['date'],
+                          dayData['date'] == _selectedDay,
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
               const SizedBox(height: 32),
@@ -197,27 +204,35 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                     const SizedBox(height: 20),
 
                     // Cancel Ride Button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _showCancelRideDialog,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFF6B6B),
-                          padding: const EdgeInsets.symmetric(vertical: 18),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Text(
-                          'Cancel Ride',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
+                    // SizedBox(
+                    //   width: double.infinity,
+                    //   child: ElevatedButton(
+                    //     onPressed: _showCancelRideDialog,
+                    //     style: ElevatedButton.styleFrom(
+                    //       backgroundColor: const Color(0xFFFF6B6B),
+                    //       padding: const EdgeInsets.symmetric(vertical: 18),
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(16),
+                    //       ),
+                    //       elevation: 0,
+                    //     ),
+                    //     child: const Text(
+                    //       'Cancel Ride',
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 18,
+                    //         fontWeight: FontWeight.w600,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    CommonWidgets.buildGradientButton(
+                      text: 'Cancel Ride',
+                      onPressed: () async {
+                        // Navigation is now handled in the viewmodel based on user role
+                      },
+                      textColor: AppColors.textWhite,
+                      borderRadius: 28,
                     ),
                   ],
                 ),
@@ -349,7 +364,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
           const SizedBox(width: 16),
 
           // Vehicle Image
-          Container(
+          SizedBox(
             width: 60,
             height: 40,
             child: Image.asset(
@@ -364,35 +379,41 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                const Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.access_time,
                       size: 16,
                       color: Colors.grey,
                     ),
-                    const SizedBox(width: 4),
-                    const Text(
-                      'Departure Time',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
+                    SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        'Departure Time',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Spacer(),
-                    const Icon(
+                    SizedBox(width: 8),
+                    Icon(
                       Icons.person,
                       size: 16,
                       color: Colors.grey,
                     ),
-                    const SizedBox(width: 4),
-                    const Text(
-                      'Assigned Driver',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
+                    SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        'Assigned Driver',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -476,22 +497,28 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    _buildGroupDetailItem(
-                      Icons.access_time,
-                      'Departure Time',
-                      '09:00 Pm',
+                    Expanded(
+                      child: _buildGroupDetailItem(
+                        Icons.access_time,
+                        'Departure Time',
+                        '09:00 Pm',
+                      ),
                     ),
-                    const SizedBox(width: 24),
-                    _buildGroupDetailItem(
-                      Icons.person,
-                      'Assigned Driver',
-                      'Driver Sam',
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: _buildGroupDetailItem(
+                        Icons.person,
+                        'Assigned Driver',
+                        'Driver Sam',
+                      ),
                     ),
-                    const SizedBox(width: 24),
-                    _buildGroupDetailItem(
-                      Icons.group,
-                      'Total Riders',
-                      '4 Students',
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: _buildGroupDetailItem(
+                        Icons.group,
+                        'Total Riders',
+                        '4 Students',
+                      ),
                     ),
                   ],
                 ),
@@ -515,12 +542,15 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
               color: Colors.grey,
             ),
             const SizedBox(width: 4),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 10,
-                color: Colors.grey,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -533,6 +563,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
@@ -585,37 +616,6 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showCancelRideDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Cancel Ride'),
-        content: const Text('Are you sure you want to cancel this ride?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('No'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Ride cancelled successfully!')),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF6B6B),
-            ),
-            child: const Text(
-              'Yes, Cancel',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
       ),
     );
   }
