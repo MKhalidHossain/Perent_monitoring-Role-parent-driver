@@ -5,6 +5,7 @@ import 'package:bbpool/views/notifications/notification_screen.dart';
 import 'package:bbpool/views/settings/settings_screen.dart';
 import 'package:bbpool/views/map/map_screen.dart';
 import 'package:bbpool/views/calendar/driver_calendar_screen.dart';
+import 'package:bbpool/views/groups/carpool_groups_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/views/splash/splash_screen.dart';
 import 'package:bbpool/views/onboarding/onboarding_screen.dart';
@@ -52,7 +53,7 @@ class AppRoutes {
     driverDashboard: (context) => const DriverDashboardScreen(),
     parentDashboard: (context) => const ParentDashboardScreen(),
     calendar: (context) => const DriverCalendarScreen(),
-    groups: (context) => const Scaffold(body: Center(child: Text('Groups'))),
+    groups: (context) => const CarpoolGroupsScreen(),
     location: (context) =>
         const Scaffold(body: Center(child: Text('Location'))),
     roleTest: (context) => const RoleTestScreen(),

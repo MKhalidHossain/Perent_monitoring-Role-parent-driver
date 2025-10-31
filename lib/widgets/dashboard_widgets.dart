@@ -1,4 +1,6 @@
+import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/config/icon_path.dart';
+import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/models/dashboard_model.dart';
 
@@ -184,28 +186,38 @@ class TodayRidesSection extends StatelessWidget {
                   return _buildRideCard(ride, index, rides.length);
                 }),
                 const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: isDriver ? onStartRideTap : onTrackRideTap,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE8D5F2),
-                      padding: const EdgeInsets.symmetric(vertical: 18),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      isDriver ? 'Start Ride' : 'Track Ride',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
+                // SizedBox(
+                //   width: double.infinity,
+                //   child: ElevatedButton(
+                //     onPressed: isDriver ? onStartRideTap : onTrackRideTap,
+                //     style: ElevatedButton.styleFrom(
+                //       backgroundColor: const Color(0xFFE8D5F2),
+                //       padding: const EdgeInsets.symmetric(vertical: 18),
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(16),
+                //       ),
+                //       elevation: 0,
+                //     ),
+                //     child: Text(
+                //       isDriver ? 'Start Ride1' : 'Track Ride',
+                //       style: const TextStyle(
+                //         color: Colors.white,
+                //         fontSize: 18,
+                //         fontWeight: FontWeight.w600,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+
+
+                CommonWidgets.buildGradientButton(
+                                    text: isDriver ? 'Start Ride' : 'Track Ride',
+                                    onPressed: () async {
+                                      // Navigation is now handled in the viewmodel based on user role
+                                    },
+                                    textColor: AppColors.textWhite,
+                                    borderRadius: 28,
+                                  ),
               ],
             ),
         ],
