@@ -1,0 +1,642 @@
+import 'package:bbpool/routes/app_routes.dart';
+import 'package:flutter/material.dart';
+import 'package:bbpool/widgets/dashboard_widgets.dart';
+import 'package:bbpool/models/dashboard_model.dart';
+import 'package:bbpool/config/icon_path.dart';
+
+class DriverCalendarScreen extends StatefulWidget {
+  const DriverCalendarScreen({super.key});
+
+  @override
+  State<DriverCalendarScreen> createState() => _DriverCalendarScreenState();
+}
+
+class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
+  int _currentIndex = 1; // Calendar tab selected
+  String _selectedMonth = 'August';
+  int _selectedDay = 27;
+
+  final List<String> _months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+
+  final List<Map<String, dynamic>> _weekDays = [
+    {'day': 'Wed', 'date': 1},
+    {'day': 'Thu', 'date': 2},
+    {'day': 'Fri', 'date': 3},
+    {'day': 'Sat', 'date': 4},
+    {'day': 'Sun', 'date': 5},
+    {'day': 'Mon', 'date': 6},
+    {'day': 'Tue', 'date': 7},
+    {'day': 'Wed', 'date': 8},
+    {'day': 'Thu', 'date': 9},
+    {'day': 'Fri', 'date': 10},
+    {'day': 'Sat', 'date': 11},
+    {'day': 'Sun', 'date': 12},
+    {'day': 'Mon', 'date': 13},
+    {'day': 'Tue', 'date': 14},
+    {'day': 'Wed', 'date': 15},
+    {'day': 'Thu', 'date': 16},
+    {'day': 'Fri', 'date': 17},
+    {'day': 'Sat', 'date': 18},
+    {'day': 'Sun', 'date': 19},
+    {'day': 'Mon', 'date': 20},
+    {'day': 'Tue', 'date': 21},
+    {'day': 'Wed', 'date': 22},
+    {'day': 'Thu', 'date': 23},
+    {'day': 'Fri', 'date': 24},
+    {'day': 'Sat', 'date': 25},
+    {'day': 'Sun', 'date': 26},
+    {'day': 'Mon', 'date': 27},
+    {'day': 'Tue', 'date': 28},
+    {'day': 'Wed', 'date': 29},
+    {'day': 'Thu', 'date': 30},
+    {'day': 'Fri', 'date': 31},
+  ];
+
+  final List<RideModel> _scheduledRides = [
+    RideModel(
+      id: '1',
+      departureTime: '02:00 Pm',
+      arrivalTime: '02:30 Pm',
+      ridersCount: 4,
+      driverName: 'Sam Smith',
+      status: 'scheduled',
+      vehicleType: 'van',
+    ),
+    RideModel(
+      id: '2',
+      departureTime: '02:00 Pm',
+      arrivalTime: '02:30 Pm',
+      ridersCount: 5,
+      driverName: 'Sam Smith',
+      status: 'scheduled',
+      vehicleType: 'van',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Header
+              DashboardHeader(
+                userName: "Jakir Hossain",
+                profileImageUrl: null,
+                credits: 100,
+                onProfileTap: () {
+                  Navigator.pushNamed(context, AppRoutes.driverProfile);
+                },
+                onChatTap: () {
+                  Navigator.pushNamed(context, AppRoutes.messageList);
+                },
+                onNotificationTap: () {
+                  Navigator.pushNamed(context, AppRoutes.notifications);
+                },
+                onSettingsTap: () {
+                  Navigator.pushNamed(context, AppRoutes.settings);
+                },
+              ),
+              const SizedBox(height: 24),
+
+              // Month Selector and View Options
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Month Dropdown
+                    GestureDetector(
+                      onTap: _showMonthSelector,
+                      child: Row(
+                        children: [
+                          Text(
+                            _selectedMonth,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.black,
+                            size: 24,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // View Options
+                    Row(
+                      children: [
+                        _buildViewOption(Icons.view_agenda, false),
+                        const SizedBox(width: 12),
+                        _buildViewOption(Icons.list, false),
+                        const SizedBox(width: 12),
+                        _buildViewOption(Icons.filter_list, false),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Week Calendar
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: _weekDays.map((dayData) {
+                    return _buildDayItem(
+                      dayData['day'],
+                      dayData['date'],
+                      dayData['date'] == _selectedDay,
+                    );
+                  }).toList(),
+                ),
+              ),
+              const SizedBox(height: 32),
+
+              // Scheduled Rides Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Scheduled Rides',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Ride Cards
+                    ..._scheduledRides
+                        .map((ride) => _buildScheduledRideCard(ride)),
+
+                    const SizedBox(height: 20),
+
+                    // Cancel Ride Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _showCancelRideDialog,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFF6B6B),
+                          padding: const EdgeInsets.symmetric(vertical: 18),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: const Text(
+                          'Cancel Ride',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 32),
+
+              // Carpool Group Details
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Carpool Group details',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    _buildCarpoolGroupCard(),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 100), // Space for bottom navigation
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigation(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          _handleNavigation(index);
+        },
+      ),
+    );
+  }
+
+  Widget _buildViewOption(IconData icon, bool isSelected) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Icon(
+        icon,
+        color: isSelected ? Colors.white : Colors.grey[600],
+        size: 20,
+      ),
+    );
+  }
+
+  Widget _buildDayItem(String day, int date, bool isSelected) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedDay = date;
+        });
+      },
+      child: Container(
+        width: 48,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF8A2BE2) : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            Text(
+              day,
+              style: TextStyle(
+                fontSize: 12,
+                color: isSelected ? Colors.white : Colors.grey[600],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              date.toString(),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: isSelected ? Colors.white : Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScheduledRideCard(RideModel ride) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF4F4F4),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // Time Icon
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.access_time,
+              color: Colors.grey,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 16),
+
+          // Vehicle Image
+          Container(
+            width: 60,
+            height: 40,
+            child: Image.asset(
+              IconPath.busIcon,
+              fit: BoxFit.contain,
+            ),
+          ),
+          const SizedBox(width: 16),
+
+          // Ride Details
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.access_time,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(width: 4),
+                    const Text(
+                      'Departure Time',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Spacer(),
+                    const Icon(
+                      Icons.person,
+                      size: 16,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(width: 4),
+                    const Text(
+                      'Assigned Driver',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(
+                      ride.departureTime,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      ride.driverName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCarpoolGroupCard() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF4F4F4),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // Route Icon
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFF6B6B).withOpacity(0.2),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(
+              Icons.route,
+              color: Color(0xFFFF6B6B),
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 16),
+
+          // Group Details
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Route A – Morning Pickup',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    _buildGroupDetailItem(
+                      Icons.access_time,
+                      'Departure Time',
+                      '09:00 Pm',
+                    ),
+                    const SizedBox(width: 24),
+                    _buildGroupDetailItem(
+                      Icons.person,
+                      'Assigned Driver',
+                      'Driver Sam',
+                    ),
+                    const SizedBox(width: 24),
+                    _buildGroupDetailItem(
+                      Icons.group,
+                      'Total Riders',
+                      '4 Students',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGroupDetailItem(IconData icon, String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(
+              icon,
+              size: 12,
+              color: Colors.grey,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 10,
+                color: Colors.grey,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 2),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showMonthSelector() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        height: 300,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const Text(
+              'Select Month',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _months.length,
+                itemBuilder: (context, index) {
+                  final month = _months[index];
+                  final isSelected = month == _selectedMonth;
+                  return ListTile(
+                    title: Text(
+                      month,
+                      style: TextStyle(
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
+                        color:
+                            isSelected ? const Color(0xFF8A2BE2) : Colors.black,
+                      ),
+                    ),
+                    trailing: isSelected
+                        ? const Icon(Icons.check, color: Color(0xFF8A2BE2))
+                        : null,
+                    onTap: () {
+                      setState(() {
+                        _selectedMonth = month;
+                      });
+                      Navigator.pop(context);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showCancelRideDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Cancel Ride'),
+        content: const Text('Are you sure you want to cancel this ride?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('No'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Ride cancelled successfully!')),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF6B6B),
+            ),
+            child: const Text(
+              'Yes, Cancel',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _handleNavigation(int index) {
+    switch (index) {
+      case 0:
+        // Home
+        Navigator.pushReplacementNamed(context, AppRoutes.driverDashboard);
+        break;
+      case 1:
+        // Calendar - already here
+        break;
+      case 2:
+        // Groups
+        Navigator.pushNamed(context, AppRoutes.groups);
+        break;
+      case 3:
+        // Location
+        Navigator.pushNamed(context, AppRoutes.mapScreen);
+        break;
+    }
+  }
+}

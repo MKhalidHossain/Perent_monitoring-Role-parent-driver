@@ -12,9 +12,13 @@ abstract class IconPath {
   static const String notificationIcon = "assets/icons/notfication_icon.png";
   static const String settingsIcon = "assets/icons/satting_icon.png";
   static const String chatIcon = "assets/icons/chat_icon.png";
-static const String filterIcon = "assets/icons/filter_icon.png";
-static const String busIcon = "assets/icons/bus_icon.png";
-static const String riderIcon = "assets/icons/rider_icon.png";
-static const String timeIcon = "assets/icons/time_icon.png";
-
+  static const String filterIcon = "assets/icons/filter_icon.png";
+  static const String busIcon = "assets/icons/bus_icon.png";
+  static const String riderIcon = "assets/icons/rider_icon.png";
+  static const String timeIcon = "assets/icons/time_icon.png";
+  static const String checkedIcon = "assets/icons/checked.png";
+  static const String commentsIcon = "assets/icons/comments.png";
+  static const String notification = "assets/icons/notification.png";
+  static const String shuttleBusIcon = "assets/icons/shuttle_bus.png";
+  static const String xButtonIcon = "assets/icons/x_button.png";
 }

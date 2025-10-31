@@ -1,3 +1,4 @@
+import 'package:bbpool/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
 import 'package:bbpool/models/dashboard_model.dart';
@@ -95,19 +96,23 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                   credits: 100,
                   onProfileTap: () {
                     // Navigate to profile
+                    Navigator.pushNamed(context, AppRoutes.driverProfile);
                   },
                   onChatTap: () {
                     // Navigate to chat
+                    Navigator.pushNamed(context, AppRoutes.messageList);
                   },
                   onNotificationTap: () {
                     // Navigate to notifications
+                    Navigator.pushNamed(context, AppRoutes.notifications);
                   },
                   onSettingsTap: () {
                     // Navigate to settings
+                    Navigator.pushNamed(context, AppRoutes.settings);
                   },
                 ),
                 const SizedBox(height: 24),
-                
+
                 // Today Rides Section with perfect design
                 TodayRidesSection(
                   rides: _todayRides,
@@ -122,7 +127,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                   },
                 ),
                 const SizedBox(height: 32),
-                
+
                 // Monthly Stats Section
                 MonthlyStatsSection(
                   stats: _monthlyStats,
@@ -257,15 +262,16 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
         break;
       case 1:
         // Calendar
-        Navigator.pushNamed(context, '/calendar');
+        Navigator.pushNamed(context, AppRoutes.calendar);
         break;
       case 2:
         // Groups
-        Navigator.pushNamed(context, '/groups');
+        Navigator.pushNamed(context, AppRoutes.groups);
         break;
       case 3:
         // Location
-        Navigator.pushNamed(context, '/location');
+        // Navigator.pushNamed(context, '/location');
+        Navigator.pushNamed(context, AppRoutes.mapScreen);
         break;
     }
   }
