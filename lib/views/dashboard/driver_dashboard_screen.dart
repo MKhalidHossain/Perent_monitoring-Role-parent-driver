@@ -108,6 +108,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
                   },
                   onSettingsTap: () {
                     // Navigate to settings
+                    Navigator.pushNamed(context, AppRoutes.settings);
                   },
                 ),
                 const SizedBox(height: 24),
@@ -261,15 +262,16 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
         break;
       case 1:
         // Calendar
-        Navigator.pushNamed(context, '/calendar');
+        Navigator.pushNamed(context, AppRoutes.calendar);
         break;
       case 2:
         // Groups
-        Navigator.pushNamed(context, '/groups');
+        Navigator.pushNamed(context, AppRoutes.groups);
         break;
       case 3:
         // Location
-        Navigator.pushNamed(context, '/location');
+        // Navigator.pushNamed(context, '/location');
+        Navigator.pushNamed(context, AppRoutes.mapScreen);
         break;
     }
   }

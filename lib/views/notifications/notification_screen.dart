@@ -112,7 +112,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             itemCount: notifications.length,
             itemBuilder: (context, index) {
               final notification = notifications[index];
-              return _buildNotificationTile(context, notification, notificationController);
+              return _buildNotificationTile(
+                  context, notification, notificationController);
             },
           );
         },
@@ -207,7 +208,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
             ),
             const SizedBox(width: 12),
-            
+
             // Content
             Expanded(
               child: Column(
@@ -222,7 +223,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           notification.title,
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: notification.isRead ? FontWeight.w500 : FontWeight.w600,
+                            fontWeight: notification.isRead
+                                ? FontWeight.w500
+                                : FontWeight.w600,
                             color: Colors.black,
                           ),
                         ),
@@ -236,12 +239,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       ),
                     ],
                   ),
-                  
+
                   // Subtitle if exists
                   if (notification.subtitle != null) ...[
                     const SizedBox(height: 4),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(6),
@@ -256,9 +260,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       ),
                     ),
                   ],
-                  
+
                   const SizedBox(height: 8),
-                  
+
                   // Date
                   Text(
                     notification.data?['date'] ?? 'Saturday, August 22, 2025',
@@ -270,7 +274,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ],
               ),
             ),
-            
+
             // Unread indicator
             if (!notification.isRead)
               Container(
