@@ -243,16 +243,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  Widget _buildBottomNavItem(IconData icon, bool isActive) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      child: Icon(
-        icon,
-        size: 24,
-        color: isActive ? const Color(0xFF9C88FF) : Colors.grey,
-      ),
-    );
-  }
 
   void _handleNotificationTap(NotificationModel notification) {
     switch (notification.type) {
