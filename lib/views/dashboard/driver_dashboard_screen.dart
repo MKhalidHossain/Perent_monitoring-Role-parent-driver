@@ -23,6 +23,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
       driverName: 'Jakir Hossain',
       status: 'scheduled',
       vehicleType: 'van',
+      isArrived: true,
     ),
     RideModel(
       id: '2',
@@ -32,6 +33,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
       driverName: 'Jakir Hossain',
       status: 'scheduled',
       vehicleType: 'van',
+      isArrived: false,
     ),
   ];
 
@@ -196,7 +198,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Start Ride'),
+        title: const Text('Start '),
         content: const Text('Are you ready to start the ride?'),
         actions: [
           TextButton(

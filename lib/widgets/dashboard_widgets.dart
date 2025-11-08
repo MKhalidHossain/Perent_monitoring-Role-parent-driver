@@ -140,6 +140,7 @@ class TodayRidesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -164,7 +165,8 @@ class TodayRidesSection extends StatelessWidget {
                     color: Colors.grey[50],
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Image.asset(IconPath.filterIcon, width: 16, height: 16),
+                  child:
+                      Image.asset(IconPath.filterIcon, width: 16, height: 16),
                 ),
               ),
             ],
@@ -209,15 +211,14 @@ class TodayRidesSection extends StatelessWidget {
                 //   ),
                 // ),
 
-
                 CommonWidgets.buildGradientButton(
-                                    text: isDriver ? 'Start Ride' : 'Track Ride',
-                                    onPressed: () async {
-                                      // Navigation is now handled in the viewmodel based on user role
-                                    },
-                                    textColor: AppColors.textWhite,
-                                    borderRadius: 28,
-                                  ),
+                  text: isDriver ? 'Start Ride' : 'Track Ride',
+                  onPressed: () async {
+                    // Navigation is now handled in the viewmodel based on user role
+                  },
+                  textColor: AppColors.textWhite,
+                  borderRadius: 28,
+                ),
               ],
             ),
         ],
@@ -226,24 +227,33 @@ class TodayRidesSection extends StatelessWidget {
   }
 
   Widget _buildRideCard(RideModel ride, int index, int totalRides) {
+    final bool isDeparture = index == 0;
+
+    // Icons & colors
+    final IconData leadingIcon =
+        isDeparture ? Icons.check_circle : Icons.access_time;
+    final Color leadingIconColor = isDeparture ? Colors.green : Colors.grey;
+    final Color leadingBg =
+        isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
+
     return Container(
-      
       margin: const EdgeInsets.only(bottom: 16),
       child: Row(
         children: [
+          // Timeline column (icon + connector)
           Column(
             children: [
               Container(
-                width: 20,
-                height: 20,
+                width: 30,
+                height: 60,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color: leadingBg,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.access_time,
-                  color: Colors.white,
-                  size: 12,
+                child: Icon(
+                  leadingIcon,
+                  color: leadingIconColor,
+                  size: 30,
                 ),
               ),
               if (index < totalRides - 1)
@@ -255,6 +265,7 @@ class TodayRidesSection extends StatelessWidget {
             ],
           ),
           const SizedBox(width: 16),
+          // Card
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(16),
@@ -273,25 +284,36 @@ class TodayRidesSection extends StatelessWidget {
               child: Row(
                 children: [
                   SizedBox(
-                    width: 50,
-                    height: 50,
-                
-                    child:  Image.asset(IconPath.busIcon, width: 28, height: 28,),
+                    width: 100,
+                    height: 70,
+                    child: Image.asset(
+                      ride.isArrived == true
+                          ? IconPath.busIcon
+                          : IconPath.busIcon2,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // Time block
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
-                                Image.asset(IconPath.timeIcon, width: 16, height: 16,),
+                                Image.asset(
+                                  IconPath.timeIcon,
+                                  width: 16,
+                                  height: 16,
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  index == 0 ? 'Departure Time' : 'Arrival Time',
+                                  isDeparture
+                                      ? 'Departure Time'
+                                      : 'Arrival Time',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey,
@@ -302,7 +324,9 @@ class TodayRidesSection extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              index == 0 ? ride.departureTime : ride.arrivalTime,
+                              isDeparture
+                                  ? ride.departureTime
+                                  : ride.arrivalTime,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -310,39 +334,41 @@ class TodayRidesSection extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 8),
-                                         
                           ],
                         ),
-                    Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-
-                          Row(
-                            children: [
-                              Image.asset(IconPath.riderIcon, width: 16, height: 16,),
-                              const SizedBox(width: 4),
-                              const     Text(
-                              'Riders',
-                              style:  TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
+                        // Riders block
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  IconPath.riderIcon,
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                const SizedBox(width: 4),
+                                const Text(
+                                  'Riders',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '${ride.ridersCount} Students',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
                               ),
-                                                      ),
-                            ],
-                          ),
-                        const SizedBox(height: 2),
-                        Text(
-                          '${ride.ridersCount} Students',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                      ),
-                    
                       ],
                     ),
                   ),
@@ -385,7 +411,7 @@ class MonthlyStatsSection extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 1.1,
+              childAspectRatio: 1.6,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
             ),
@@ -402,7 +428,7 @@ class MonthlyStatsSection extends StatelessWidget {
 
   Widget _buildStatCard(StatModel stat) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(11),
       decoration: BoxDecoration(
         color: const Color(0xFFF4F4F4),
         borderRadius: BorderRadius.circular(12),
@@ -418,33 +444,30 @@ class MonthlyStatsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: _getIconColor(stat.icon).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              _getIconData(stat.icon),
-              color: _getIconColor(stat.icon),
-              size: 24,
-            ),
+          Row(
+            children: [
+              _getImage(
+                stat.icon,
+                26,
+              ),
+              SizedBox(width:5 ),
+              Text(
+                stat.title,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  overflow: TextOverflow.visible,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            stat.title,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 4),
+
+          const SizedBox(height: 20),
           Text(
             stat.value,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -454,47 +477,27 @@ class MonthlyStatsSection extends StatelessWidget {
     );
   }
 
-  IconData _getIconData(String iconName) {
+  Widget _getImage(String iconName, double size ) {
     switch (iconName.toLowerCase()) {
       case 'rides_completed':
-        return Icons.directions_bus;
+        return Image.asset('assets/icons/image 17.png', fit: BoxFit.cover,height: size,width: size,);
       case 'on_time_pickups':
-        return Icons.access_time;
+        return Image.asset('assets/icons/image 18.png',fit: BoxFit.cover,height: size,width: size,);
       case 'distance_traveled':
-        return Icons.location_on;
+        return Image.asset('assets/icons/image 19.png',fit: BoxFit.cover,height: size,width: size,);
       case 'children_dropped':
-        return Icons.child_care;
+        return Image.asset('assets/icons/image 20.png',fit: BoxFit.cover,height: size,width: size,);
       case 'cancellations':
-        return Icons.cancel;
+        return Image.asset('assets/icons/image 21.png',fit: BoxFit.cover,height: size,width: size,);
       case 'active_carpool_groups':
-        return Icons.group;
+        return Image.asset('assets/icons/image 22.png',fit: BoxFit.cover,height: size,width: size,);
       case 'scheduled_rides':
-        return Icons.calendar_today;
+        return Image.asset('assets/images/scheduled_rides.png',fit: BoxFit.cover,height: size,width: size,);
       default:
-        return Icons.info;
+        return Image.asset('assets/images/default.png',fit: BoxFit.cover,height: size,width: size,);
     }
   }
 
-  Color _getIconColor(String iconName) {
-    switch (iconName.toLowerCase()) {
-      case 'rides_completed':
-        return const Color(0xFFFFA500); // Orange
-      case 'on_time_pickups':
-        return const Color(0xFF00C853); // Green
-      case 'distance_traveled':
-        return const Color(0xFF2196F3); // Blue
-      case 'children_dropped':
-        return const Color(0xFF9C27B0); // Purple
-      case 'cancellations':
-        return const Color(0xFFF44336); // Red
-      case 'active_carpool_groups':
-        return const Color(0xFF00BCD4); // Teal
-      case 'scheduled_rides':
-        return const Color(0xFFF44336); // Red
-      default:
-        return Colors.grey;
-    }
-  }
 }
 
 class BottomNavigation extends StatelessWidget {
@@ -562,5 +565,4 @@ class BottomNavigation extends StatelessWidget {
       ),
     );
   }
-
 }

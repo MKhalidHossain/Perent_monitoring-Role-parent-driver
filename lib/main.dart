@@ -25,7 +25,7 @@ class BBPoolApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => AuthProvider(context)),
         ChangeNotifierProvider(
             create: (context) => OnboardingProvider()..initialize()),
         ChangeNotifierProvider(create: (context) => SelectUserTypeProvider()),

@@ -36,8 +36,8 @@ class AuthProvider with ChangeNotifier {
   bool get isPasswordVisible => _viewModel.isPasswordVisible;
   bool get isConfirmPasswordVisible => _viewModel.isConfirmPasswordVisible;
 
-  AuthProvider() {
-    _viewModel.initialize();
+  AuthProvider(BuildContext context) {
+    _viewModel.initialize( context);
   }
 
   // Delegate methods to ViewModel
@@ -71,13 +71,13 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> logout() async {
-    await _viewModel.logout();
+  Future<void> logout(BuildContext context) async {
+    await _viewModel.logout(context);
     notifyListeners();
   }
 
-  Future<void> checkAuthStatus() async {
-    await _viewModel.checkAuthStatus();
+  Future<void> checkAuthStatus(BuildContext context) async {
+    await _viewModel.checkAuthStatus(context);
     notifyListeners();
   }
 

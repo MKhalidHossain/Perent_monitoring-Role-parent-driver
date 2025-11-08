@@ -41,6 +41,7 @@ class AppRoutes {
   static const String messageDemo = '/message-demo';
   static const String notifications = '/notifications';
   static const String mapScreen = '/map';
+  
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => const SplashScreen(),

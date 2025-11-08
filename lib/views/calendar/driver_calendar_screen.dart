@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/routes/app_routes.dart';
 import 'package:bbpool/widgets/common_widgets.dart';
@@ -76,6 +78,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
       driverName: 'Sam Smith',
       status: 'scheduled',
       vehicleType: 'van',
+      isArrived: true,
     ),
     RideModel(
       id: '2',
@@ -85,6 +88,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
       driverName: 'Sam Smith',
       status: 'scheduled',
       vehicleType: 'van',
+      isArrived: false,
     ),
   ];
 
@@ -146,15 +150,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                     ),
 
                     // View Options
-                    Row(
-                      children: [
-                        _buildViewOption(Icons.view_agenda, false),
-                        const SizedBox(width: 12),
-                        _buildViewOption(Icons.list, false),
-                        const SizedBox(width: 12),
-                        _buildViewOption(Icons.filter_list, false),
-                      ],
-                    ),
+
                   ],
                 ),
               ),
@@ -199,7 +195,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
 
                     // Ride Cards
                     ..._scheduledRides
-                        .map((ride) => _buildScheduledRideCard(ride)),
+                        .map((ride) => _buildScheduledRideCard(ride, _scheduledRides.indexOf(ride), _scheduledRides.length)),
 
                     const SizedBox(height: 20),
 
@@ -227,6 +223,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                     //   ),
                     // ),
                     CommonWidgets.buildGradientButton(
+                      color: AppColors.red,
                       text: 'Cancel Ride',
                       onPressed: () async {
                         // Navigation is now handled in the viewmodel based on user role
@@ -285,9 +282,10 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
       child: Icon(
         icon,
         color: isSelected ? Colors.white : Colors.grey[600],
-        size: 20,
+        size: 18,
       ),
     );
+
   }
 
   Widget _buildDayItem(String day, int date, bool isSelected) {
@@ -301,7 +299,10 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
         width: 48,
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF8A2BE2) : Colors.transparent,
+          gradient: isSelected
+              ? AppColors.buttonGradient // Use the gradient if selected
+              : null, // No gradient if not selected
+          color: !isSelected ? Colors.transparent : null, // Transparent background if not selected
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -329,125 +330,190 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
     );
   }
 
-  Widget _buildScheduledRideCard(RideModel ride) {
+  Widget _buildScheduledRideCard(RideModel ride, int index, int totalRides) {
+    final bool isDeparture = index == 0;
+
+    // Icons & colors
+    final IconData leadingIcon = isDeparture ? Icons.access_time : Icons.access_time;
+    final Color leadingIconColor = isDeparture ? Colors.grey : Colors.grey;
+    final Color leadingBg = isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF4F4F4),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
       child: Row(
         children: [
-          // Time Icon
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.access_time,
-              color: Colors.grey,
-              size: 20,
-            ),
+          // Timeline column (icon + connector)
+          Column(
+            children: [
+              Container(
+                width: 30,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: leadingBg,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  leadingIcon,
+                  color: leadingIconColor,
+                  size: 30,
+                ),
+              ),
+              if (index < totalRides - 1)
+                Container(
+                  width: 2,
+                  height: 50,
+                  color: Colors.grey[300],
+                ),
+            ],
           ),
           const SizedBox(width: 16),
 
-          // Vehicle Image
-          SizedBox(
-            width: 60,
-            height: 40,
-            child: Image.asset(
-              IconPath.busIcon,
-              fit: BoxFit.contain,
-            ),
-          ),
-          const SizedBox(width: 16),
-
-          // Ride Details
+          // Card
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Row(
-                  children: [
-                    Icon(
-                      Icons.access_time,
-                      size: 16,
-                      color: Colors.grey,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF4F4F4),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  // Vehicle Image - Flipped for arrival time (left to right)
+                  Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.rotationY(isDeparture ? 0 : pi), // Flip horizontally for arrival
+                    child: SizedBox(
+                      width: 100,
+                      height: 70,
+                      child: Image.asset(
+                        IconPath.busIcon,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    SizedBox(width: 4),
-                    Flexible(
-                      child: Text(
-                        'Departure Time',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
+                  ),
+                  const SizedBox(width: 16),
+
+                  // Ride Details
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Time block
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  IconPath.timeIcon,
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  isDeparture ? 'Departure Time' : 'Arrival Time',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              isDeparture ? ride.departureTime : ride.arrivalTime,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+
+                            // Driver block
+                            Row(
+                              children: [
+                                Image.asset(
+                                  IconPath.riderIcon, // You might want to use a driver icon here
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                const SizedBox(width: 4),
+                                const Text(
+                                  'Driver',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              ride.driverName,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Icon(
-                      Icons.person,
-                      size: 16,
-                      color: Colors.grey,
-                    ),
-                    SizedBox(width: 4),
-                    Flexible(
-                      child: Text(
-                        'Assigned Driver',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
+
+                        // Riders block
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  IconPath.riderIcon,
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                const SizedBox(width: 4),
+                                const Text(
+                                  'Riders',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '${ride.ridersCount} Students',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      ride.departureTime,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      ride.driverName,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
   }
-
   Widget _buildCarpoolGroupCard() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -638,5 +704,264 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
         Navigator.pushNamed(context, AppRoutes.mapScreen);
         break;
     }
+  }
+}
+class TodayRidesSection extends StatelessWidget {
+  final List<RideModel> rides;
+  final VoidCallback? onFilterTap;
+  final VoidCallback? onStartRideTap;
+  final VoidCallback? onTrackRideTap;
+  final bool isDriver;
+
+  const TodayRidesSection({
+    super.key,
+    required this.rides,
+    this.onFilterTap,
+    this.onStartRideTap,
+    this.onTrackRideTap,
+    this.isDriver = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Today Rides',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              GestureDetector(
+                onTap: onFilterTap,
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child:
+                  Image.asset(IconPath.filterIcon, width: 16, height: 16),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          if (rides.isEmpty)
+            const Center(
+              child: Text(
+                'No rides scheduled for today',
+                style: TextStyle(color: Colors.grey),
+              ),
+            )
+          else
+            Column(
+              children: [
+                ...rides.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final ride = entry.value;
+                  return _buildRideCard(ride, index, rides.length);
+                }),
+                const SizedBox(height: 20),
+                // SizedBox(
+                //   width: double.infinity,
+                //   child: ElevatedButton(
+                //     onPressed: isDriver ? onStartRideTap : onTrackRideTap,
+                //     style: ElevatedButton.styleFrom(
+                //       backgroundColor: const Color(0xFFE8D5F2),
+                //       padding: const EdgeInsets.symmetric(vertical: 18),
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(16),
+                //       ),
+                //       elevation: 0,
+                //     ),
+                //     child: Text(
+                //       isDriver ? 'Start Ride1' : 'Track Ride',
+                //       style: const TextStyle(
+                //         color: Colors.white,
+                //         fontSize: 18,
+                //         fontWeight: FontWeight.w600,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+
+                CommonWidgets.buildGradientButton(
+                  text: isDriver ? 'Start Ride' : 'Track Ride',
+                  onPressed: () async {
+                    // Navigation is now handled in the viewmodel based on user role
+                  },
+                  textColor: AppColors.textWhite,
+                  borderRadius: 28,
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRideCard(RideModel ride, int index, int totalRides) {
+    final bool isDeparture = index == 0;
+
+    // Icons & colors
+    final IconData leadingIcon =
+    isDeparture ? Icons.check_circle : Icons.access_time;
+    final Color leadingIconColor = isDeparture ? Colors.green : Colors.grey;
+    final Color leadingBg =
+    isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        children: [
+          // Timeline column (icon + connector)
+          Column(
+            children: [
+              Container(
+                width: 30,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: leadingBg,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  leadingIcon,
+                  color: leadingIconColor,
+                  size: 30,
+                ),
+              ),
+              if (index < totalRides - 1)
+                Container(
+                  width: 2,
+                  height: 50,
+                  color: Colors.grey[300],
+                ),
+            ],
+          ),
+          const SizedBox(width: 16),
+          // Card
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF4F4F4),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withValues(alpha: 0.1),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    height: 70,
+                    child: Image.asset(
+                      ride.isArrived == true
+                          ? IconPath.busIcon
+                          : IconPath.busIcon2,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Time block
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  IconPath.timeIcon,
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  isDeparture
+                                      ? 'Departure Time'
+                                      : 'Arrival Time',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              isDeparture
+                                  ? ride.departureTime
+                                  : ride.arrivalTime,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
+                        // Riders block
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                  IconPath.riderIcon,
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                const SizedBox(width: 4),
+                                const Text(
+                                  'Riders',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '${ride.ridersCount} Students',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

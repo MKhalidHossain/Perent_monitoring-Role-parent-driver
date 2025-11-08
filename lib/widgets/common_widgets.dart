@@ -8,6 +8,7 @@ class CommonWidgets {
   static Widget buildGradientButton({
     required String text,
     required VoidCallback onPressed,
+    Color? color, // Base color for fallback if no gradient is provided
     double? width,
     double? height,
     double? fontSize,
@@ -15,6 +16,7 @@ class CommonWidgets {
     Color? textColor,
     EdgeInsetsGeometry? padding,
     double? borderRadius,
+    Gradient? gradient, // Optional gradient property
   }) {
     return GestureDetector(
       onTap: onPressed,
@@ -22,7 +24,7 @@ class CommonWidgets {
         width: width ?? double.infinity,
         height: height ?? 56,
         decoration: BoxDecoration(
-          gradient: AppColors.gradientButton,
+          color: color ?? AppColors.gradientButtonEnd,
           borderRadius: BorderRadius.circular(borderRadius ?? 28),
         ),
         padding: padding ?? const EdgeInsets.symmetric(horizontal: 32, vertical: 16),

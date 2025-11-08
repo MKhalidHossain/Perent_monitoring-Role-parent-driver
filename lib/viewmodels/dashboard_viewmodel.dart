@@ -51,6 +51,7 @@ class DashboardViewModel {
           driverName: 'Sam Smith',
           status: 'completed',
           vehicleType: 'van',
+          isArrived: true,
         ),
         RideModel(
           id: '2',
@@ -60,6 +61,7 @@ class DashboardViewModel {
           driverName: 'Sam Smith',
           status: 'pending',
           vehicleType: 'van',
+          isArrived: false,
         ),
       ];
     } else {
@@ -73,6 +75,7 @@ class DashboardViewModel {
           driverName: 'Sam Smith',
           status: 'completed',
           vehicleType: 'van',
+          isArrived: true,
         ),
         RideModel(
           id: '2',
@@ -82,6 +85,7 @@ class DashboardViewModel {
           driverName: 'Sam Smith',
           status: 'pending',
           vehicleType: 'van',
+          isArrived: false,
         ),
       ];
     }

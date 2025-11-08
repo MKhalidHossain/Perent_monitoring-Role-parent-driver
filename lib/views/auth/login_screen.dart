@@ -316,6 +316,7 @@ class LoginScreen extends StatelessWidget {
                                   }
                                   
                                   return CommonWidgets.buildGradientButton(
+                                    gradient: AppColors.buttonGradient,
                                     text: 'Continue',
                                     onPressed: () async {
                                       await authProvider.login(context);
