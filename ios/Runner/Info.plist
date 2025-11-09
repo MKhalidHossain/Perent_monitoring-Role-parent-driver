@@ -24,10 +24,12 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -41,19 +43,25 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Privacy permissions -->
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs access to camera to take photos for profile pictures.</string>
+	<string>This app needs camera access to take profile photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs access to photo library to select profile pictures.</string>
+	<string>This app needs photo library access to choose profile photos.</string>
+
+	<!-- Location: include WhenInUse; include Always+WhenInUse only if you truly need background location -->
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location to provide real-time ride tracking.</string>
+	<string>This app uses your location to show your position on the map and for ride tracking while the app is in use.</string>
+	<!-- Remove the next two lines if you don't need background location -->
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs access to location to provide real-time ride tracking.</string>
+	<string>This app may access your location in the background to support continuous ride tracking.</string>
 </dict>
 </plist>

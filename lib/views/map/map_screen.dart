@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:bbpool/controllers/map_controller.dart';
 import 'package:bbpool/models/map_model.dart';
-import 'package:bbpool/widgets/dashboard_widgets.dart';
-import 'package:bbpool/routes/app_routes.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -23,159 +22,18 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
+  static const LatLng _mapLocation = const LatLng(23.777176, 90.399452);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Header
-            DashboardHeader(
-              userName: "Jakir Hossain",
-              profileImageUrl: null,
-              credits: 100,
-              onProfileTap: () {
-                Navigator.pushNamed(context, AppRoutes.driverProfile);
-              },
-              onChatTap: () {
-                Navigator.pushNamed(context, AppRoutes.messageList);
-              },
-              onNotificationTap: () {
-                Navigator.pushNamed(context, AppRoutes.notifications);
-              },
-              onSettingsTap: () {
-                Navigator.pushNamed(context, AppRoutes.settings);
-              },
-            ),
-            
-            // Map Content
-            Expanded(
-              child: Consumer<MapController>(
-                builder: (context, mapController, child) {
-                  final ride = mapController.currentRide;
+      appBar: AppBar(),
+      body: const GoogleMap(
+          initialCameraPosition: CameraPosition(
+              target: _mapLocation,
+              zoom: 13)),
 
-                  if (mapController.isLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xFF9C88FF),
-                      ),
-                    );
-                  }
-
-                  if (ride == null) {
-                    return Stack(
-                      children: [
-                        // Simulated Map
-                        _buildSimulatedMap(),
-                        
-                        // Map Controls
-                        Positioned(
-                          top: 20,
-                          right: 20,
-                          child: _buildMapControls(),
-                        ),
-                        
-                        // Location Button
-                        Positioned(
-                          bottom: 120,
-                          right: 20,
-                          child: _buildLocationButton(),
-                        ),
-                        
-                        // No Active Ride Message
-                        Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(20),
-                            margin: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 1,
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: const Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.location_off,
-                                  size: 48,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 16),
-                                Text(
-                                  'No active ride',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Start a ride to see live tracking',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                  
-                  return Stack(
-                    children: [
-                      // Map with active ride
-                      _buildSimulatedMap(),
-                      
-                      // Driver Info Card
-                      Positioned(
-                        top: 20,
-                        left: 20,
-                        right: 20,
-                        child: _buildDriverInfoCard(ride),
-                      ),
-                      
-                      // Map Controls
-                      Positioned(
-                        top: 100,
-                        right: 20,
-                        child: _buildMapControls(),
-                      ),
-                      
-                      // Location Button
-                      Positioned(
-                        bottom: 120,
-                        right: 20,
-                        child: _buildLocationButton(),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          _handleNavigation(index);
-        },
-      ),
     );
   }
 
@@ -418,53 +276,6 @@ class _MapScreenState extends State<MapScreen> {
         size: 20,
       ),
     );
-  }
-
-  Widget _buildFloatingActionButton() {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFFB39DDB), Color(0xFF9C88FF)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        shape: BoxShape.circle,
-      ),
-      child: FloatingActionButton(
-        onPressed: () {
-          // Handle add action
-        },
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 24,
-        ),
-      ),
-    );
-  }
-
-  void _handleNavigation(int index) {
-    switch (index) {
-      case 0:
-        // Home
-        Navigator.pushReplacementNamed(context, AppRoutes.driverDashboard);
-        break;
-      case 1:
-        // Calendar
-        Navigator.pushReplacementNamed(context, AppRoutes.calendar);
-        break;
-      case 2:
-        // Groups
-        Navigator.pushNamed(context, AppRoutes.groups);
-        break;
-      case 3:
-        // Location - already here
-        break;
-    }
   }
 
   void _showCancelRideDialog() {

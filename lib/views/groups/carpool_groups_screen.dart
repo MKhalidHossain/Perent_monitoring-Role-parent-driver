@@ -1,6 +1,7 @@
 import 'package:bbpool/config/icon_path.dart';
 import 'package:bbpool/views/messages/chat_screen.dart';
 import 'package:bbpool/views/notifications/notification_screen.dart';
+import 'package:bbpool/widgets/carpool_group_card.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
@@ -89,9 +90,9 @@ class _CarpoolGroupsScreenState extends State<CarpoolGroupsScreen> {
                     // Carpool Groups List
                     Expanded(
                       child: ListView.builder(
-                        itemCount: _carpoolGroups.length,
+                        itemCount: 2,
                         itemBuilder: (context, index) {
-                          return _buildCarpoolGroupCard(_carpoolGroups[index]);
+                          return const CarpoolGroupCard();
                         },
                       ),
                     ),
@@ -101,18 +102,6 @@ class _CarpoolGroupsScreenState extends State<CarpoolGroupsScreen> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          _handleNavigation(index);
-        },
-        onAddTap: () {
-          _showAddOptionsDialog();
-        },
       ),
     );
   }
@@ -336,64 +325,6 @@ class _CarpoolGroupsScreenState extends State<CarpoolGroupsScreen> {
         ],
       ),
     );
-  }
-
-  void _showAddOptionsDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.add_road),
-              title: const Text('New Route'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to add route
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.group_add),
-              title: const Text('New Group'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to add group
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.schedule),
-              title: const Text('Schedule Ride'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to schedule ride
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _handleNavigation(int index) {
-    switch (index) {
-      case 0:
-        // Home
-        Navigator.pop(context);
-        break;
-      case 1:
-        // Calendar
-        Navigator.pushReplacementNamed(context, '/calendar');
-        break;
-      case 2:
-        // Groups - already here
-        break;
-      case 3:
-        // Location
-        Navigator.pushReplacementNamed(context, '/map');
-        break;
-    }
   }
 }
 

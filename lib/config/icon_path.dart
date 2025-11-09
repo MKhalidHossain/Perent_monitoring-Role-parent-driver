@@ -22,4 +22,5 @@ abstract class IconPath {
   static const String notification = "assets/icons/notification.png";
   static const String shuttleBusIcon = "assets/icons/shuttle_bus.png";
   static const String xButtonIcon = "assets/icons/x_button.png";
+  static const String groupIcon = "assets/icons/group 1.png";
 }

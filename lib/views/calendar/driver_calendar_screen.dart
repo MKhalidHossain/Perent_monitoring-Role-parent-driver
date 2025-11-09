@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/routes/app_routes.dart';
+import 'package:bbpool/widgets/carpool_group_card.dart';
 import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
@@ -150,7 +151,6 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                     ),
 
                     // View Options
-
                   ],
                 ),
               ),
@@ -194,8 +194,10 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                     const SizedBox(height: 20),
 
                     // Ride Cards
-                    ..._scheduledRides
-                        .map((ride) => _buildScheduledRideCard(ride, _scheduledRides.indexOf(ride), _scheduledRides.length)),
+                    ..._scheduledRides.map((ride) => _buildScheduledRideCard(
+                        ride,
+                        _scheduledRides.indexOf(ride),
+                        _scheduledRides.length)),
 
                     const SizedBox(height: 20),
 
@@ -237,12 +239,12 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
               const SizedBox(height: 32),
 
               // Carpool Group Details
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Carpool Group details',
                       style: TextStyle(
                         fontSize: 20,
@@ -250,8 +252,8 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                         color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    _buildCarpoolGroupCard(),
+                    SizedBox(height: 20),
+                    CarpoolGroupCard(),
                   ],
                 ),
               ),
@@ -260,33 +262,33 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          _handleNavigation(index);
-        },
-      ),
+      // bottomNavigationBar: BottomNavigation(
+      //   currentIndex: _currentIndex,
+      //   onTap: (index) {
+      //     setState(() {
+      //       _currentIndex = index;
+      //     });
+      //     _handleNavigation(index);
+      //   },
+      // ),
     );
   }
 
-  Widget _buildViewOption(IconData icon, bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Icon(
-        icon,
-        color: isSelected ? Colors.white : Colors.grey[600],
-        size: 18,
-      ),
-    );
-
-  }
+  // Widget _buildViewOption(IconData icon, bool isSelected) {
+  //   return Container(
+  //     padding: const EdgeInsets.all(8),
+  //     decoration: BoxDecoration(
+  //       color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey[100],
+  //       borderRadius: BorderRadius.circular(8),
+  //     ),
+  //     child: Icon(
+  //       icon,
+  //       color: isSelected ? Colors.white : Colors.grey[600],
+  //       size: 18,
+  //     ),
+  //   );
+  //
+  // }
 
   Widget _buildDayItem(String day, int date, bool isSelected) {
     return GestureDetector(
@@ -302,7 +304,9 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
           gradient: isSelected
               ? AppColors.buttonGradient // Use the gradient if selected
               : null, // No gradient if not selected
-          color: !isSelected ? Colors.transparent : null, // Transparent background if not selected
+          color: !isSelected
+              ? Colors.transparent
+              : null, // Transparent background if not selected
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -334,9 +338,11 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
     final bool isDeparture = index == 0;
 
     // Icons & colors
-    final IconData leadingIcon = isDeparture ? Icons.access_time : Icons.access_time;
+    final IconData leadingIcon =
+        isDeparture ? Icons.access_time : Icons.access_time;
     final Color leadingIconColor = isDeparture ? Colors.grey : Colors.grey;
-    final Color leadingBg = isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
+    final Color leadingBg =
+        isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -389,7 +395,8 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                   // Vehicle Image - Flipped for arrival time (left to right)
                   Transform(
                     alignment: Alignment.center,
-                    transform: Matrix4.rotationY(isDeparture ? 0 : pi), // Flip horizontally for arrival
+                    transform: Matrix4.rotationY(
+                        isDeparture ? 0 : pi), // Flip horizontally for arrival
                     child: SizedBox(
                       width: 100,
                       height: 70,
@@ -419,7 +426,9 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  isDeparture ? 'Departure Time' : 'Arrival Time',
+                                  isDeparture
+                                      ? 'Departure Time'
+                                      : 'Arrival Time',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey,
@@ -430,7 +439,9 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              isDeparture ? ride.departureTime : ride.arrivalTime,
+                              isDeparture
+                                  ? ride.departureTime
+                                  : ride.arrivalTime,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -443,7 +454,8 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                             Row(
                               children: [
                                 Image.asset(
-                                  IconPath.riderIcon, // You might want to use a driver icon here
+                                  IconPath
+                                      .riderIcon, // You might want to use a driver icon here
                                   width: 16,
                                   height: 16,
                                 ),
@@ -514,126 +526,125 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
       ),
     );
   }
-  Widget _buildCarpoolGroupCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF4F4F4),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Route Icon
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: const Color(0xFFFF6B6B).withOpacity(0.2),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(
-              Icons.route,
-              color: Color(0xFFFF6B6B),
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 16),
+  // Widget _buildCarpoolGroupCard() {
+  //   return Container(
 
-          // Group Details
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Route A – Morning Pickup',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildGroupDetailItem(
-                        Icons.access_time,
-                        'Departure Time',
-                        '09:00 Pm',
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: _buildGroupDetailItem(
-                        Icons.person,
-                        'Assigned Driver',
-                        'Driver Sam',
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: _buildGroupDetailItem(
-                        Icons.group,
-                        'Total Riders',
-                        '4 Students',
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  //     padding: const EdgeInsets.all(16),
+  //     decoration: BoxDecoration(
+  //       color: const Color(0xFFF4F4F4),
+  //       borderRadius: BorderRadius.circular(12),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Colors.grey.withOpacity(0.1),
+  //           spreadRadius: 1,
+  //           blurRadius: 4,
+  //           offset: const Offset(0, 2),
+  //         ),
+  //       ],
+  //     ),
+  //     child: Row(
+  //       children: [
+  //         // Route Icon
+  //         Container(
+  //           width: 40,
+  //           height: 40,
+  //           child: Image.asset(IconPath.groupIcon, width: 20, height: 20),
+  //         ),
+  //         const SizedBox(width: 16),
 
-  Widget _buildGroupDetailItem(IconData icon, String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(
-              icon,
-              size: 12,
-              color: Colors.grey,
-            ),
-            const SizedBox(width: 4),
-            Expanded(
-              child: Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 2),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
-    );
-  }
+  //         // Group Details
+  //         Expanded(
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               const Text(
+  //                 'Route A – Morning Pickup',
+  //                 style: TextStyle(
+  //                   fontSize: 16,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: Colors.black,
+  //                 ),
+  //               ),
+  //               const SizedBox(height: 12),
+  //               Row(
+  //                 children: [
+  //                   Expanded(
+  //                     child: GroupDetailItem(
+  //                       icon:
+  //                       Icons.access_time,
+  //                     label:   'Departure Time',
+  //                      value:  '09:00 Pm',
+  //                     ),
+  //                   ),
+  //                   const SizedBox(width: 8),
+  //                   Expanded(
+  //                     child: GroupDetailItem(
+  //                   icon:     Icons.person,
+  //                     label:   'Assigned Driver',
+  //                   value:    'Driver Sam',
+  //                     ),
+  //                   ),
+  //                   const SizedBox(width: 8),
+  //                   Expanded(
+  //                     child: GroupDetailItem(
+  //                     icon:   Icons.group,
+  //                     label:   'Total Riders',
+  //                      value:  '4 Students',
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+
+  // }
+
+  // Widget _buildGroupDetailItem(IconData icon, String label, String value) {
+  //   return
+
+  //   Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+
+  //     children: [
+  //     Row(
+  //     crossAxisAlignment: CrossAxisAlignment.baseline,
+  //     textBaseline: TextBaseline.alphabetic, // required for baseline alignment
+  //     children: [
+  //       Icon(icon, size: 12, color: AppColors.gradientButtonEnd),
+  //       const SizedBox(width: 4),
+  //       Expanded(
+  //         child: Text(
+  //           label,
+  //           style: const TextStyle(
+  //             fontSize: 10, // match icon size for clean alignment
+  //             color: Colors.grey,
+  //             fontWeight: FontWeight.w500,
+  //           ),
+  //           overflow: TextOverflow.ellipsis,
+  //           maxLines: 1,
+  //         ),
+  //       ),
+  //     ],
+  //   ),
+
+  //   const SizedBox(height: 2),
+  //       Text(
+  //         value,
+  //         style: const TextStyle(
+  //           fontSize: 12,
+  //           fontWeight: FontWeight.bold,
+  //           color: Colors.black,
+  //         ),
+  //         overflow: TextOverflow.ellipsis,
+  //       ),
+  //     ],
+  //   );
+
+  // }
 
   void _showMonthSelector() {
     showModalBottomSheet(
@@ -685,27 +696,8 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
       ),
     );
   }
-
-  void _handleNavigation(int index) {
-    switch (index) {
-      case 0:
-        // Home
-        Navigator.pushReplacementNamed(context, AppRoutes.driverDashboard);
-        break;
-      case 1:
-        // Calendar - already here
-        break;
-      case 2:
-        // Groups
-        Navigator.pushNamed(context, AppRoutes.groups);
-        break;
-      case 3:
-        // Location
-        Navigator.pushNamed(context, AppRoutes.mapScreen);
-        break;
-    }
-  }
 }
+
 class TodayRidesSection extends StatelessWidget {
   final List<RideModel> rides;
   final VoidCallback? onFilterTap;
@@ -750,7 +742,7 @@ class TodayRidesSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child:
-                  Image.asset(IconPath.filterIcon, width: 16, height: 16),
+                      Image.asset(IconPath.filterIcon, width: 16, height: 16),
                 ),
               ),
             ],
@@ -815,10 +807,10 @@ class TodayRidesSection extends StatelessWidget {
 
     // Icons & colors
     final IconData leadingIcon =
-    isDeparture ? Icons.check_circle : Icons.access_time;
+        isDeparture ? Icons.check_circle : Icons.access_time;
     final Color leadingIconColor = isDeparture ? Colors.green : Colors.grey;
     final Color leadingBg =
-    isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
+        isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -965,3 +957,7 @@ class TodayRidesSection extends StatelessWidget {
     );
   }
 }
+
+// fast
+
+// widget for group detail item
