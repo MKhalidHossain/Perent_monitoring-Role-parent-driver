@@ -17,7 +17,7 @@ class DriverCalendarScreen extends StatefulWidget {
 }
 
 class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
-  int _currentIndex = 1; // Calendar tab selected
+ final int currentIndex = 1; // Calendar tab selected
   String _selectedMonth = 'August';
   int _selectedDay = 27;
 
@@ -716,7 +716,6 @@ class TodayRidesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(

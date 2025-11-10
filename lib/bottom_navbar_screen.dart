@@ -22,7 +22,6 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
   ];
 
   // Colors from the mock
-  static const Color _barBg = Color(0xFFF6F6F6);
   static const Color _inactive = Color(0xFF969696); // soft grey
   static const Color _active = Color(0xFF8E97FD);   // soft purple
 

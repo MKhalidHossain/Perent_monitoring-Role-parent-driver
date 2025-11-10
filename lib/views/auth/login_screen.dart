@@ -12,8 +12,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -27,355 +25,320 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              // Status Bar
-
-              // Back Button
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
-                        color: AppColors.textSecondary,
-                        size: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Background Content
-              Expanded(
-                flex: 2,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Slogan
-                      Text(
-                        'Safe Rides.',
-                        style:
-                            Theme.of(context).textTheme.displayMedium?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                      )
-                          .animate()
-                          .fadeIn(delay: 200.ms, duration: 600.ms)
-                          .slideY(begin: 0.3, end: 0),
-
-                      Text(
-                        'Happy Kids.',
-                        style:
-                            Theme.of(context).textTheme.displayMedium?.copyWith(
-                                  color: const Color(0xFFA0B0C8),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                      )
-                          .animate()
-                          .fadeIn(delay: 400.ms, duration: 600.ms)
-                          .slideY(begin: 0.3, end: 0),
-
-                      Text(
-                        'Confident Parents.',
-                        style:
-                            Theme.of(context).textTheme.displayMedium?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                      )
-                          .animate()
-                          .fadeIn(delay: 600.ms, duration: 600.ms)
-                          .slideY(begin: 0.3, end: 0),
-
-                      const SizedBox(height: 40),
-
-                      Image.asset(
-                        ImagePath.onboarding3,
-                        width: double.infinity,
-                        height: 100,
-                      ),
-                      const SizedBox(height: 20),
-                      // // Children Illustration
-                      // _buildChildrenIllustration(context).animate()
-                      //   .fadeIn(delay: 800.ms, duration: 800.ms)
-                      //   .scale(begin: const Offset(0.8, 0.8), end: const Offset(1.0, 1.0)),
-                    ],
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
-                ),
-              ),
-
-              // Login Form Card
-              Expanded(
-                flex: 3,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: AppColors.cardBackground,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.cardShadow,
-                        blurRadius: 20,
-                        offset: Offset(0, -5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      // Handle
-                      Container(
-                        width: 40,
-                        height: 4,
-                        margin: const EdgeInsets.only(top: 12),
-                        decoration: BoxDecoration(
-                          color: AppColors.textSecondary,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-
-                      Expanded(
-                        child: SingleChildScrollView(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
+                  child: IntrinsicHeight(
+                    child: Column(
+                      children: [
+                        // Back Button
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
                             children: [
-                              const SizedBox(height: 20),
-
-                              // Social Login Buttons
-                              _buildSocialLoginButtons(context, authProvider),
-
-                              const SizedBox(height: 20),
-
-                              // Divider
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: 1,
-                                      color: const Color(0xFFC0C0C0),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    child: Text(
-                                      'or',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            color: const Color(0xFFC0C0C0),
-                                          ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      height: 1,
-                                      color: const Color(0xFFC0C0C0),
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              const SizedBox(height: 20),
-
-                              // Email Field
-                              TextFormField(
-                                onChanged: authProvider.updateEmail,
-                                decoration: InputDecoration(
-                                  labelText: 'Email Address',
-                                  hintText: 'wireframes@bpool.com',
-                                  labelStyle:
-                                      const TextStyle(color: Color(0xFFA0A0A0)),
-                                  hintStyle: const TextStyle(
-                                      color: AppColors.textPrimary),
-                                  prefixIcon: const Icon(Icons.email_outlined,
-                                      color: Color(0xFFA0A0A0)),
-                                  filled: true,
-                                  fillColor: const Color(0xFFF5F5F5),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none,
-                                  ),
+                              IconButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                icon: const Icon(
+                                  Icons.arrow_back_ios,
+                                  color: AppColors.textSecondary,
+                                  size: 20,
                                 ),
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              // Password Field
-                              Consumer<AuthProvider>(
-                                builder: (context, authProvider, child) {
-                                  return TextFormField(
-                                    onChanged: authProvider.updatePassword,
-                                    obscureText: !authProvider.isPasswordVisible,
-                                    decoration: InputDecoration(
-                                      labelText: 'Password',
-                                      labelStyle:
-                                          const TextStyle(color: Color(0xFFA0A0A0)),
-                                      prefixIcon: const Icon(Icons.lock_outline,
-                                          color: Color(0xFFA0A0A0)),
-                                      suffixIcon: IconButton(
-                                        onPressed: () {
-                                          authProvider.togglePasswordVisibility();
-                                        },
-                                        icon: Icon(
-                                          authProvider.isPasswordVisible
-                                              ? Icons.visibility_outlined
-                                              : Icons.visibility_off_outlined,
-                                          color: const Color(0xFFA0A0A0),
-                                        ),
-                                      ),
-                                      filled: true,
-                                      fillColor: const Color(0xFFF5F5F5),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-
-                              const SizedBox(height: 30),
-
-                              // Error Message
-                              Consumer<AuthProvider>(
-                                builder: (context, authProvider, child) {
-                                  return authProvider.errorMessage.isNotEmpty
-                                      ? Container(
-                                          padding: const EdgeInsets.all(12),
-                                          margin:
-                                              const EdgeInsets.only(bottom: 16),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.error
-                                                .withValues(alpha: 0.1),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            border: Border.all(
-                                                color: AppColors.error),
-                                          ),
-                                          child: Text(
-                                            authProvider.errorMessage,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall
-                                                ?.copyWith(
-                                                  color: AppColors.error,
-                                                ),
-                                          ),
-                                        )
-                                      : const SizedBox.shrink();
-                                },
-                              ),
-
-                              // Login Button
-                              Consumer<AuthProvider>(
-                                builder: (context, authProvider, child) {
-                                  if (authProvider.isLoading) {
-                                    return Container(
-                                      width: double.infinity,
-                                      height: 56,
-                                      decoration: BoxDecoration(
-                                        gradient: AppColors.gradientButton,
-                                        borderRadius: BorderRadius.circular(28),
-                                      ),
-                                      child: const Center(
-                                        child: SizedBox(
-                                          width: 24,
-                                          height: 24,
-                                          child: CircularProgressIndicator(
-                                            color: AppColors.textPrimary,
-                                            strokeWidth: 2.5,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  
-                                  return CommonWidgets.buildGradientButton(
-                                    gradient: AppColors.buttonGradient,
-                                    text: 'Continue',
-                                    onPressed: () async {
-                                      await authProvider.login(context);
-                                      // Navigation is now handled in the viewmodel based on user role
-                                    },
-                                    textColor: AppColors.textWhite,
-                                    borderRadius: 28,
-                                  );
-                                },
-                              ),
-
-                              const SizedBox(height: 20),
-
-                              // Sign Up Link
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Don't have an account? ",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          color: AppColors.textSecondary,
-                                        ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () => Navigator.of(context)
-                                        .pushNamed(AppRoutes.signup),
-                                    child: Text(
-                                      'Sign Up',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            color: AppColors.primary,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                    ),
-                                  ),
-                                ],
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
+
+                        // Top Content (Safe Rides, Happy Kids, Confident Parents)
+                        _buildTopContent(context),
+
+                        // Spacer to push the form card to the bottom
+                        const Expanded(
+                          child: SizedBox.shrink(),
+                        ),
+
+                        // Login Form Card
+                        _buildLoginFormCard(context),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  Widget _buildSocialLoginButtons(
-      BuildContext context, AuthProvider authProvider) {
+  Widget _buildTopContent(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Column(
+        children: [
+          Text(
+            'Safe Rides.',
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+              .animate()
+              .fadeIn(delay: 200.ms, duration: 600.ms)
+              .slideY(begin: 0.3, end: 0),
+
+          Text(
+            'Happy Kids.',
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+              color: const Color(0xFFA0B0C8),
+              fontWeight: FontWeight.bold,
+            ),
+          )
+              .animate()
+              .fadeIn(delay: 400.ms, duration: 600.ms)
+              .slideY(begin: 0.3, end: 0),
+
+          Text(
+            'Confident Parents.',
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+              .animate()
+              .fadeIn(delay: 600.ms, duration: 600.ms)
+              .slideY(begin: 0.3, end: 0),
+
+          const SizedBox(height: 40),
+
+          Image.asset(
+            ImagePath.onboarding3,
+            width: double.infinity,
+            height: 200,
+          ),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoginFormCard(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.cardBackground,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.cardShadow,
+            blurRadius: 20,
+            offset: Offset(0, -5),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Handle
+          Container(
+            width: 40,
+            height: 4,
+            margin: const EdgeInsets.only(top: 12),
+            decoration: BoxDecoration(
+              color: AppColors.textSecondary,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 20),
+
+                // Social Login Buttons
+                _buildSocialLoginButtons(context, authProvider),
+
+                const SizedBox(height: 20),
+
+                // Divider
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 1,
+                        color: const Color(0xFFC0C0C0),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'or',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: const Color(0xFFC0C0C0),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        height: 1,
+                        color: const Color(0xFFC0C0C0),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                // Email Field
+                TextFormField(
+                  onChanged: authProvider.updateEmail,
+                  decoration: InputDecoration(
+                    labelText: 'Email Address',
+                    hintText: 'wireframes@bpool.com',
+                    labelStyle: const TextStyle(color: Color(0xFFA0A0A0)),
+                    hintStyle: const TextStyle(color: AppColors.textPrimary),
+                    prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFFA0A0A0)),
+                    filled: true,
+                    fillColor: const Color(0xFFF5F5F5),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Password Field
+                Consumer<AuthProvider>(
+                  builder: (context, authProvider, child) {
+                    return TextFormField(
+                      onChanged: authProvider.updatePassword,
+                      obscureText: !authProvider.isPasswordVisible,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: const TextStyle(color: Color(0xFFA0A0A0)),
+                        prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFFA0A0A0)),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            authProvider.togglePasswordVisibility();
+                          },
+                          icon: Icon(
+                            authProvider.isPasswordVisible
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: const Color(0xFFA0A0A0),
+                          ),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFF5F5F5),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 30),
+
+                // Error Message
+                Consumer<AuthProvider>(
+                  builder: (context, authProvider, child) {
+                    return authProvider.errorMessage.isNotEmpty
+                        ? Container(
+                      padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.only(bottom: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.error.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.error),
+                      ),
+                      child: Text(
+                        authProvider.errorMessage,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.error,
+                        ),
+                      ),
+                    )
+                        : const SizedBox.shrink();
+                  },
+                ),
+
+                // Login Button
+                CommonWidgets.buildGradientButton(
+                  gradient: AppColors.buttonGradient,
+                  text: 'Continue',
+                  onPressed: () async {
+                    await authProvider.login(context);
+                  },
+                  textColor: AppColors.textWhite,
+                  borderRadius: 28,
+                ),
+
+                const SizedBox(height: 20),
+
+                // Sign Up Link
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an account? ",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pushNamed(AppRoutes.signup),
+                      child: Text(
+                        'Sign Up',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                // Add some bottom padding for safety
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSocialLoginButtons(BuildContext context, AuthProvider authProvider) {
     return Column(
       children: [
         // Google Sign In
@@ -432,9 +395,9 @@ class LoginScreen extends StatelessWidget {
                 Text(
                   'Continue with Google',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
@@ -476,9 +439,9 @@ class LoginScreen extends StatelessWidget {
                 Text(
                   'Continue with Apple ID',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),

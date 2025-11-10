@@ -49,6 +49,6 @@ class GroupDetailItem extends StatelessWidget {
         ),
       ],
     );
-    ;
+    
   }
 }

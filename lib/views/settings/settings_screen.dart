@@ -260,16 +260,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildBottomNavItem(IconData icon, bool isActive) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      child: Icon(
-        icon,
-        size: 24,
-        color: isActive ? const Color(0xFF9C88FF) : Colors.grey,
-      ),
-    );
-  }
+  
 
   void _showLogoutDialog(BuildContext context, AuthProvider authProvider) {
     showDialog(

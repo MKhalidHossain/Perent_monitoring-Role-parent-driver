@@ -369,9 +369,8 @@ class AuthViewModel {
       if (isLogOut) {
         debugPrint('User logged out successfully');
 
-Navigator.of(context).pushNamedAndRemoveUntil(
-          AppRoutes.login, (Route<dynamic> route) => false);
-
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.splash, (Route<dynamic> route) => false);
       } else {
         debugPrint('Logout failed');
       }

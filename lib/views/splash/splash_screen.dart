@@ -12,40 +12,38 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
- Future.delayed(const Duration(seconds: 2), () {
-    _navigateBasedOnUserStatus();
- });
+    Future.delayed(const Duration(seconds: 2), () {
+      _navigateBasedOnUserStatus();
+    });
   }
 
-void _navigateBasedOnUserStatus() async {
-  final accessToken = await TokenManager.getAccessToken();
-  final userRole = await TokenManager.getUserRole();
-  final userId = await TokenManager.getUserId();
-  final userData = await TokenManager.getUserData();
+  void _navigateBasedOnUserStatus() async {
+    final accessToken = await TokenManager.getAccessToken();
+    final userRole = await TokenManager.getUserRole();
+    final userId = await TokenManager.getUserId();
+    final userData = await TokenManager.getUserData();
 
+    print("********************************************************");
+    print(userRole);
+    print(userId);
+    print(userData);
+    print("********************************************************");
 
-  print("********************************************************");
-  print(userRole);
-  print(userId);
-  print(userData);
-  print("********************************************************");
-
-  if (accessToken != null) {
-    if (userRole == 'driver') {
-      Navigator.pushReplacementNamed(context, AppRoutes.driverNavBar);
-    } else if (userRole == 'parent') {
-      Navigator.pushReplacementNamed(context, AppRoutes.driverNavBar);
+    if (accessToken != null) {
+      if (userRole == 'driver') {
+        Navigator.pushReplacementNamed(context, AppRoutes.driverNavBar);
+      } else if (userRole == 'parent') {
+        Navigator.pushReplacementNamed(context, AppRoutes.driverDashboard);
+      } else {
+        Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
+      }
     } else {
       Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
     }
-  } else {
-    Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
   }
-}
 
   @override
   Widget build(BuildContext context) {

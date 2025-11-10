@@ -140,7 +140,7 @@ class TodayRidesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+   
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(

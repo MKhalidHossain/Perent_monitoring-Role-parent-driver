@@ -11,7 +11,6 @@ class DriverDashboardScreen extends StatefulWidget {
 }
 
 class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
-  int _currentIndex = 0;
 
   // Static data matching the image perfectly
   final List<RideModel> _todayRides = [
