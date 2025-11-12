@@ -133,7 +133,12 @@ class AuthViewModel {
         debugPrint('✅ Login successful - user data saved to SharedPreferences');
 
         // Navigate based on user role using helper
-        RoleNavigationHelper.navigateToDashboard(context, response.data!.role);
+        // RoleNavigationHelper.navigateToDashboard(context, response.data!.role);
+        if(user.role == 'parent' ){
+          Navigator.pushNamed(context, AppRoutes.parentDashboard);
+        } if(user.role == 'driver' ){
+          Navigator.pushNamed(context, AppRoutes.driverDashboard);
+        }
       } else {
         _updateModel(_model.copyWith(
           errorMessage: response.message,

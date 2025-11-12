@@ -19,6 +19,7 @@ import 'package:bbpool/views/dashboard/parent_dashboard_screen.dart';
 import 'package:bbpool/views/test/role_test_screen.dart';
 
 import '../bottom_navbar_screen.dart';
+import '../parent_bottom_navbar_screen.dart';
 
 class AppRoutes {
   static const String splash = '/splash';
@@ -44,6 +45,7 @@ class AppRoutes {
   static const String notifications = '/notifications';
   static const String mapScreen = '/map';
   static const String driverNavBar = '/driver-nav-bar';
+  static const String parentNavBar = '/parent-nav-bar';
 
 
   static Map<String, WidgetBuilder> routes = {
@@ -68,5 +70,6 @@ class AppRoutes {
     mapScreen: (context) => const MapScreen(),
     settings: (context) => const SettingsScreen(),
     driverNavBar: (context) => const DriverNavBarScreen(),
+    parentNavBar: (context) => const ParentNavBarScreen(),
   };
 }

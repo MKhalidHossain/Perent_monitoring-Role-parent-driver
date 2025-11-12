@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (userRole == 'driver') {
         Navigator.pushReplacementNamed(context, AppRoutes.driverNavBar);
       } else if (userRole == 'parent') {
-        Navigator.pushReplacementNamed(context, AppRoutes.driverDashboard);
+        Navigator.pushReplacementNamed(context, AppRoutes.parentNavBar);
       } else {
         Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
       }

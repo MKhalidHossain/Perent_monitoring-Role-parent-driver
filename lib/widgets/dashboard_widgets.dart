@@ -28,7 +28,8 @@ class DashboardHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Row(
+      child:
+      Row(
         children: [
           GestureDetector(
             onTap: onProfileTap,
@@ -140,7 +141,7 @@ class TodayRidesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -446,18 +447,20 @@ class MonthlyStatsSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              _getImage(
-                stat.icon,
-                26,
-              ),
-              SizedBox(width:5 ),
-              Text(
-                stat.title,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.visible,
+              _getImage(stat.icon, 26),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  stat.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    // remove overflow from TextStyle (handled above)
+                  ),
                 ),
               ),
             ],
@@ -486,83 +489,17 @@ class MonthlyStatsSection extends StatelessWidget {
       case 'distance_traveled':
         return Image.asset('assets/icons/image 19.png',fit: BoxFit.cover,height: size,width: size,);
       case 'children_dropped':
-        return Image.asset('assets/icons/image 20.png',fit: BoxFit.cover,height: size,width: size,);
+        return Image.asset('assets/icons/image 19.png',fit: BoxFit.cover,height: size,width: size,);
       case 'cancellations':
-        return Image.asset('assets/icons/image 21.png',fit: BoxFit.cover,height: size,width: size,);
+        return Image.asset('assets/icons/image 19.png',fit: BoxFit.cover,height: size,width: size,);
       case 'active_carpool_groups':
-        return Image.asset('assets/icons/image 22.png',fit: BoxFit.cover,height: size,width: size,);
-      case 'scheduled_rides':
-        return Image.asset('assets/images/scheduled_rides.png',fit: BoxFit.cover,height: size,width: size,);
+        return Image.asset('assets/icons/image 21.png',fit: BoxFit.cover,height: size,width: size,);
       default:
-        return Image.asset('assets/images/default.png',fit: BoxFit.cover,height: size,width: size,);
+        return Image.asset('assets/icons/image 19.png',fit: BoxFit.cover,height: size,width: size,);
     }
   }
 
 }
 
-class BottomNavigation extends StatelessWidget {
-  final int currentIndex;
-  final Function(int) onTap;
-  final VoidCallback? onAddTap;
 
-  const BottomNavigation({
-    super.key,
-    required this.currentIndex,
-    required this.onTap,
-    this.onAddTap,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(Icons.home, 0, 'Home'),
-          _buildNavItem(Icons.calendar_today, 1, 'Calendar'),
-          _buildNavItem(Icons.group, 2, 'Groups'),
-          _buildNavItem(Icons.location_on, 3, 'Location'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, int index, String label) {
-    final isSelected = currentIndex == index;
-    return GestureDetector(
-      onTap: () => onTap(index),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey,
-            size: 28,
-          ),
-          if (isSelected)
-            Container(
-              margin: const EdgeInsets.only(top: 6),
-              width: 6,
-              height: 6,
-              decoration: const BoxDecoration(
-                color: Color(0xFF8A2BE2),
-                shape: BoxShape.circle,
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}

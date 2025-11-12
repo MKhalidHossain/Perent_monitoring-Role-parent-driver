@@ -14,8 +14,6 @@ class ParentDashboardScreen extends StatefulWidget {
 class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
   int _currentIndex = 0;
 
-  
-
   @override
   void initState() {
     super.initState();
@@ -26,8 +24,9 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
 
   void _initializeDashboard() {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
-    
+    final dashboardProvider =
+        Provider.of<DashboardProvider>(context, listen: false);
+
     if (authProvider.currentUser != null) {
       dashboardProvider.initializeDashboard(authProvider.currentUser!);
     }
@@ -73,7 +72,7 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    
+
                     // Today Rides Section
                     TodayRidesSection(
                       rides: dashboardProvider.todayRides,
@@ -85,12 +84,13 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
                       onTrackRideTap: () {
                         // Track ride
                         if (dashboardProvider.todayRides.isNotEmpty) {
-                          dashboardProvider.trackRide(dashboardProvider.todayRides.first.id);
+                          dashboardProvider
+                              .trackRide(dashboardProvider.todayRides.first.id);
                         }
                       },
                     ),
                     const SizedBox(height: 30),
-                    
+
                     // Monthly Stats Section
                     MonthlyStatsSection(
                       stats: dashboardProvider.monthlyStats,
@@ -102,19 +102,6 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
             );
           },
         ),
-      ),
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          _handleNavigation(index);
-        },
-        onAddTap: () {
-          // Handle add button tap
-          _showAddOptionsDialog();
-        },
       ),
     );
   }
@@ -157,61 +144,4 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
     );
   }
 
-  void _showAddOptionsDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.child_care),
-              title: const Text('Add Child'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to add child
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.group_add),
-              title: const Text('Join Group'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to join group
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.schedule),
-              title: const Text('Book Ride'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to book ride
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _handleNavigation(int index) {
-    switch (index) {
-      case 0:
-        // Home - already here
-        break;
-      case 1:
-        // Calendar
-        Navigator.pushNamed(context, '/calendar');
-        break;
-      case 2:
-        // Groups
-        Navigator.pushNamed(context, '/groups');
-        break;
-      case 3:
-        // Location
-        Navigator.pushNamed(context, '/location');
-        break;
-    }
-  }
 }
