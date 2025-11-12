@@ -36,6 +36,16 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
+     appBar: AppBar(
+       leading: Container(
+         decoration: BoxDecoration(
+           color: Colors.white,
+           borderRadius: BorderRadius.circular(10),
+         ),
+         child: const Icon(Icons.arrow_back),
+       ),
+     ),
+
       body: SafeArea(
         child: Consumer2<AuthProvider, DashboardProvider>(
           builder: (context, authProvider, dashboardProvider, child) {
@@ -54,23 +64,27 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
                 child: Column(
                   children: [
                     // Header
-                    DashboardHeader(
-                      userName: dashboardProvider.userName,
-                      profileImageUrl: authProvider.currentUser?.profileImage,
-                      credits: dashboardProvider.credits,
-                      onProfileTap: () {
-                        // Navigate to profile
-                      },
-                      onChatTap: () {
-                        // Navigate to chat
-                      },
-                      onNotificationTap: () {
-                        // Navigate to notifications
-                      },
-                      onSettingsTap: () {
-                        // Navigate to settings
-                      },
-                    ),
+                    // DashboardHeader(
+                    //   userName: dashboardProvider.userName,
+                    //   profileImageUrl: authProvider.currentUser?.profileImage,
+                    //   credits: dashboardProvider.credits,
+                    //   onProfileTap: () {
+                    //     // Navigate to profile
+                    //   },
+                    //   onChatTap: () {
+                    //     // Navigate to chat
+                    //   },
+                    //   onNotificationTap: () {
+                    //     // Navigate to notifications
+                    //   },
+                    //   onSettingsTap: () {
+                    //     // Navigate to settings
+                    //   },
+                    // ),
+                    //
+                    //
+
+
                     const SizedBox(height: 20),
 
                     // Today Rides Section

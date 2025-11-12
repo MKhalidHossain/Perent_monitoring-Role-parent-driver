@@ -102,23 +102,23 @@ class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
           child: Column(
             children: [
               // Header
-              DashboardHeader(
-                userName: "Jakir Hossain",
-                profileImageUrl: null,
-                credits: 100,
-                onProfileTap: () {
-                  Navigator.pushNamed(context, AppRoutes.driverProfile);
-                },
-                onChatTap: () {
-                  Navigator.pushNamed(context, AppRoutes.messageList);
-                },
-                onNotificationTap: () {
-                  Navigator.pushNamed(context, AppRoutes.notifications);
-                },
-                onSettingsTap: () {
-                  Navigator.pushNamed(context, AppRoutes.settings);
-                },
-              ),
+              // DashboardHeader(
+              //   userName: "Jakir Hossain",
+              //   profileImageUrl: null,
+              //   credits: 100,
+              //   onProfileTap: () {
+              //     Navigator.pushNamed(context, AppRoutes.driverProfile);
+              //   },
+              //   onChatTap: () {
+              //     Navigator.pushNamed(context, AppRoutes.messageList);
+              //   },
+              //   onNotificationTap: () {
+              //     Navigator.pushNamed(context, AppRoutes.notifications);
+              //   },
+              //   onSettingsTap: () {
+              //     Navigator.pushNamed(context, AppRoutes.settings);
+              //   },
+              // ),
               const SizedBox(height: 24),
 
               // Month Selector and View Options

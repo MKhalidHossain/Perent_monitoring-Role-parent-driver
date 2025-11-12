@@ -30,6 +30,16 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      appBar: AppBar(
+        leading: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Icon(Icons.arrow_back),
+        ),
+      ),
       body: _pages[_selectedIndex],
 
       bottomNavigationBar: BottomAppBar(

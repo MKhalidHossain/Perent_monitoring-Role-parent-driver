@@ -3,125 +3,125 @@ import 'package:bbpool/config/icon_path.dart';
 import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/models/dashboard_model.dart';
-
-class DashboardHeader extends StatelessWidget {
-  final String userName;
-  final String? profileImageUrl;
-  final int credits;
-  final VoidCallback? onProfileTap;
-  final VoidCallback? onChatTap;
-  final VoidCallback? onNotificationTap;
-  final VoidCallback? onSettingsTap;
-
-  const DashboardHeader({
-    super.key,
-    required this.userName,
-    this.profileImageUrl,
-    required this.credits,
-    this.onProfileTap,
-    this.onChatTap,
-    this.onNotificationTap,
-    this.onSettingsTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child:
-      Row(
-        children: [
-          GestureDetector(
-            onTap: onProfileTap,
-            child: CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.grey[200],
-              backgroundImage: profileImageUrl != null
-                  ? NetworkImage(profileImageUrl!)
-                  : null,
-              child: profileImageUrl == null
-                  ? Image.asset(IconPath.profileIcon, fit: BoxFit.cover)
-                  : null,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  userName,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Row(
-            children: [
-              _buildActionIcon(
-                iconPath: IconPath.chatIcon,
-                onTap: onChatTap,
-                hasNotification: true,
-              ),
-              const SizedBox(width: 16),
-              _buildActionIcon(
-                iconPath: IconPath.notificationIcon,
-                onTap: onNotificationTap,
-              ),
-              const SizedBox(width: 16),
-              _buildActionIcon(
-                iconPath: IconPath.settingsIcon,
-                onTap: onSettingsTap,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionIcon({
-    required String iconPath,
-    VoidCallback? onTap,
-    bool hasNotification = false,
-  }) {
-    return Stack(
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: Image.asset(iconPath, fit: BoxFit.cover),
-            ),
-          ),
-        ),
-        if (hasNotification)
-          Positioned(
-            right: 2,
-            top: 2,
-            child: Container(
-              width: 12,
-              height: 12,
-              decoration: const BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-}
+//
+// class DashboardHeader extends StatelessWidget {
+//   final String userName;
+//   final String? profileImageUrl;
+//   final int credits;
+//   final VoidCallback? onProfileTap;
+//   final VoidCallback? onChatTap;
+//   final VoidCallback? onNotificationTap;
+//   final VoidCallback? onSettingsTap;
+//
+//   const DashboardHeader({
+//     super.key,
+//     required this.userName,
+//     this.profileImageUrl,
+//     required this.credits,
+//     this.onProfileTap,
+//     this.onChatTap,
+//     this.onNotificationTap,
+//     this.onSettingsTap,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+//       child:
+//       Row(
+//         children: [
+//           GestureDetector(
+//             onTap: onProfileTap,
+//             child: CircleAvatar(
+//               radius: 30,
+//               backgroundColor: Colors.grey[200],
+//               backgroundImage: profileImageUrl != null
+//                   ? NetworkImage(profileImageUrl!)
+//                   : null,
+//               child: profileImageUrl == null
+//                   ? Image.asset(IconPath.profileIcon, fit: BoxFit.cover)
+//                   : null,
+//             ),
+//           ),
+//           const SizedBox(width: 16),
+//           Expanded(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   userName,
+//                   style: const TextStyle(
+//                     fontSize: 14,
+//                     fontWeight: FontWeight.bold,
+//                     color: Colors.black,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           Row(
+//             children: [
+//               _buildActionIcon(
+//                 iconPath: IconPath.chatIcon,
+//                 onTap: onChatTap,
+//                 hasNotification: true,
+//               ),
+//               const SizedBox(width: 16),
+//               _buildActionIcon(
+//                 iconPath: IconPath.notificationIcon,
+//                 onTap: onNotificationTap,
+//               ),
+//               const SizedBox(width: 16),
+//               _buildActionIcon(
+//                 iconPath: IconPath.settingsIcon,
+//                 onTap: onSettingsTap,
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   Widget _buildActionIcon({
+//     required String iconPath,
+//     VoidCallback? onTap,
+//     bool hasNotification = false,
+//   }) {
+//     return Stack(
+//       children: [
+//         GestureDetector(
+//           onTap: onTap,
+//           child: Container(
+//             width: 44,
+//             height: 44,
+//             decoration: BoxDecoration(
+//               color: Colors.grey[100],
+//               shape: BoxShape.circle,
+//             ),
+//             child: Center(
+//               child: Image.asset(iconPath, fit: BoxFit.cover),
+//             ),
+//           ),
+//         ),
+//         if (hasNotification)
+//           Positioned(
+//             right: 2,
+//             top: 2,
+//             child: Container(
+//               width: 12,
+//               height: 12,
+//               decoration: const BoxDecoration(
+//                 color: Colors.red,
+//                 shape: BoxShape.circle,
+//               ),
+//             ),
+//           ),
+//       ],
+//     );
+//   }
+// }
 
 class TodayRidesSection extends StatelessWidget {
   final List<RideModel> rides;

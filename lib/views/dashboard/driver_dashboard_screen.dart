@@ -91,27 +91,30 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             child: Column(
               children: [
                 // Header with perfect spacing
-                DashboardHeader(
-                  userName: "Jakir Hossain",
-                  profileImageUrl: null,
-                  credits: 100,
-                  onProfileTap: () {
-                    // Navigate to profile
-                    Navigator.pushNamed(context, AppRoutes.driverProfile);
-                  },
-                  onChatTap: () {
-                    // Navigate to chat
-                    Navigator.pushNamed(context, AppRoutes.messageList);
-                  },
-                  onNotificationTap: () {
-                    // Navigate to notifications
-                    Navigator.pushNamed(context, AppRoutes.notifications);
-                  },
-                  onSettingsTap: () {
-                    // Navigate to settings
-                    Navigator.pushNamed(context, AppRoutes.settings);
-                  },
-                ),
+                // DashboardHeader(
+                //   userName: "Jakir Hossain",
+                //   profileImageUrl: null,
+                //   credits: 100,
+                //   onProfileTap: () {
+                //     // Navigate to profile
+                //     Navigator.pushNamed(context, AppRoutes.driverProfile);
+                //   },
+                //   onChatTap: () {
+                //     // Navigate to chat
+                //     Navigator.pushNamed(context, AppRoutes.messageList);
+                //   },
+                //   onNotificationTap: () {
+                //     // Navigate to notifications
+                //     Navigator.pushNamed(context, AppRoutes.notifications);
+                //   },
+                //   onSettingsTap: () {
+                //     // Navigate to settings
+                //     Navigator.pushNamed(context, AppRoutes.settings);
+                //   },
+                // ),
+                //
+
+
                 const SizedBox(height: 24),
 
                 // Today Rides Section with perfect design
