@@ -1,6 +1,5 @@
-import 'package:bbpool/views/calendar/driver_calendar_screen.dart';
+
 import 'package:bbpool/views/calendar/parent_calender_screen.dart';
-import 'package:bbpool/views/dashboard/driver_dashboard_screen.dart';
 import 'package:bbpool/views/dashboard/parent_dashboard_screen.dart';
 import 'package:bbpool/views/groups/carpool_groups_screen.dart';
 import 'package:bbpool/views/map/map_screen.dart';
@@ -25,21 +24,20 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
 
   // Colors from the mock
   static const Color _inactive = Color(0xFF969696); // soft grey
-  static const Color _active = Color(0xFF8E97FD);   // soft purple
+  static const Color _active = Color(0xFF8E97FD); // soft purple
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      appBar: AppBar(
-        leading: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: const Icon(Icons.arrow_back),
-        ),
-      ),
+      // appBar: AppBar(
+      //   leading: Container(
+      //     decoration: BoxDecoration(
+      //       color: Colors.white,
+      //       borderRadius: BorderRadius.circular(10),
+      //     ),
+      //     child: const Icon(Icons.arrow_back),
+      //   ),
+      // ),
       body: _pages[_selectedIndex],
 
       bottomNavigationBar: BottomAppBar(
@@ -103,7 +101,7 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
                 ),
               ],
             ),
-            alignment: Alignment.topCenter,
+            alignment: Alignment.center,
             child: const Icon(Icons.add, size: 36, color: Colors.white),
           ),
         ),
@@ -126,7 +124,9 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
               color: isSelected ? _active : _inactive,
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );

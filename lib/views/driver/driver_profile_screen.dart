@@ -1,5 +1,5 @@
+import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/config/icon_path.dart';
-import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 
 class DriverProfileScreen extends StatelessWidget {
@@ -7,375 +7,225 @@ class DriverProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final double horizontalPadding =
+        (size.width * 0.06).clamp(16.0, 24.0); // responsive gutters
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'Driver Profile',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.fromLTRB(
+            horizontalPadding,
+            size.height * 0.015 + 8,
+            horizontalPadding,
+            size.height * 0.03,
           ),
-        ),
-        centerTitle: false,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Driver Profile Section
-            Center(
-              child: Column(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage(IconPath.profileIcon),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(width: 4),
                   const Text(
-                    'Driver Sam',
+                    'Driver Profile',
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.star_outline,
-                          size: 16, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
-                      Text(
-                        '4.97 • 223 Ratings',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  CommonWidgets.buildGradientButton(
-                    text: 'Inbox me',
-                    onPressed: () {},
-                  ),
-
-                  // Container(
-                  //   width: double.infinity,
-                  //   height: 50,
-                  //   decoration: BoxDecoration(
-                  //     gradient: const LinearGradient(
-                  //       colors: [Color(0xFFB39DDB), Color(0xFF9C88FF)],
-                  //       begin: Alignment.centerLeft,
-                  //       end: Alignment.centerRight,
-                  //     ),
-                  //     borderRadius: BorderRadius.circular(25),
-                  //   ),
-                  //   child: ElevatedButton(
-                  //     onPressed: () {},
-                  //     style: ElevatedButton.styleFrom(
-                  //       backgroundColor: Colors.transparent,
-                  //       shadowColor: Colors.transparent,
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(25),
-                  //       ),
-                  //     ),
-                  //     child: const Text(
-                  //       'Inbox me',
-                  //       style: TextStyle(
-                  //         color: Colors.white,
-                  //         fontSize: 16,
-                  //         fontWeight: FontWeight.w500,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
-            ),
-            const SizedBox(height: 30),
-
-            // Driver Stats Section
-            const Text(
-              'Driver Stats',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    icon: '🚗',
-                    title: 'Rides Completed',
-                    value: '53 Rides',
-                    backgroundColor: const Color(0xFFF5F5F5),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatCard(
-                    icon: '⏰',
-                    title: 'On-Time Pickups',
-                    value: '94%',
-                    backgroundColor: const Color(0xFFF5F5F5),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    icon: '🚫',
-                    title: 'Cancellations',
-                    value: '13',
-                    backgroundColor: const Color(0xFFF5F5F5),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatCard(
-                    icon: '👥',
-                    title: 'Children Dropped',
-                    value: '02',
-                    backgroundColor: const Color(0xFFF5F5F5),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-
-            // Rating & Reviews Section
-            const Text(
-              'Rating & Reviews',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Rating Summary
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        '4.97',
-                        style: TextStyle(
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const Text(
-                        '200 Reviews',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: List.generate(
-                          5,
-                          (index) => const Icon(
-                            Icons.star,
-                            size: 16,
-                            color: Colors.amber,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Rating Breakdown
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    children: [
-                      _buildRatingBar(5, 0.8, '80%'),
-                      _buildRatingBar(4, 0.85, '85%'),
-                      _buildRatingBar(3, 0.9, '90%'),
-                      _buildRatingBar(2, 0.8, '80%'),
-                      _buildRatingBar(1, 0.8, '80%'),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-
-            // Individual Reviews
-            _buildReviewCard(
-              name: 'Antwon Taylor',
-              time: '1 month ago',
-              rating: 4.0,
-              review:
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet gravida nulla.',
-              avatar:
-                  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face',
-            ),
-            const SizedBox(height: 16),
-            _buildReviewCard(
-              name: 'Jamie Scott',
-              time: '2 months ago',
-              rating: 5.0,
-              review:
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet gravida nulla.',
-              avatar:
-                  'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50&h=50&fit=crop&crop=face',
-            ),
-            const SizedBox(height: 16),
-            _buildReviewCard(
-              name: 'Nathan Scott',
-              time: '3 months ago',
-              rating: 3.0,
-              review:
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet gravida nulla.',
-              avatar:
-                  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face',
-            ),
-            const SizedBox(height: 20),
-
-            // Read More Button
-            Center(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFB39DDB),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  'Read More',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+              SizedBox(height: size.height * 0.02),
+              _buildProfileHeader(),
+              SizedBox(height: size.height * 0.02),
+              _buildInboxButton(),
+              SizedBox(height: size.height * 0.03),
+              const Text(
+                'Driver Stats',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
                 ),
               ),
-            ),
-            const SizedBox(height: 100), // Space for bottom navigation
-          ],
-        ),
-      ),
-      floatingActionButton: Container(
-        width: 56,
-        height: 56,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFB39DDB), Color(0xFF9C88FF)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          shape: BoxShape.circle,
-        ),
-        child: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 24,
+              const SizedBox(height: 14),
+              _buildStatsGrid(size),
+              SizedBox(height: size.height * 0.03),
+              const Text(
+                'Rating & Reviews',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildRatingSummary(),
+              const SizedBox(height: 18),
+              ..._reviews
+                  .map((review) => Padding(
+                        padding: const EdgeInsets.only(bottom: 18),
+                        child: _buildReviewCard(review),
+                      ))
+                  .toList(),
+              const SizedBox(height: 12),
+              _buildReadMoreButton(),
+            ],
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        height: 80,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.1),
-              spreadRadius: 1,
-              blurRadius: 10,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildBottomNavItem(Icons.home_outlined, false),
-            _buildBottomNavItem(Icons.calendar_today_outlined, false),
-            const SizedBox(width: 56), // Space for FAB
-            _buildBottomNavItem(Icons.people_outline, true),
-            _buildBottomNavItem(Icons.location_on_outlined, false),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-  Widget _buildStatCard({
-    required String icon,
-    required String title,
-    required String value,
-    required Color backgroundColor,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
+  Widget _buildProfileHeader() {
+    return Center(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const CircleAvatar(
+            radius: 45,
+            backgroundImage: AssetImage(IconPath.profileIcon),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'Driver Sam',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 6),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Icon(Icons.star_border, size: 18, color: Colors.grey[600]),
+              const SizedBox(width: 6),
               Text(
-                icon,
-                style: const TextStyle(fontSize: 20),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
+                '4.97 - 223 Ratings',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.grey[600],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInboxButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFFD99BD9), Color(0xFF8E9AEF)],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: BorderRadius.circular(26),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(26),
+            onTap: () {},
+            child: const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Center(
+                child: Text(
+                  'Inbox me',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatsGrid(Size size) {
+    final stats = [
+      _Stat('Rides Completed', '53 Rides', Icons.directions_bus_filled),
+      _Stat('On-Time Pickups', '94%', Icons.alarm_on),
+      _Stat('Cancellations', '13', Icons.cancel_outlined),
+      _Stat('Children Dropped', '02', Icons.family_restroom),
+    ];
+
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 1.2,
+      ),
+      itemCount: stats.length,
+      itemBuilder: (context, index) {
+        final stat = stats[index];
+        return _buildStatCard(stat);
+      },
+    );
+  }
+
+  Widget _buildStatCard(_Stat stat) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF6F6F8),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Icon(
+                stat.icon,
+                size: 22,
+                color: Colors.grey[700],
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  stat.title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
           Text(
-            value,
+            stat.value,
             style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
               color: Colors.black,
             ),
           ),
@@ -384,32 +234,258 @@ class DriverProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRatingBar(int stars, double percentage, String percentageText) {
+  Widget _buildRatingSummary() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '4.97',
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black,
+                ),
+              ),
+              const Text(
+                '200 Reviews',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: List.generate(
+                  5,
+                  (index) => const Icon(
+                    Icons.star,
+                    size: 16,
+                    color: Colors.amber,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Column(
+            children: const [
+              _RatingBar(stars: 5, percent: 0.8),
+              _RatingBar(stars: 4, percent: 0.7),
+              _RatingBar(stars: 3, percent: 0.55),
+              _RatingBar(stars: 2, percent: 0.2),
+              _RatingBar(stars: 1, percent: 0.1),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildReviewCard(_Review review) {
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 24,
+              backgroundImage: NetworkImage(review.avatar),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              review.name,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              review.timeAgo,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 16,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            review.rating.toStringAsFixed(1),
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    review.review,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black87,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        Container(height: 1, color: Colors.grey.withOpacity(0.15)),
+      ],
+    );
+  }
+
+  Widget _buildReadMoreButton() {
+    return Center(
+      child: GestureDetector(
+        onTap: () {},
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF8B92E3),
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: const Text(
+            'Read More',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Stat {
+  _Stat(this.title, this.value, this.icon);
+  final String title;
+  final String value;
+  final IconData icon;
+}
+
+class _Review {
+  _Review({
+    required this.name,
+    required this.timeAgo,
+    required this.rating,
+    required this.review,
+    required this.avatar,
+  });
+
+  final String name;
+  final String timeAgo;
+  final double rating;
+  final String review;
+  final String avatar;
+}
+
+List<_Review> _reviews = [
+  _Review(
+    name: 'Antwon Taylor',
+    timeAgo: '1 month ago',
+    rating: 4.0,
+    review:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet gravida nulla.',
+    avatar:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces',
+  ),
+  _Review(
+    name: 'Jamie Scott',
+    timeAgo: '2 months ago',
+    rating: 5.0,
+    review:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet gravida nulla.',
+    avatar:
+        'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=faces',
+  ),
+  _Review(
+    name: 'Nathan Scott',
+    timeAgo: '3 months ago',
+    rating: 3.0,
+    review:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet gravida nulla.',
+    avatar:
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces',
+  ),
+];
+
+class _RatingBar extends StatelessWidget {
+  const _RatingBar({required this.stars, required this.percent});
+
+  final int stars;
+  final double percent;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
+      padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         children: [
           Text(
             '$stars',
             style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 6),
           const Icon(Icons.star, size: 12, color: Colors.amber),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Expanded(
             child: Container(
-              height: 6,
+              height: 8,
               decoration: BoxDecoration(
                 color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(3),
+                borderRadius: BorderRadius.circular(4),
               ),
               child: FractionallySizedBox(
                 alignment: Alignment.centerLeft,
-                widthFactor: percentage,
+                widthFactor: percent,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFF9C88FF),
-                    borderRadius: BorderRadius.circular(3),
+                    color: const Color(0xFF8E9AEF),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ),
@@ -417,104 +493,10 @@ class DriverProfileScreen extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            percentageText,
-            style: const TextStyle(fontSize: 10, color: Colors.grey),
+            '${(percent * 100).round()}%',
+            style: const TextStyle(fontSize: 11, color: Colors.grey),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildReviewCard({
-    required String name,
-    required String time,
-    required double rating,
-    required String review,
-    required String avatar,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF9F9F9),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundImage: NetworkImage(avatar),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      time,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.amber,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.star, size: 12, color: Colors.white),
-                    const SizedBox(width: 2),
-                    Text(
-                      rating.toString(),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            review,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[700],
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomNavItem(IconData icon, bool isActive) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      child: Icon(
-        icon,
-        size: 24,
-        color: isActive ? const Color(0xFF9C88FF) : Colors.grey,
       ),
     );
   }

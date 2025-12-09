@@ -5,9 +5,8 @@ import 'package:bbpool/controllers/message_controller.dart';
 import 'package:bbpool/controllers/notification_controller.dart';
 import 'package:bbpool/controllers/settings_controller.dart';
 import 'package:bbpool/controllers/map_controller.dart';
-import 'package:bbpool/views/driver/driver_pre_trip_checklist_screen.dart';
-import 'package:bbpool/views/driver/driver_ride_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:bbpool/config/app_theme.dart';
 import 'package:bbpool/routes/app_routes.dart';
@@ -39,7 +38,7 @@ class BBPoolApp extends StatelessWidget {
 
         // Add other providers here as needed
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         title: 'BBPool',
         theme: AppTheme.lightTheme,
         debugShowCheckedModeBanner: false,

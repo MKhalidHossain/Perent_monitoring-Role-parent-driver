@@ -4,6 +4,7 @@ import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/routes/app_routes.dart';
 import 'package:bbpool/widgets/carpool_group_card.dart';
 import 'package:bbpool/widgets/common_widgets.dart';
+import 'package:bbpool/widgets/driver_action_card.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
 import 'package:bbpool/models/dashboard_model.dart';
@@ -102,23 +103,23 @@ class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
           child: Column(
             children: [
               // Header
-              // DashboardHeader(
-              //   userName: "Jakir Hossain",
-              //   profileImageUrl: null,
-              //   credits: 100,
-              //   onProfileTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.driverProfile);
-              //   },
-              //   onChatTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.messageList);
-              //   },
-              //   onNotificationTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.notifications);
-              //   },
-              //   onSettingsTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.settings);
-              //   },
-              // ),
+              DashboardHeader(
+                userName: "Jakir Hossain",
+                profileImageUrl: null,
+                credits: 100,
+                onProfileTap: () {
+                  Navigator.pushNamed(context, AppRoutes.driverProfile);
+                },
+                onChatTap: () {
+                  Navigator.pushNamed(context, AppRoutes.messageList);
+                },
+                onNotificationTap: () {
+                  Navigator.pushNamed(context, AppRoutes.notifications);
+                },
+                onSettingsTap: () {
+                  Navigator.pushNamed(context, AppRoutes.settings);
+                },
+              ),
               const SizedBox(height: 24),
 
               // Month Selector and View Options
@@ -245,7 +246,7 @@ class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Carpool Group details',
+                      'Driver Details',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -253,7 +254,7 @@ class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    CarpoolGroupCard(),
+                    DriverActionCard(),
                   ],
                 ),
               ),
@@ -262,33 +263,23 @@ class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigation(
-      //   currentIndex: _currentIndex,
-      //   onTap: (index) {
-      //     setState(() {
-      //       _currentIndex = index;
-      //     });
-      //     _handleNavigation(index);
-      //   },
-      // ),
     );
   }
 
-  // Widget _buildViewOption(IconData icon, bool isSelected) {
-  //   return Container(
-  //     padding: const EdgeInsets.all(8),
-  //     decoration: BoxDecoration(
-  //       color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey[100],
-  //       borderRadius: BorderRadius.circular(8),
-  //     ),
-  //     child: Icon(
-  //       icon,
-  //       color: isSelected ? Colors.white : Colors.grey[600],
-  //       size: 18,
-  //     ),
-  //   );
-  //
-  // }
+  Widget _buildViewOption(IconData icon, bool isSelected) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Icon(
+        icon,
+        color: isSelected ? Colors.white : Colors.grey[600],
+        size: 18,
+      ),
+    );
+  }
 
   Widget _buildDayItem(String day, int date, bool isSelected) {
     return GestureDetector(
@@ -339,10 +330,10 @@ class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
 
     // Icons & colors
     final IconData leadingIcon =
-    isDeparture ? Icons.access_time : Icons.access_time;
+        isDeparture ? Icons.access_time : Icons.access_time;
     final Color leadingIconColor = isDeparture ? Colors.grey : Colors.grey;
     final Color leadingBg =
-    isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
+        isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -673,9 +664,9 @@ class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
                       month,
                       style: TextStyle(
                         fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
+                            isSelected ? FontWeight.bold : FontWeight.normal,
                         color:
-                        isSelected ? const Color(0xFF8A2BE2) : Colors.black,
+                            isSelected ? const Color(0xFF8A2BE2) : Colors.black,
                       ),
                     ),
                     trailing: isSelected
@@ -741,7 +732,7 @@ class TodayRidesSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child:
-                  Image.asset(IconPath.filterIcon, width: 16, height: 16),
+                      Image.asset(IconPath.filterIcon, width: 16, height: 16),
                 ),
               ),
             ],
@@ -806,10 +797,10 @@ class TodayRidesSection extends StatelessWidget {
 
     // Icons & colors
     final IconData leadingIcon =
-    isDeparture ? Icons.check_circle : Icons.access_time;
+        isDeparture ? Icons.check_circle : Icons.access_time;
     final Color leadingIconColor = isDeparture ? Colors.green : Colors.grey;
     final Color leadingBg =
-    isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
+        isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),

@@ -53,25 +53,23 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
                 child: Column(
                   children: [
                     // Header
-                    // DashboardHeader(
-                    //   userName: dashboardProvider.userName,
-                    //   profileImageUrl: authProvider.currentUser?.profileImage,
-                    //   credits: dashboardProvider.credits,
-                    //   onProfileTap: () {
-                    //     // Navigate to profile
-                    //   },
-                    //   onChatTap: () {
-                    //     // Navigate to chat
-                    //   },
-                    //   onNotificationTap: () {
-                    //     // Navigate to notifications
-                    //   },
-                    //   onSettingsTap: () {
-                    //     // Navigate to settings
-                    //   },
-                    // ),
-                    //
-                    //
+                    DashboardHeader(
+                      userName: dashboardProvider.userName,
+                      profileImageUrl: authProvider.currentUser?.profileImage,
+                      credits: dashboardProvider.credits,
+                      onProfileTap: () {
+                        // Navigate to profile
+                      },
+                      onChatTap: () {
+                        // Navigate to chat
+                      },
+                      onNotificationTap: () {
+                        // Navigate to notifications
+                      },
+                      onSettingsTap: () {
+                        // Navigate to settings
+                      },
+                    ),
 
                     const SizedBox(height: 20),
 

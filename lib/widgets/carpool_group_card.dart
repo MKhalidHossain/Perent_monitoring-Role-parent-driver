@@ -3,7 +3,7 @@ import 'package:bbpool/widgets/group_detailItem.dart';
 import 'package:flutter/material.dart';
 
 class CarpoolGroupCard extends StatelessWidget {
-  const  CarpoolGroupCard({super.key});
+  const CarpoolGroupCard({super.key});
 
   @override
   Widget build(BuildContext context) {

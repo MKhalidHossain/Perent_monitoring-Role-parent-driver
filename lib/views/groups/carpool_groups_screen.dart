@@ -1,8 +1,10 @@
 import 'package:bbpool/config/icon_path.dart';
+import 'package:bbpool/views/driver/driver_ride_detail_screen.dart';
 import 'package:bbpool/views/messages/chat_screen.dart';
 import 'package:bbpool/views/notifications/notification_screen.dart';
 import 'package:bbpool/widgets/carpool_group_card.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CarpoolGroupsScreen extends StatefulWidget {
   const CarpoolGroupsScreen({super.key});
@@ -12,9 +14,6 @@ class CarpoolGroupsScreen extends StatefulWidget {
 }
 
 class _CarpoolGroupsScreenState extends State<CarpoolGroupsScreen> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,10 +52,13 @@ class _CarpoolGroupsScreenState extends State<CarpoolGroupsScreen> {
                             color: Colors.grey[100],
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(
-                            Icons.tune,
-                            color: Colors.black54,
-                            size: 20,
+                          child: GestureDetector(
+                            onTap: () => Get.to(DriverRideDetailScreen()),
+                            child: const Icon(
+                              Icons.tune,
+                              color: Colors.black54,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ],
@@ -139,8 +141,6 @@ class _CarpoolGroupsScreenState extends State<CarpoolGroupsScreen> {
       ),
     );
   }
-
-
 }
 
 // Model class for carpool groups
