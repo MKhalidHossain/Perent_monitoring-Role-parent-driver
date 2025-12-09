@@ -23,7 +23,7 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
 
   // Colors from the mock
   static const Color _inactive = Color(0xFF969696); // soft grey
-  static const Color _active = Color(0xFF8E97FD);   // soft purple
+  static const Color _active = Color(0xFF8E97FD); // soft purple
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
                 ),
               ],
             ),
-            alignment: Alignment.topCenter,
+            alignment: Alignment.center,
             child: const Icon(Icons.add, size: 36, color: Colors.white),
           ),
         ),
@@ -114,7 +114,9 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
               color: isSelected ? _active : _inactive,
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );

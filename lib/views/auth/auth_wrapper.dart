@@ -1,9 +1,9 @@
+import 'package:bbpool/bottom_navbar_screen.dart';
+import 'package:bbpool/parent_bottom_navbar_screen.dart';
 import 'package:bbpool/services/token_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bbpool/providers/auth_provider.dart';
-import 'package:bbpool/views/dashboard/driver_dashboard_screen.dart';
-import 'package:bbpool/views/dashboard/parent_dashboard_screen.dart';
 import 'package:bbpool/routes/app_routes.dart';
 
 class AuthWrapper extends StatelessWidget {
@@ -19,12 +19,14 @@ class AuthWrapper extends StatelessWidget {
         debugPrint('🔍 AuthWrapper: Is loading: ${authProvider.isLoading}');
         debugPrint('🔍 AuthWrapper: Is logged in: ${authProvider.isLoggedIn}');
         debugPrint('🔍 AuthWrapper: Current user: ${authProvider.currentUser}');
-        debugPrint('🔍 AuthWrapper: Current user role: ${authProvider.currentUser?.role}');
-        debugPrint('🔍 AuthWrapper: Current user id: ${authProvider.currentUser?.id}');
-        debugPrint('🔍 AuthWrapper: Current user email: ${authProvider.currentUser?.email}');
-        debugPrint('🔍 AuthWrapper: Current user name: ${authProvider.currentUser?.name}');
-
-
+        debugPrint(
+            '🔍 AuthWrapper: Current user role: ${authProvider.currentUser?.role}');
+        debugPrint(
+            '🔍 AuthWrapper: Current user id: ${authProvider.currentUser?.id}');
+        debugPrint(
+            '🔍 AuthWrapper: Current user email: ${authProvider.currentUser?.email}');
+        debugPrint(
+            '🔍 AuthWrapper: Current user name: ${authProvider.currentUser?.name}');
 
         // If not logged in, navigate to login
         if (!authProvider.isLoggedIn || authProvider.currentUser == null) {
@@ -39,20 +41,18 @@ class AuthWrapper extends StatelessWidget {
         }
 
         // Route based on user role
-   final userRole =  TokenManager.getUserRole();
-
+        final userRole = TokenManager.getUserRole();
 
         debugPrint('🔍 AuthWrapper: Checking user role: $userRole');
-    if(userRole == 'driver') {
-      return const DriverDashboardScreen();
-    } else if (userRole == 'parent') {
-      return const ParentDashboardScreen();
-    } else {
-      return  Scaffold(
-        body: Center(child: Text('Unknown role: $userRole')),
-      );
-    }
-        
+        if (userRole == 'driver') {
+          return const DriverNavBarScreen();
+        } else if (userRole == 'parent') {
+          return const ParentNavBarScreen();
+        } else {
+          return Scaffold(
+            body: Center(child: Text('Unknown role: $userRole')),
+          );
+        }
       },
     );
   }

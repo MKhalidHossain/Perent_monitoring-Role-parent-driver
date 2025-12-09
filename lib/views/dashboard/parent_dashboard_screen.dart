@@ -36,16 +36,6 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-     appBar: AppBar(
-       leading: Container(
-         decoration: BoxDecoration(
-           color: Colors.white,
-           borderRadius: BorderRadius.circular(10),
-         ),
-         child: const Icon(Icons.arrow_back),
-       ),
-     ),
-
       body: SafeArea(
         child: Consumer2<AuthProvider, DashboardProvider>(
           builder: (context, authProvider, dashboardProvider, child) {
@@ -54,7 +44,6 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
                 child: CircularProgressIndicator(),
               );
             }
-
             return RefreshIndicator(
               onRefresh: () async {
                 await dashboardProvider.refreshDashboard();
@@ -83,7 +72,6 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
                     // ),
                     //
                     //
-
 
                     const SizedBox(height: 20),
 
@@ -157,5 +145,4 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
       ),
     );
   }
-
 }

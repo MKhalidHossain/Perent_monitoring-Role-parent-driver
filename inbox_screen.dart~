@@ -1,0 +1,244 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../feature/message/controller/chat_controller.dart';
+import '../../../feature/message/model/chat_data.dart';
+import '../../../feature/message/model/send_message_request_model.dart';
+import '../../../feature/profile/controller/profile_controller.dart';
+
+class InboxScreen extends StatefulWidget {
+  final ChatData chat;
+  final String userId;
+
+  const InboxScreen({super.key, required this.chat, required this.userId});
+
+  @override
+  State<InboxScreen> createState() => _InboxScreenState();
+}
+
+class _InboxScreenState extends State<InboxScreen> {
+  final TextEditingController _sendMessageTextCntrl = TextEditingController();
+  final ChatController chatController = ChatController.instance;
+  final ScrollController _scrollController = ScrollController();
+  final ProfileController profileController = Get.put(ProfileController());
+
+  @override
+  void initState() {
+    super.initState();
+    // Load messages in background
+    chatController.getChatById(widget.chat.id);
+    profileController.getProfile();
+  }
+
+  @override
+  void dispose() {
+    _sendMessageTextCntrl.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _sendMessage() async {
+    final text = _sendMessageTextCntrl.text.trim();
+    if (text.isEmpty) return;
+
+    await chatController.sendMessage(
+      SendMessageRequestModel(chatId: widget.chat.id, message: text),
+    );
+
+    _sendMessageTextCntrl.clear();
+
+    // Scroll to bottom after sending
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          0.0, // because reverse: true
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  Widget _buildShimmer() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      reverse: true,
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return Align(
+          alignment:
+          index % 2 == 0 ? Alignment.centerRight : Alignment.centerLeft,
+          child: Shimmer.fromColors(
+            baseColor: Colors.grey[700]!,
+            highlightColor: Colors.grey[500]!,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+              margin: const EdgeInsets.symmetric(vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(
+                widget.chat.user?.profileImage ??
+                    "https://randomuser.me/api/portraits/men/32.jpg",
+              ),
+              radius: 20,
+            ),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.chat.fullName ?? "User",
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                Text(
+                  widget.chat.user?.id ?? '',
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: Colors.black,
+      body: Obx(() {
+        // Get messages instantly, even if profile not loaded yet
+        final currentUserId = profileController.profile.value?.id ?? "";
+        final messages = chatController.chatMessages[widget.chat.id] ?? [];
+
+        // Show shimmer only if messages empty and loading
+        if (messages.isEmpty && chatController.isLoading.value) {
+          return _buildShimmer();
+        }
+
+        if (messages.isEmpty) {
+          return const Center(
+            child: Text(
+              "No messages",
+              style: TextStyle(color: Colors.grey),
+            ),
+          );
+        }
+
+        return Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                padding: const EdgeInsets.all(16),
+                reverse: true,
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  final msg = messages[messages.length - 1 - index];
+                  final isMe = msg.user?.id == currentUserId;
+
+                  return Align(
+                    alignment:
+                    isMe ? Alignment.centerRight : Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: isMe
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        if (!isMe)
+                          CircleAvatar(
+                            radius: 14,
+                            backgroundImage: NetworkImage(
+                              msg.user?.profileImage ??
+                                  "https://randomuser.me/api/portraits/men/32.jpg",
+                            ),
+                          ),
+                        const SizedBox(width: 6),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 14),
+                          decoration: BoxDecoration(
+                            color: isMe
+                                ? AppColors.primarybutton
+                                : Colors.grey[800],
+                            borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(12),
+                              topRight: const Radius.circular(12),
+                              bottomLeft: Radius.circular(isMe ? 12 : 0),
+                              bottomRight: Radius.circular(isMe ? 0 : 12),
+                            ),
+                          ),
+                          child: Text(
+                            msg.text ?? "",
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            // Input box
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF212323),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: TextField(
+                        controller: _sendMessageTextCntrl,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: 'Message...',
+                          hintStyle:
+                          const TextStyle(color: Colors.white54),
+                          border: InputBorder.none,
+                          suffixIcon: GestureDetector(
+                            onTap: _sendMessage,
+                            child: Container(
+                              margin: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: AppColors.primarybutton,
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              child: const Icon(
+                                Icons.send,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                            ),
+                          ),
+                        ),
+                        onSubmitted: (_) => _sendMessage(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      }),
+    );
+  }
+}

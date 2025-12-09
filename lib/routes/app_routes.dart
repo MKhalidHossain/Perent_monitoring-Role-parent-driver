@@ -1,4 +1,5 @@
 import 'package:bbpool/views/driver/driver_profile_screen.dart';
+import 'package:bbpool/views/driver/driver_ride_detail_screen.dart';
 import 'package:bbpool/views/messages/message_list_screen.dart';
 import 'package:bbpool/views/messages/message_demo_screen.dart';
 import 'package:bbpool/views/notifications/notification_screen.dart';
@@ -17,6 +18,7 @@ import 'package:bbpool/views/auth/auth_wrapper.dart';
 import 'package:bbpool/views/dashboard/driver_dashboard_screen.dart';
 import 'package:bbpool/views/dashboard/parent_dashboard_screen.dart';
 import 'package:bbpool/views/test/role_test_screen.dart';
+import 'package:bbpool/views/driver/driver_pre_trip_checklist_screen.dart';
 
 import '../bottom_navbar_screen.dart';
 import '../parent_bottom_navbar_screen.dart';
@@ -46,6 +48,8 @@ class AppRoutes {
   static const String mapScreen = '/map';
   static const String driverNavBar = '/driver-nav-bar';
   static const String parentNavBar = '/parent-nav-bar';
+  static const String driverRideDetail = '/driver-ride-detail';
+  static const String driverPreTripChecklist = '/driver-pre-trip-checklist';
 
 
   static Map<String, WidgetBuilder> routes = {
@@ -71,5 +75,8 @@ class AppRoutes {
     settings: (context) => const SettingsScreen(),
     driverNavBar: (context) => const DriverNavBarScreen(),
     parentNavBar: (context) => const ParentNavBarScreen(),
+    driverRideDetail: (context) => const DriverRideDetailScreen(),
+    driverPreTripChecklist: (context) =>
+        const DriverPreTripChecklistScreen(),
   };
 }

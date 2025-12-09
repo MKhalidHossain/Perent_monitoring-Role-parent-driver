@@ -27,7 +27,8 @@ class CommonWidgets {
           color: color ?? AppColors.gradientButtonEnd,
           borderRadius: BorderRadius.circular(borderRadius ?? 28),
         ),
-        padding: padding ?? const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        padding:
+            padding ?? const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         child: Center(
           child: Text(
             text,
@@ -116,42 +117,112 @@ class CommonWidgets {
     VoidCallback? onChatPressed,
     VoidCallback? onNotificationPressed,
     VoidCallback? onSettingsPressed,
+    VoidCallback? onProfileTap,
+    bool showBack = false,
+    VoidCallback? onBackPressed,
+    String? profileImagePath,
+    String? chatIconPath,
+    String? notificationIconPath,
+    String? settingsIconPath,
+    EdgeInsetsGeometry padding = const EdgeInsets.all(20),
     required BuildContext context,
   }) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: padding,
       child: Row(
         children: [
-          // Profile Image
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(30),
+          if (showBack)
+            IconButton(
+              onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
             ),
-            child: const Icon(
-              Icons.person,
-              color: AppColors.primary,
-              size: 30,
+          if (showBack) const SizedBox(width: 4),
+          // Profile Image
+          GestureDetector(
+            onTap: onProfileTap,
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: AppColors.primaryLight,
+                borderRadius: BorderRadius.circular(30),
+                image: profileImagePath != null && profileImagePath.isNotEmpty
+                    ? DecorationImage(
+                        image: AssetImage(profileImagePath),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
+              ),
+              child: profileImagePath == null || profileImagePath.isEmpty
+                  ? const Icon(
+                      Icons.person,
+                      color: AppColors.primary,
+                      size: 30,
+                    )
+                  : null,
             ),
           ),
-          const SizedBox(width: 16),
-          
+          const Spacer(),
+
           // Action Buttons
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildActionButton(Icons.chat_bubble_outline, onPressed: (){
-                  Navigator.pushNamed(context, AppRoutes.driverProfileSetup);
-                }),
-                buildActionButton(Icons.notifications_outlined, onPressed: onNotificationPressed),
-                buildActionButton(Icons.settings_outlined, onPressed: onSettingsPressed),
-              ],
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _circleIconButton(
+                iconPath: chatIconPath,
+                fallbackIcon: Icons.chat_bubble_outline,
+                onPressed: onChatPressed ??
+                    () => Navigator.pushNamed(
+                          context,
+                          AppRoutes.driverProfileSetup,
+                        ),
+              ),
+              const SizedBox(width: 10),
+              _circleIconButton(
+                iconPath: notificationIconPath,
+                fallbackIcon: Icons.notifications_outlined,
+                onPressed: onNotificationPressed,
+              ),
+              const SizedBox(width: 10),
+              _circleIconButton(
+                iconPath: settingsIconPath,
+                fallbackIcon: Icons.settings_outlined,
+                onPressed: onSettingsPressed,
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  static Widget _circleIconButton({
+    String? iconPath,
+    IconData? fallbackIcon,
+    VoidCallback? onPressed,
+  }) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF0F0F0),
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Center(
+          child: iconPath != null && iconPath.isNotEmpty
+              ? Image.asset(iconPath, width: 45, height: 45)
+              : Icon(
+                  fallbackIcon ?? Icons.circle_outlined,
+                  color: AppColors.textSecondary,
+                  size: 24,
+                ),
+        ),
       ),
     );
   }
@@ -201,7 +272,8 @@ class CommonWidgets {
   }
 
   // Section Header Widget
-  static Widget buildSectionHeader(String title, {VoidCallback? onFilterPressed}) {
+  static Widget buildSectionHeader(String title,
+      {VoidCallback? onFilterPressed}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -251,24 +323,24 @@ class CommonWidgets {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: ride.status == RideStatus.completed 
-                  ? const Color(0xFF4CAF50) 
+              color: ride.status == RideStatus.completed
+                  ? const Color(0xFF4CAF50)
                   : const Color(0xFFF0F0F0),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Icon(
-              ride.status == RideStatus.completed 
-                  ? Icons.check 
+              ride.status == RideStatus.completed
+                  ? Icons.check
                   : Icons.schedule,
-              color: ride.status == RideStatus.completed 
-                  ? Colors.white 
+              color: ride.status == RideStatus.completed
+                  ? Colors.white
                   : AppColors.textSecondary,
               size: 20,
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // Vehicle Icon
           Container(
             width: 60,
@@ -283,9 +355,9 @@ class CommonWidgets {
               size: 24,
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // Ride Details
           Expanded(
             child: Column(
@@ -300,7 +372,9 @@ class CommonWidgets {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      ride.type == RideType.departure ? 'Departure Time' : 'Arrival Time',
+                      ride.type == RideType.departure
+                          ? 'Departure Time'
+                          : 'Arrival Time',
                       style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 12,
@@ -310,7 +384,9 @@ class CommonWidgets {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  ride.type == RideType.departure ? ride.departureTime : ride.arrivalTime,
+                  ride.type == RideType.departure
+                      ? ride.departureTime
+                      : ride.arrivalTime,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 16,
@@ -320,7 +396,7 @@ class CommonWidgets {
               ],
             ),
           ),
-          
+
           // Driver Info
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -461,7 +537,7 @@ class CommonWidgets {
             ),
           ),
           const SizedBox(height: 20),
-          
+
           // Stats Grid
           Row(
             children: [
@@ -484,9 +560,9 @@ class CommonWidgets {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           Row(
             children: [
               Expanded(
