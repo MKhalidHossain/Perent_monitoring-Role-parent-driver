@@ -1,9 +1,8 @@
-import 'package:bbpool/routes/app_routes.dart';
+
 import 'package:flutter/material.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
 import 'package:bbpool/models/dashboard_model.dart';
-import 'package:bbpool/widgets/common_widgets.dart';
-import 'package:bbpool/config/icon_path.dart';
+
 
 class DriverDashboardScreen extends StatefulWidget {
   const DriverDashboardScreen({super.key});
@@ -91,21 +90,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
-                CommonWidgets.buildHeaderSection(
-                  context: context,
-                  profileImagePath: IconPath.profileIcon,
-                  chatIconPath: IconPath.chatIcon,
-                  notificationIconPath: IconPath.notificationIcon,
-                  settingsIconPath: IconPath.settingsIcon,
-                  onProfileTap: () =>
-                      Navigator.pushNamed(context, AppRoutes.driverProfile),
-                  onChatPressed: () =>
-                      Navigator.pushNamed(context, AppRoutes.messageList),
-                  onNotificationPressed: () =>
-                      Navigator.pushNamed(context, AppRoutes.notifications),
-                  onSettingsPressed: () =>
-                      Navigator.pushNamed(context, AppRoutes.settings),
-                ),
+               
 
                 const SizedBox(height: 24),
 

@@ -47,15 +47,8 @@ class _MessageListScreenState extends State<MessageListScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        centerTitle: false,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit_outlined, color: Colors.black),
-            onPressed: () {
-              // Handle compose new message
-            },
-          ),
-        ],
+        centerTitle: true,
+        
       ),
       body: Column(
         children: [
