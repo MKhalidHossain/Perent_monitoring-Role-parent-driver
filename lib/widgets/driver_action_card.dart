@@ -103,7 +103,7 @@ class DriverActionCard extends StatelessWidget {
                 child: _pillButton(
                   label: 'Driver Profile',
                   onTap: () {
-                    Get.to(DriverProfileScreen());
+                    Get.to(const DriverProfileScreen());
                   },
                   borderColor: const Color(0xFFBDA9E6),
                   textColor: Colors.black87,

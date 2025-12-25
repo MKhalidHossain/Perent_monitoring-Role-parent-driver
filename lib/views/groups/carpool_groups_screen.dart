@@ -53,7 +53,7 @@ class _CarpoolGroupsScreenState extends State<CarpoolGroupsScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: GestureDetector(
-                            onTap: () => Get.to(DriverRideDetailScreen()),
+                            onTap: () => Get.to(const DriverRideDetailScreen()),
                             child: const Icon(
                               Icons.tune,
                               color: Colors.black54,

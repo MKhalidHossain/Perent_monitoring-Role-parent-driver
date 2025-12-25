@@ -92,7 +92,7 @@ class _DriverPreTripChecklistScreenState
                 ),
               ),
               const SizedBox(height: 22),
-              ..._items.map((item) => _buildChecklistTile(item)).toList(),
+              ..._items.map((item) => _buildChecklistTile(item)),
               SizedBox(height: size.height * 0.06),
               _buildSubmitButton(),
             ],

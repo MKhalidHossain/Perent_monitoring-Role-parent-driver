@@ -260,12 +260,12 @@ class _DriverRideDetailScreenState extends State<DriverRideDetailScreen> {
           selected: isSelected,
           onSelected: (_) => setState(() => _filter = entry.value),
           backgroundColor: const Color(0xFFF0F0F0),
-          selectedColor: Color(0xff96A1DB),
+          selectedColor: const Color(0xff96A1DB),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(
-              color: isSelected ? Color(0xff96A1DB) : Colors.transparent,
+              color: isSelected ? const Color(0xff96A1DB) : Colors.transparent,
             ),
           ),
         );
@@ -348,9 +348,9 @@ class _DriverRideDetailScreenState extends State<DriverRideDetailScreen> {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: const Color(0xFFE6D8F0),
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              color: Color(0xFFE6D8F0),
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),

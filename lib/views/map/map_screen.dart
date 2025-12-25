@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bbpool/config/icon_path.dart';
-import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -157,8 +156,8 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ),
           const SizedBox(height: 4),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Icon(Icons.stop_circle, size: 14, color: Colors.grey),
               SizedBox(width: 6),
               Expanded(
@@ -183,8 +182,8 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ),
           const SizedBox(height: 4),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Icon(Icons.location_city, size: 14, color: Colors.grey),
               SizedBox(width: 6),
               Expanded(
@@ -305,10 +304,10 @@ class _MapScreenState extends State<MapScreen> {
     ];
 
     return {
-      Polyline(
-        polylineId: const PolylineId('route'),
+      const Polyline(
+        polylineId: PolylineId('route'),
         points: route,
-        color: const Color(0xFF9C88FF),
+        color: Color(0xFF9C88FF),
         width: 6,
         startCap: Cap.roundCap,
         endCap: Cap.roundCap,

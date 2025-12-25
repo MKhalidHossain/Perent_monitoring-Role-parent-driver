@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/routes/app_routes.dart';
-import 'package:bbpool/widgets/carpool_group_card.dart';
 import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:bbpool/widgets/driver_action_card.dart';
 import 'package:flutter/material.dart';
