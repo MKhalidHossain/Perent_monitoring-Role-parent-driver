@@ -265,20 +265,6 @@ class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
     );
   }
 
-  Widget _buildViewOption(IconData icon, bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Icon(
-        icon,
-        color: isSelected ? Colors.white : Colors.grey[600],
-        size: 18,
-      ),
-    );
-  }
 
   Widget _buildDayItem(String day, int date, bool isSelected) {
     return GestureDetector(

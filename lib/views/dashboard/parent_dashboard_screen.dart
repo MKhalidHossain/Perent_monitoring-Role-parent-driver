@@ -12,7 +12,6 @@ class ParentDashboardScreen extends StatefulWidget {
 }
 
 class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
-  final int _currentIndex = 0;
 
   @override
   void initState() {
