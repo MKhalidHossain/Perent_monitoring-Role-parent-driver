@@ -11,13 +11,13 @@ class OnboardingProvider with ChangeNotifier {
 
   final List<OnboardingPage> pages = [
     OnboardingPage(
-      title: "Connect and easily manage\nyour child's school runs",
-      description: "Easily chat, manage schedules, and build\ntrusted carpools with your school community.",
+      title: "Track Every Ride in\nReal-Time",
+      description: "Stay informed with live GPS tracking, ETA updates,\ntrusted carpools with your school community.",
       imagePath: 'assets/images/onboarding1.png', // Update path as needed
     ),
     OnboardingPage(
-      title: "Track Every Ride in\nReal-Time",
-      description: "Stay informed with live GPS tracking, ETA updates,\nand instant ride alerts.",
+      title: "Connect and easily manage\nyour child's school runs",
+      description: "Easily chat, manage schedules, and build\n trusted carpools with your school community.",
       imagePath: 'assets/images/onboarding2.png', // Update path as needed
     ),
     OnboardingPage(

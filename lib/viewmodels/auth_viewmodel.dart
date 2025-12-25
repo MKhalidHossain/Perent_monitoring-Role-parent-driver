@@ -36,41 +36,41 @@ class AuthViewModel {
   bool get isUsernameValid => _model.isUsernameValid;
   bool get isPhoneValid => _model.isPhoneValid;
   bool get isOtpValid => _model.isOtpValid;
-  
+
   // UI state getters
   bool get isPasswordVisible => _model.isPasswordVisible;
   bool get isConfirmPasswordVisible => _model.isConfirmPasswordVisible;
 
   // Initialize and check auth status
-  Future<void> initialize() async {
-    await checkAuthStatus();
+  Future<void> initialize(BuildContext context) async {
+    await checkAuthStatus(context);
   }
 
   // Check if user is already logged in
-  Future<void> checkAuthStatus() async {
+  Future<void> checkAuthStatus(BuildContext context) async {
     try {
       _updateModel(_model.copyWith(isLoading: true));
 
       // Check if user is logged in using TokenManager
       final isLoggedIn = await TokenManager.isLoggedIn();
-      
+
       if (isLoggedIn) {
         // Get user data from TokenManager
         final userData = await TokenManager.getUserData();
-        
+
         if (userData != null) {
           // Create UserModel from stored data
           final user = UserModel.fromJson(userData);
-          
+
           _updateModel(_model.copyWith(
             currentUser: user,
             isLoggedIn: true,
             isLoading: false,
           ));
-          
+
           debugPrint('User authenticated from stored data');
         } else {
-          await logout();
+          await logout(context);
         }
       } else {
         _updateModel(_model.copyWith(isLoading: false));
@@ -119,10 +119,10 @@ class AuthViewModel {
         debugPrint('User ID: ${response.data!.id}');
         debugPrint('User Email: ${response.data!.email}');
         debugPrint('========================');
-        
+
         // Create UserModel from login response
         final user = UserModel.fromJson(response.data!.toJson());
-        
+
         _updateModel(_model.copyWith(
           currentUser: user,
           isLoggedIn: true,
@@ -131,9 +131,14 @@ class AuthViewModel {
         ));
 
         debugPrint('✅ Login successful - user data saved to SharedPreferences');
-        
+
         // Navigate based on user role using helper
-        RoleNavigationHelper.navigateToDashboard(context, response.data!.role);
+        // RoleNavigationHelper.navigateToDashboard(context, response.data!.role);
+        if(user.role == 'parent' ){
+          Navigator.pushNamed(context, AppRoutes.parentDashboard);
+        } if(user.role == 'driver' ){
+          Navigator.pushNamed(context, AppRoutes.driverDashboard);
+        }
       } else {
         _updateModel(_model.copyWith(
           errorMessage: response.message,
@@ -172,7 +177,7 @@ class AuthViewModel {
         password: _model.password,
         role: _model.role,
       );
-      
+
       debugPrint('Registration response:');
       debugPrint('Success: ${response.success}');
       debugPrint('Message: ${response.message}');
@@ -186,8 +191,10 @@ class AuthViewModel {
 
         // Save token
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString(AppConfig.userTokenKey, 'dummy_token'); // Replace with actual token
-        await prefs.setString(AppConfig.userDataKey, response.data!.toJson().toString());
+        await prefs.setString(
+            AppConfig.userTokenKey, 'dummy_token'); // Replace with actual token
+        await prefs.setString(
+            AppConfig.userDataKey, response.data!.toJson().toString());
       } else {
         _updateModel(_model.copyWith(
           errorMessage: response.message,
@@ -353,18 +360,25 @@ class AuthViewModel {
   }
 
   // Logout
-  Future<void> logout() async {
+  Future<void> logout(BuildContext context) async {
     try {
       // Clear all user data using TokenManager
-      await TokenManager.clearUserData();
+      bool isLogOut = await TokenManager.clearUserData();
 
       _updateModel(_model.copyWith(
         currentUser: null,
         isLoggedIn: false,
         errorMessage: '',
       ));
-      
-      debugPrint('User logged out successfully');
+
+      if (isLogOut) {
+        debugPrint('User logged out successfully');
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.splash, (Route<dynamic> route) => false);
+      } else {
+        debugPrint('Logout failed');
+      }
     } catch (e) {
       debugPrint('Logout error: $e');
       _updateModel(_model.copyWith(
@@ -470,7 +484,8 @@ class AuthViewModel {
   }
 
   void toggleConfirmPasswordVisibility() {
-    _updateModel(_model.copyWith(isConfirmPasswordVisible: !_model.isConfirmPasswordVisible));
+    _updateModel(_model.copyWith(
+        isConfirmPasswordVisible: !_model.isConfirmPasswordVisible));
   }
 
   // Clear form
@@ -501,6 +516,7 @@ class AuthViewModel {
   }
 
   bool _isEmailValid(String email) {
-    return email.isNotEmpty && RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+    return email.isNotEmpty &&
+        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 }

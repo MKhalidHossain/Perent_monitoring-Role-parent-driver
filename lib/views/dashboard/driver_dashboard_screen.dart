@@ -2,6 +2,8 @@ import 'package:bbpool/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
 import 'package:bbpool/models/dashboard_model.dart';
+import 'package:bbpool/widgets/common_widgets.dart';
+import 'package:bbpool/config/icon_path.dart';
 
 class DriverDashboardScreen extends StatefulWidget {
   const DriverDashboardScreen({super.key});
@@ -11,8 +13,6 @@ class DriverDashboardScreen extends StatefulWidget {
 }
 
 class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
-  int _currentIndex = 0;
-
   // Static data matching the image perfectly
   final List<RideModel> _todayRides = [
     RideModel(
@@ -23,6 +23,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
       driverName: 'Jakir Hossain',
       status: 'scheduled',
       vehicleType: 'van',
+      isArrived: true,
     ),
     RideModel(
       id: '2',
@@ -32,6 +33,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
       driverName: 'Jakir Hossain',
       status: 'scheduled',
       vehicleType: 'van',
+      isArrived: false,
     ),
   ];
 
@@ -89,28 +91,22 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
-                // Header with perfect spacing
-                DashboardHeader(
-                  userName: "Jakir Hossain",
-                  profileImageUrl: null,
-                  credits: 100,
-                  onProfileTap: () {
-                    // Navigate to profile
-                    Navigator.pushNamed(context, AppRoutes.driverProfile);
-                  },
-                  onChatTap: () {
-                    // Navigate to chat
-                    Navigator.pushNamed(context, AppRoutes.messageList);
-                  },
-                  onNotificationTap: () {
-                    // Navigate to notifications
-                    Navigator.pushNamed(context, AppRoutes.notifications);
-                  },
-                  onSettingsTap: () {
-                    // Navigate to settings
-                    Navigator.pushNamed(context, AppRoutes.settings);
-                  },
+                CommonWidgets.buildHeaderSection(
+                  context: context,
+                  profileImagePath: IconPath.profileIcon,
+                  chatIconPath: IconPath.chatIcon,
+                  notificationIconPath: IconPath.notificationIcon,
+                  settingsIconPath: IconPath.settingsIcon,
+                  onProfileTap: () =>
+                      Navigator.pushNamed(context, AppRoutes.driverProfile),
+                  onChatPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.messageList),
+                  onNotificationPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.notifications),
+                  onSettingsPressed: () =>
+                      Navigator.pushNamed(context, AppRoutes.settings),
                 ),
+
                 const SizedBox(height: 24),
 
                 // Today Rides Section with perfect design
@@ -137,19 +133,6 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          _handleNavigation(index);
-        },
-        onAddTap: () {
-          // Handle add button tap
-          _showAddOptionsDialog();
-        },
       ),
     );
   }
@@ -196,7 +179,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Start Ride'),
+        title: const Text('Start '),
         content: const Text('Are you ready to start the ride?'),
         actions: [
           TextButton(
@@ -254,25 +237,25 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
       ),
     );
   }
-
-  void _handleNavigation(int index) {
-    switch (index) {
-      case 0:
-        // Home - already here
-        break;
-      case 1:
-        // Calendar
-        Navigator.pushNamed(context, AppRoutes.calendar);
-        break;
-      case 2:
-        // Groups
-        Navigator.pushNamed(context, AppRoutes.groups);
-        break;
-      case 3:
-        // Location
-        // Navigator.pushNamed(context, '/location');
-        Navigator.pushNamed(context, AppRoutes.mapScreen);
-        break;
-    }
-  }
+  //
+  // void _handleNavigation(int index) {
+  //   switch (index) {
+  //     case 0:
+  //       // Home - already here
+  //       break;
+  //     case 1:
+  //       // Calendar
+  //       Navigator.pushNamed(context, AppRoutes.calendar);
+  //       break;
+  //     case 2:
+  //       // Groups
+  //       Navigator.pushNamed(context, AppRoutes.groups);
+  //       break;
+  //     case 3:
+  //       // Location
+  //       // Navigator.pushNamed(context, '/location');
+  //       Navigator.pushNamed(context, AppRoutes.mapScreen);
+  //       break;
+  //   }
+  // }
 }

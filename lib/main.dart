@@ -6,6 +6,7 @@ import 'package:bbpool/controllers/notification_controller.dart';
 import 'package:bbpool/controllers/settings_controller.dart';
 import 'package:bbpool/controllers/map_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:bbpool/config/app_theme.dart';
 import 'package:bbpool/routes/app_routes.dart';
@@ -25,7 +26,7 @@ class BBPoolApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => AuthProvider(context)),
         ChangeNotifierProvider(
             create: (context) => OnboardingProvider()..initialize()),
         ChangeNotifierProvider(create: (context) => SelectUserTypeProvider()),
@@ -37,12 +38,13 @@ class BBPoolApp extends StatelessWidget {
 
         // Add other providers here as needed
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         title: 'BBPool',
         theme: AppTheme.lightTheme,
         debugShowCheckedModeBanner: false,
         initialRoute: AppRoutes.splash,
         routes: AppRoutes.routes,
+        // home: const DriverPreTripChecklistScreen(),
       ),
     );
   }

@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:bbpool/models/settings_model.dart';
 
 class SettingsController extends ChangeNotifier {
+
+
   SettingsModel _settings = SettingsModel(
     name: 'Antwon Taylor',
     email: 'antwontsy@gmail.com',

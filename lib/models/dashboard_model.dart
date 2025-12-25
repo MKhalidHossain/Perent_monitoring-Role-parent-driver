@@ -6,6 +6,7 @@ class RideModel {
   final String driverName;
   final String status;
   final String vehicleType;
+  final bool isArrived;
 
   RideModel({
     required this.id,
@@ -15,6 +16,7 @@ class RideModel {
     required this.driverName,
     required this.status,
     required this.vehicleType,
+required   this.isArrived,
   });
 
   factory RideModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class RideModel {
       driverName: json['driverName'] ?? '',
       status: json['status'] ?? 'pending',
       vehicleType: json['vehicleType'] ?? 'van',
+      isArrived: json['isArrived'],
     );
   }
 

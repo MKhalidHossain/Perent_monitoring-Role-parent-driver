@@ -1,3 +1,4 @@
+import 'package:bbpool/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bbpool/controllers/settings_controller.dart';
@@ -13,6 +14,8 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -120,7 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                _showLogoutDialog(context, settingsController);
+                                _showLogoutDialog(context,authProvider );
                               },
                               borderRadius: BorderRadius.circular(25),
                               child: const Center(
@@ -257,18 +260,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildBottomNavItem(IconData icon, bool isActive) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      child: Icon(
-        icon,
-        size: 24,
-        color: isActive ? const Color(0xFF9C88FF) : Colors.grey,
-      ),
-    );
-  }
+  
 
-  void _showLogoutDialog(BuildContext context, SettingsController controller) {
+  void _showLogoutDialog(BuildContext context, AuthProvider authProvider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -283,9 +277,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                controller.logout();
-                // Navigate to login screen
-                // Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (route) => false);
+         authProvider.logout(context);
+                // Handle logout
+            
               },
               child: const Text(
                 'Logout',

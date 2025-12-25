@@ -14,6 +14,7 @@ abstract class IconPath {
   static const String chatIcon = "assets/icons/chat_icon.png";
   static const String filterIcon = "assets/icons/filter_icon.png";
   static const String busIcon = "assets/icons/bus_icon.png";
+  static const String busIcon2 = "assets/icons/bus _Icon2.png";
   static const String riderIcon = "assets/icons/rider_icon.png";
   static const String timeIcon = "assets/icons/time_icon.png";
   static const String checkedIcon = "assets/icons/checked.png";
@@ -21,4 +22,5 @@ abstract class IconPath {
   static const String notification = "assets/icons/notification.png";
   static const String shuttleBusIcon = "assets/icons/shuttle_bus.png";
   static const String xButtonIcon = "assets/icons/x_button.png";
+  static const String groupIcon = "assets/icons/group 1.png";
 }

@@ -4,20 +4,21 @@ import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/routes/app_routes.dart';
 import 'package:bbpool/widgets/carpool_group_card.dart';
 import 'package:bbpool/widgets/common_widgets.dart';
+import 'package:bbpool/widgets/driver_action_card.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
 import 'package:bbpool/models/dashboard_model.dart';
 import 'package:bbpool/config/icon_path.dart';
 
-class DriverCalendarScreen extends StatefulWidget {
-  const DriverCalendarScreen({super.key});
+class ParentCalendarScreen extends StatefulWidget {
+  const ParentCalendarScreen({super.key});
 
   @override
-  State<DriverCalendarScreen> createState() => _DriverCalendarScreenState();
+  State<ParentCalendarScreen> createState() => _ParentCalendarScreenState();
 }
 
-class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
- final int currentIndex = 1; // Calendar tab selected
+class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
+  final int currentIndex = 1; // Calendar tab selected
   String _selectedMonth = 'August';
   int _selectedDay = 27;
 
@@ -102,23 +103,23 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
           child: Column(
             children: [
               // Header
-              // DashboardHeader(
-              //   userName: "Jakir Hossain",
-              //   profileImageUrl: null,
-              //   credits: 100,
-              //   onProfileTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.driverProfile);
-              //   },
-              //   onChatTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.messageList);
-              //   },
-              //   onNotificationTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.notifications);
-              //   },
-              //   onSettingsTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.settings);
-              //   },
-              // ),
+              DashboardHeader(
+                userName: "Jakir Hossain",
+                profileImageUrl: null,
+                credits: 100,
+                onProfileTap: () {
+                  Navigator.pushNamed(context, AppRoutes.driverProfile);
+                },
+                onChatTap: () {
+                  Navigator.pushNamed(context, AppRoutes.messageList);
+                },
+                onNotificationTap: () {
+                  Navigator.pushNamed(context, AppRoutes.notifications);
+                },
+                onSettingsTap: () {
+                  Navigator.pushNamed(context, AppRoutes.settings);
+                },
+              ),
               const SizedBox(height: 24),
 
               // Month Selector and View Options
@@ -245,7 +246,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Carpool Group details',
+                      'Driver Details',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -253,7 +254,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    CarpoolGroupCard(),
+                    DriverActionCard(),
                   ],
                 ),
               ),
@@ -262,33 +263,23 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigation(
-      //   currentIndex: _currentIndex,
-      //   onTap: (index) {
-      //     setState(() {
-      //       _currentIndex = index;
-      //     });
-      //     _handleNavigation(index);
-      //   },
-      // ),
     );
   }
 
-  // Widget _buildViewOption(IconData icon, bool isSelected) {
-  //   return Container(
-  //     padding: const EdgeInsets.all(8),
-  //     decoration: BoxDecoration(
-  //       color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey[100],
-  //       borderRadius: BorderRadius.circular(8),
-  //     ),
-  //     child: Icon(
-  //       icon,
-  //       color: isSelected ? Colors.white : Colors.grey[600],
-  //       size: 18,
-  //     ),
-  //   );
-  //
-  // }
+  Widget _buildViewOption(IconData icon, bool isSelected) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Icon(
+        icon,
+        color: isSelected ? Colors.white : Colors.grey[600],
+        size: 18,
+      ),
+    );
+  }
 
   Widget _buildDayItem(String day, int date, bool isSelected) {
     return GestureDetector(
