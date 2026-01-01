@@ -3,6 +3,7 @@ import 'package:bbpool/views/dashboard/driver_dashboard_screen.dart';
 import 'package:bbpool/views/groups/carpool_groups_screen.dart';
 import 'package:bbpool/views/map/map_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:bbpool/views/ride/schedule_child_ride_screen.dart';
 
 class DriverNavBarScreen extends StatefulWidget {
   const DriverNavBarScreen({super.key});
@@ -17,6 +18,7 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
   final List<Widget> _pages = const [
     DriverDashboardScreen(),
     DriverCalendarScreen(),
+    ScheduleChildRideScreen(),
     CarpoolGroupsScreen(),
     MapScreen(),
   ];
@@ -51,9 +53,9 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
               // right side
               Row(
                 children: [
-                  _buildNavItem(icon: Icons.group_outlined, index: 2),
+                  _buildNavItem(icon: Icons.group_outlined, index: 3),
                   const SizedBox(width: 28),
-                  _buildNavItem(icon: Icons.location_on_outlined, index: 3),
+                  _buildNavItem(icon: Icons.location_on_outlined, index: 4),
                 ],
               ),
             ],
@@ -70,7 +72,9 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
           elevation: 0,
           highlightElevation: 0,
           backgroundColor: Colors.transparent, // let our gradient show
-          onPressed: () {},
+          onPressed: () {
+            setState(() => _selectedIndex = 2);
+          },
           child: Container(
             decoration: const BoxDecoration(
               shape: BoxShape.circle,

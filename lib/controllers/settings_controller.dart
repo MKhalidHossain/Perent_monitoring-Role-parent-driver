@@ -8,6 +8,16 @@ class SettingsController extends ChangeNotifier {
     name: 'Antwon Taylor',
     email: 'antwontsy@gmail.com',
     profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+    phoneNumber: '+1 123 1234 1234',
+    dateOfBirth: '01/01/2003',
+    emergencyContactName: 'John Doe',
+    emergencyContactRelationship: 'Guardian',
+    emergencyContactNumber: '+1 123 1234 1234',
+    emergencyContactName2: '',
+    emergencyContactRelationship2: '',
+    emergencyContactNumber2: '',
+    handoffVerificationName: 'John Doe',
+    handoffVerificationPin: '2503',
     darkMode: false,
     language: 'English',
     notificationsEnabled: true,
@@ -39,16 +49,58 @@ class SettingsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateProfile({String? name, String? email, String? profileImage}) {
+  void updateProfile({
+    String? name,
+    String? email,
+    String? profileImage,
+    String? phoneNumber,
+    String? dateOfBirth,
+  }) {
     _settings = _settings.copyWith(
       name: name,
       email: email,
       profileImage: profileImage,
+      phoneNumber: phoneNumber,
+      dateOfBirth: dateOfBirth,
     );
     notifyListeners();
   }
 
-  List<SettingsSection> getSettingsSections() {
+  void updateEmergencyContacts({
+    required String name,
+    required String relationship,
+    required String number,
+    String? name2,
+    String? relationship2,
+    String? number2,
+  }) {
+    _settings = _settings.copyWith(
+      emergencyContactName: name,
+      emergencyContactRelationship: relationship,
+      emergencyContactNumber: number,
+      emergencyContactName2: name2 ?? '',
+      emergencyContactRelationship2: relationship2 ?? '',
+      emergencyContactNumber2: number2 ?? '',
+      emergencyContact: name,
+    );
+    notifyListeners();
+  }
+
+  void updateChildHandoffVerification({
+    required String name,
+    required String pin,
+  }) {
+    _settings = _settings.copyWith(
+      handoffVerificationName: name,
+      handoffVerificationPin: pin,
+    );
+    notifyListeners();
+  }
+
+  List<SettingsSection> getSettingsSections({
+    VoidCallback? onEmergencyContactTap,
+    VoidCallback? onChildHandoffTap,
+  }) {
     return [
       SettingsSection(
         title: 'App Preferences',
@@ -86,17 +138,13 @@ class SettingsController extends ChangeNotifier {
             title: 'Emergency Contact Info',
             icon: 'emergency',
             hasArrow: true,
-            onTap: () {
-              // Handle emergency contact
-            },
+            onTap: onEmergencyContactTap,
           ),
           SettingsItem(
             title: 'Child Handoff Verification',
             icon: 'child_verification',
             hasArrow: true,
-            onTap: () {
-              // Handle child verification
-            },
+            onTap: onChildHandoffTap,
           ),
         ],
       ),

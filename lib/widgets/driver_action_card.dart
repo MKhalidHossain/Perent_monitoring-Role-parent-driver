@@ -90,11 +90,7 @@ class DriverActionCard extends StatelessWidget {
                 child: _pillButton(
                   label: 'Inbox me',
                   onTap: onInbox,
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFD99BD9), Color(0xFF8E9AEF)],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
+                  gradient: AppColors.gradientButton,
                   textColor: Colors.white,
                 ),
               ),

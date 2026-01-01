@@ -3,9 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:bbpool/providers/auth_provider.dart';
 import 'package:bbpool/providers/dashboard_provider.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
+import 'package:bbpool/routes/app_routes.dart';
 
 class ParentDashboardScreen extends StatefulWidget {
-  const ParentDashboardScreen({super.key});
+  const ParentDashboardScreen({super.key, this.onNotificationTap});
+
+  final VoidCallback? onNotificationTap;
 
   @override
   State<ParentDashboardScreen> createState() => _ParentDashboardScreenState();
@@ -64,7 +67,11 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
                         // Navigate to chat
                       },
                       onNotificationTap: () {
-                        // Navigate to notifications
+                        if (widget.onNotificationTap != null) {
+                          widget.onNotificationTap!();
+                          return;
+                        }
+                        Navigator.pushNamed(context, AppRoutes.notifications);
                       },
                       onSettingsTap: () {
                         // Navigate to settings

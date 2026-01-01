@@ -125,11 +125,7 @@ class DriverProfileScreen extends StatelessWidget {
       width: double.infinity,
       child: Container(
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFFD99BD9), Color(0xFF8E9AEF)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
+          gradient: AppColors.gradientButton,
           borderRadius: BorderRadius.circular(26),
         ),
         child: Material(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bbpool/config/app_colors.dart';
 
 class ProfileSetupView extends StatefulWidget {
   const ProfileSetupView({super.key});
@@ -289,11 +290,7 @@ class _ProfileSetupViewState extends State<ProfileSetupView> {
       width: double.infinity,
       height: 50,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF9C27B0), Color(0xFF673AB7)],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
+        gradient: AppColors.gradientButton,
         borderRadius: BorderRadius.circular(8),
       ),
       child: ElevatedButton(
