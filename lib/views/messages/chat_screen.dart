@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/controllers/message_controller.dart';
 import 'package:bbpool/models/message_model.dart';
 
@@ -237,12 +238,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 Container(
                   width: 44,
                   height: 44,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Color(0xFFB39DDB), Color(0xFF9C88FF)],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
+                  decoration: BoxDecoration(
+                    gradient: AppColors.gradientButton,
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(

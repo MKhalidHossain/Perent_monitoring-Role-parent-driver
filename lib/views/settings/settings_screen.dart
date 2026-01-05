@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:bbpool/config/icon_path.dart';
 import 'package:bbpool/providers/auth_provider.dart';
+import 'package:bbpool/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bbpool/controllers/settings_controller.dart';
@@ -38,7 +42,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Consumer<SettingsController>(
         builder: (context, settingsController, child) {
           final settings = settingsController.settings;
-          final sections = settingsController.getSettingsSections();
+          final sections = settingsController.getSettingsSections(
+            onEmergencyContactTap: () {
+              Navigator.pushNamed(context, AppRoutes.emergencyContact);
+            },
+            onChildHandoffTap: () {
+              Navigator.pushNamed(
+                context,
+                AppRoutes.childHandoffVerification,
+              );
+            },
+          );
 
           return SingleChildScrollView(
             child: Column(
@@ -56,7 +70,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: NetworkImage(settings.profileImage),
+                                image: _resolveProfileImage(
+                                  settings.profileImage,
+                                ),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -64,17 +80,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Positioned(
                             bottom: 0,
                             right: 0,
-                            child: Container(
-                              width: 24,
-                              height: 24,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF9C88FF),
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 14,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.editProfile,
+                                );
+                              },
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFF9C88FF),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 14,
+                                ),
                               ),
                             ),
                           ),
@@ -123,7 +147,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                _showLogoutDialog(context,authProvider );
+                                _showLogoutDialog(context, authProvider);
                               },
                               borderRadius: BorderRadius.circular(25),
                               child: const Center(
@@ -183,6 +207,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
         },
       ),
     );
+  }
+
+  ImageProvider _resolveProfileImage(String imagePath) {
+    if (imagePath.isEmpty) {
+      return const AssetImage(IconPath.profileIcon);
+    }
+    final uri = Uri.tryParse(imagePath);
+    if (uri != null && (uri.scheme == 'http' || uri.scheme == 'https')) {
+      return NetworkImage(imagePath);
+    }
+    return FileImage(File(imagePath));
   }
 
   Widget _buildSettingsSection(
@@ -260,8 +295,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  
-
   void _showLogoutDialog(BuildContext context, AuthProvider authProvider) {
     showDialog(
       context: context,
@@ -277,9 +310,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-         authProvider.logout(context);
+                authProvider.logout(context);
                 // Handle logout
-            
               },
               child: const Text(
                 'Logout',

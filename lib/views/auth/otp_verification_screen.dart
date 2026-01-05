@@ -297,21 +297,28 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               // Verify Button
                               SizedBox(
                                 height: 50,
-                                child: ElevatedButton(
-                                  onPressed: _handleVerifyClick,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    elevation: 0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: AppColors.gradientButton,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: const Text(
-                                    'Verify',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.textWhite,
+                                  child: ElevatedButton(
+                                    onPressed: _handleVerifyClick,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      shadowColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      elevation: 0,
+                                    ),
+                                    child: const Text(
+                                      'Verify',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.textWhite,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -457,28 +464,36 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 SizedBox(
                   width: double.infinity,
                   height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        showSuccessModal = false;
-                      });
-                      // Navigate to login screen
-                      Navigator.of(context).pushReplacementNamed(
-                        AppRoutes.login,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: AppColors.gradientButton,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Text(
-                      'Continue',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textWhite,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          showSuccessModal = false;
+                        });
+                        // Navigate to login screen
+                        Navigator.of(context).pushReplacementNamed(
+                          AppRoutes.login,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        'Continue',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textWhite,
+                        ),
                       ),
                     ),
                   ),
@@ -643,4 +658,3 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
 }
-

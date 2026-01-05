@@ -13,9 +13,7 @@ import 'package:bbpool/models/notification_model.dart';
 import 'package:bbpool/models/settings_model.dart';
 import 'package:bbpool/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-enum OverlayScreen { none, profile, messages, notifications, settings }
+import 'package:bbpool/views/ride/schedule_child_ride_screen.dart';
 
 class DriverNavBarScreen extends StatefulWidget {
   const DriverNavBarScreen({super.key});
@@ -31,6 +29,7 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
   final List<Widget> _pages = const [
     DriverDashboardScreen(),
     DriverCalendarScreen(),
+    ScheduleChildRideScreen(),
     CarpoolGroupsScreen(),
     MapScreen(),
   ];
@@ -439,61 +438,9 @@ class _ProfileScreenContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              review.name,
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              review.timeAgo,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            review.rating.toStringAsFixed(1),
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    review.review,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
-                      height: 1.4,
-                    ),
-                  ),
+                  _buildNavItem(icon: Icons.group_outlined, index: 3),
+                  const SizedBox(width: 28),
+                  _buildNavItem(icon: Icons.location_on_outlined, index: 4),
                 ],
               ),
             ),
@@ -536,62 +483,28 @@ class _ProfileScreenContent extends StatelessWidget {
   }
 }
 
-class _MessageListScreenContent extends StatefulWidget {
-  final VoidCallback onBack;
-
-  const _MessageListScreenContent({required this.onBack});
-
-  @override
-  State<_MessageListScreenContent> createState() =>
-      _MessageListScreenContentState();
-}
-
-class _MessageListScreenContentState
-    extends State<_MessageListScreenContent> {
-  final TextEditingController _searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        context.read<MessageController>().initializeMessages();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Header with back button
-
-     
-     
-       // Search Bar
-        Container(
-          margin: const EdgeInsets.all(16),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF5F5F5),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: TextField(
-            controller: _searchController,
-            onChanged: (value) {
-              context.read<MessageController>().setSearchQuery(value);
-            },
-            decoration: const InputDecoration(
-              hintText: 'Search',
-              hintStyle: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
+      // Gradient FAB that still creates the notch
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: SizedBox(
+        width: 72,
+        height: 72,
+        child: FloatingActionButton(
+          elevation: 0,
+          highlightElevation: 0,
+          backgroundColor: Colors.transparent, // let our gradient show
+          onPressed: () {
+            setState(() => _selectedIndex = 2);
+          },
+          child: Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [
+                  Color(0xFFECC9F6), // pinkish
+                  Color(0xFF9DB2FF), // periwinkle
+                ],
               ),
               prefixIcon: Icon(
                 Icons.search,

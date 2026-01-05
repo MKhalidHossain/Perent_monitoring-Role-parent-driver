@@ -51,8 +51,8 @@ class AppColors {
   static const Color cardShadow = Color(0x1A000000);
   
   // Button Colors
-  static const Color buttonPrimary = Color(0xFF8A2BE2);
-  static const Color buttonSecondary = Color(0xFF4A90E2);
+  static const Color buttonPrimary = Color(0xFF909EDB);
+  static const Color buttonSecondary = Color(0xFFE9CCE2);
   static const Color buttonDisabled = Color(0xFFCCCCCC);
   
   // Gradient Button Colors
@@ -75,7 +75,7 @@ class AppColors {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
-    colors: [Color(0xFFD0B0E8), Color(0xFFA0B0E0)],
+    colors: [gradientButtonStart, gradientButtonEnd],
   );
   
   static const LinearGradient backgroundGradient = LinearGradient(
@@ -84,11 +84,7 @@ class AppColors {
     colors: [Color(0xFFE0E6F0), Color(0xFFC0C8D8)],
   );
 
-  static const LinearGradient buttonGradient = LinearGradient(
-    begin: Alignment.centerLeft,
-    end: Alignment.centerRight,
-    colors: [Color(0xFFD0B0E8), Color(0xFFA0B0E0)],
-  );
+  static const LinearGradient buttonGradient = gradientButton;
 
   static const Color driverDashboardCardBackground = Color(0xFFF4F4F4);
 }

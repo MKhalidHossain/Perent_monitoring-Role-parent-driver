@@ -83,11 +83,7 @@ class SelectUserTypeScreen extends StatelessWidget {
                           width: double.infinity,
                           height: 56,
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [Color(0xFFD0B0E8), Color(0xFFA0B0E0)],
-                            ),
+                            gradient: AppColors.gradientButton,
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: ElevatedButton(

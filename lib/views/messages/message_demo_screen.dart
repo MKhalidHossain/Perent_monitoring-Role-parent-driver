@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/routes/app_routes.dart';
 
 class MessageDemoScreen extends StatelessWidget {
@@ -53,11 +54,7 @@ class MessageDemoScreen extends StatelessWidget {
               width: 200,
               height: 50,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFB39DDB), Color(0xFF9C88FF)],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
+                gradient: AppColors.gradientButton,
                 borderRadius: BorderRadius.circular(25),
               ),
               child: ElevatedButton(

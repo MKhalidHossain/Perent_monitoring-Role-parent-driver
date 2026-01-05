@@ -168,21 +168,28 @@ class _DriverPreTripChecklistScreenState
     return SizedBox(
       width: double.infinity,
       height: 54,
-      child: ElevatedButton(
-        onPressed: _handleSubmit,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF8A8CE3),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
-          ),
-          elevation: 0,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: AppColors.gradientButton,
+          borderRadius: BorderRadius.circular(28),
         ),
-        child: const Text(
-          'Submit',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textWhite,
+        child: ElevatedButton(
+          onPressed: _handleSubmit,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(28),
+            ),
+            elevation: 0,
+          ),
+          child: const Text(
+            'Submit',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textWhite,
+            ),
           ),
         ),
       ),

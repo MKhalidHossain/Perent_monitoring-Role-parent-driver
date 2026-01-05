@@ -24,7 +24,9 @@ class CommonWidgets {
         width: width ?? double.infinity,
         height: height ?? 56,
         decoration: BoxDecoration(
-          color: color ?? AppColors.gradientButtonEnd,
+          color: gradient == null ? (color ?? AppColors.gradientButtonEnd) : null,
+          gradient:
+              gradient ?? (color == null ? AppColors.gradientButton : null),
           borderRadius: BorderRadius.circular(borderRadius ?? 28),
         ),
         padding:
@@ -442,21 +444,28 @@ class CommonWidgets {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: SizedBox(
         width: double.infinity,
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF9C88D4),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: AppColors.gradientButton,
+            borderRadius: BorderRadius.circular(12),
           ),
-          child: const Text(
-            'Track Ride',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+          child: ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text(
+              'Track Ride',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textWhite,
+              ),
             ),
           ),
         ),

@@ -3,6 +3,8 @@ import 'package:bbpool/views/calendar/parent_calender_screen.dart';
 import 'package:bbpool/views/dashboard/parent_dashboard_screen.dart';
 import 'package:bbpool/views/groups/carpool_groups_screen.dart';
 import 'package:bbpool/views/map/map_screen.dart';
+import 'package:bbpool/views/notifications/notification_screen.dart';
+import 'package:bbpool/views/ride/schedule_child_ride_screen.dart';
 import 'package:flutter/material.dart';
 
 class ParentNavBarScreen extends StatefulWidget {
@@ -15,11 +17,17 @@ class ParentNavBarScreen extends StatefulWidget {
 class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
   int _selectedIndex = 1; // calendar is selected in your design
 
-  final List<Widget> _pages = const [
-    ParentDashboardScreen(),
-    ParentCalendarScreen(),
-    CarpoolGroupsScreen(),
-    MapScreen(),
+  late final List<Widget> _pages = [
+    ParentDashboardScreen(
+      onNotificationTap: () => setState(() => _selectedIndex = 5),
+    ),
+    const ParentCalendarScreen(),
+    const ScheduleChildRideScreen(),
+    const CarpoolGroupsScreen(),
+    const MapScreen(),
+    NotificationScreen(
+      onBack: () => setState(() => _selectedIndex = 0),
+    ),
   ];
 
   // Colors from the mock
@@ -61,9 +69,9 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
               // right side
               Row(
                 children: [
-                  _buildNavItem(icon: Icons.group_outlined, index: 2),
+                  _buildNavItem(icon: Icons.group_outlined, index: 3),
                   const SizedBox(width: 28),
-                  _buildNavItem(icon: Icons.location_on_outlined, index: 3),
+                  _buildNavItem(icon: Icons.location_on_outlined, index: 4),
                 ],
               ),
             ],
@@ -80,7 +88,9 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
           elevation: 0,
           highlightElevation: 0,
           backgroundColor: Colors.transparent, // let our gradient show
-          onPressed: () {},
+          onPressed: () {
+            setState(() => _selectedIndex = 2);
+          },
           child: Container(
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
