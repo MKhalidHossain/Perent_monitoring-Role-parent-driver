@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/routes/app_routes.dart';
-import 'package:bbpool/widgets/carpool_group_card.dart';
 import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:bbpool/widgets/driver_action_card.dart';
 import 'package:flutter/material.dart';
@@ -266,20 +265,6 @@ class _ParentCalendarScreenState extends State<ParentCalendarScreen> {
     );
   }
 
-  Widget _buildViewOption(IconData icon, bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF8A2BE2) : Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Icon(
-        icon,
-        color: isSelected ? Colors.white : Colors.grey[600],
-        size: 18,
-      ),
-    );
-  }
 
   Widget _buildDayItem(String day, int date, bool isSelected) {
     return GestureDetector(

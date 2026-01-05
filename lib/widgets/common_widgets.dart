@@ -147,6 +147,7 @@ class CommonWidgets {
           GestureDetector(
             onTap: onProfileTap,
             child: Container(
+              padding: const EdgeInsets.all(4),
               width: 60,
               height: 60,
               decoration: BoxDecoration(

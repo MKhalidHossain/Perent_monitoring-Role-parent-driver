@@ -49,7 +49,7 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
       body: _pages[_selectedIndex],
 
       bottomNavigationBar: BottomAppBar(
-        color: Color(0xFFF4F4F4),
+        color: const Color(0xFFF4F4F4),
         shape: const CircularNotchedRectangle(),
         notchMargin: 15,
         height: 70,
@@ -134,7 +134,7 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
               color: isSelected ? _active : _inactive,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
         ],

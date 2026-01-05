@@ -1,9 +1,8 @@
-import 'package:bbpool/routes/app_routes.dart';
+
 import 'package:flutter/material.dart';
 import 'package:bbpool/widgets/dashboard_widgets.dart';
 import 'package:bbpool/models/dashboard_model.dart';
-import 'package:bbpool/widgets/common_widgets.dart';
-import 'package:bbpool/config/icon_path.dart';
+
 
 class DriverDashboardScreen extends StatefulWidget {
   const DriverDashboardScreen({super.key});
@@ -91,21 +90,7 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
-                CommonWidgets.buildHeaderSection(
-                  context: context,
-                  profileImagePath: IconPath.profileIcon,
-                  chatIconPath: IconPath.chatIcon,
-                  notificationIconPath: IconPath.notificationIcon,
-                  settingsIconPath: IconPath.settingsIcon,
-                  onProfileTap: () =>
-                      Navigator.pushNamed(context, AppRoutes.driverProfile),
-                  onChatPressed: () =>
-                      Navigator.pushNamed(context, AppRoutes.messageList),
-                  onNotificationPressed: () =>
-                      Navigator.pushNamed(context, AppRoutes.notifications),
-                  onSettingsPressed: () =>
-                      Navigator.pushNamed(context, AppRoutes.settings),
-                ),
+               
 
                 const SizedBox(height: 24),
 
@@ -200,62 +185,5 @@ class _DriverDashboardScreenState extends State<DriverDashboardScreen> {
     );
   }
 
-  void _showAddOptionsDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.add_road),
-              title: const Text('New Route'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to add route
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.group_add),
-              title: const Text('New Group'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to add group
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.schedule),
-              title: const Text('Schedule Ride'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to schedule ride
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-  //
-  // void _handleNavigation(int index) {
-  //   switch (index) {
-  //     case 0:
-  //       // Home - already here
-  //       break;
-  //     case 1:
-  //       // Calendar
-  //       Navigator.pushNamed(context, AppRoutes.calendar);
-  //       break;
-  //     case 2:
-  //       // Groups
-  //       Navigator.pushNamed(context, AppRoutes.groups);
-  //       break;
-  //     case 3:
-  //       // Location
-  //       // Navigator.pushNamed(context, '/location');
-  //       Navigator.pushNamed(context, AppRoutes.mapScreen);
-  //       break;
-  //   }
-  // }
+
 }

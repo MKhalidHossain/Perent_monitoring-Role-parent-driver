@@ -1,4 +1,3 @@
-import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/config/icon_path.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +72,7 @@ class DriverProfileScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 18),
                         child: _buildReviewCard(review),
                       ))
-                  .toList(),
+                  ,
               const SizedBox(height: 12),
               _buildReadMoreButton(),
             ],
@@ -268,10 +267,10 @@ class DriverProfileScreen extends StatelessWidget {
             ],
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 3,
           child: Column(
-            children: const [
+            children: [
               _RatingBar(stars: 5, percent: 0.8),
               _RatingBar(stars: 4, percent: 0.7),
               _RatingBar(stars: 3, percent: 0.55),
