@@ -14,6 +14,15 @@ import 'package:bbpool/models/settings_model.dart';
 import 'package:bbpool/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:bbpool/views/ride/schedule_child_ride_screen.dart';
+import 'package:provider/provider.dart';
+
+enum OverlayScreen {
+  none,
+  profile,
+  messages,
+  notifications,
+  settings,
+}
 
 class DriverNavBarScreen extends StatefulWidget {
   const DriverNavBarScreen({super.key});
@@ -78,6 +87,37 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
       body: _overlayScreen != OverlayScreen.none
           ? _buildOverlayScreen()
           : _pages[_selectedIndex],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: SizedBox(
+        width: 72,
+        height: 72,
+        child: FloatingActionButton(
+          elevation: 0,
+          highlightElevation: 0,
+          backgroundColor: Colors.transparent,
+          onPressed: () {
+            setState(() => _selectedIndex = 2);
+          },
+          child: Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [
+                  Color(0xFFECC9F6), // pinkish
+                  Color(0xFF9DB2FF), // periwinkle
+                ],
+              ),
+            ),
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 32,
+            ),
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomAppBar(
         color: const Color(0xFFF4F4F4),
         child: Row(
@@ -438,9 +478,47 @@ class _ProfileScreenContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildNavItem(icon: Icons.group_outlined, index: 3),
-                  const SizedBox(width: 28),
-                  _buildNavItem(icon: Icons.location_on_outlined, index: 4),
+                  Row(
+                    children: [
+                      Text(
+                        review.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        review.timeAgo,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: List.generate(
+                      5,
+                      (index) => Icon(
+                        index < review.rating.floor()
+                            ? Icons.star
+                            : Icons.star_border,
+                        size: 16,
+                        color: Colors.amber,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    review.review,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[700],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -483,76 +561,141 @@ class _ProfileScreenContent extends StatelessWidget {
   }
 }
 
-      // Gradient FAB that still creates the notch
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: SizedBox(
-        width: 72,
-        height: 72,
-        child: FloatingActionButton(
-          elevation: 0,
-          highlightElevation: 0,
-          backgroundColor: Colors.transparent, // let our gradient show
-          onPressed: () {
-            setState(() => _selectedIndex = 2);
-          },
-          child: Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                colors: [
-                  Color(0xFFECC9F6), // pinkish
-                  Color(0xFF9DB2FF), // periwinkle
-                ],
-              ),
-              prefixIcon: Icon(
-                Icons.search,
-                color: Colors.grey,
-              ),
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 12),
+class _MessageListScreenContent extends StatefulWidget {
+  final VoidCallback onBack;
+
+  const _MessageListScreenContent({required this.onBack});
+
+  @override
+  State<_MessageListScreenContent> createState() =>
+      _MessageListScreenContentState();
+}
+
+class _MessageListScreenContentState extends State<_MessageListScreenContent> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<MessageController>().initializeMessages();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final double horizontalPadding =
+        (size.width * 0.06).clamp(16.0, 24.0);
+
+    return SafeArea(
+      child: Column(
+        children: [
+          // Header with back button
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              size.height * 0.015 + 8,
+              horizontalPadding,
+              16,
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                  onPressed: widget.onBack,
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'Messages',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-        // Messages List
-        Expanded(
-          child: Consumer<MessageController>(
-            builder: (context, messageController, child) {
-              if (messageController.isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Color(0xFF9C88FF),
-                  ),
-                );
-              }
-
-              final messages = messageController.filteredMessages;
-
-              if (messages.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'No messages found',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                );
-              }
-
-              return ListView.builder(
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  final message = messages[index];
-                  return _buildMessageTile(context, message);
+          // Search Bar
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: (value) {
+                  context.read<MessageController>().setSearchQuery(value);
                 },
-              );
-            },
+                decoration: const InputDecoration(
+                  hintText: 'Search',
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: 80), // Space for bottom nav
-      ],
+          const SizedBox(height: 16),
+          // Messages List
+          Expanded(
+            child: Consumer<MessageController>(
+              builder: (context, messageController, child) {
+                if (messageController.isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFF9C88FF),
+                    ),
+                  );
+                }
+
+                final messages = messageController.filteredMessages;
+
+                if (messages.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'No messages found',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final message = messages[index];
+                    return _buildMessageTile(context, message);
+                  },
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 80), // Space for bottom nav
+        ],
+      ),
     );
   }
 
@@ -633,7 +776,7 @@ class _ProfileScreenContent extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  // const SizedBox(height: 4),
                   Row(
                     children: [
                       Expanded(
@@ -653,7 +796,7 @@ class _ProfileScreenContent extends StatelessWidget {
                         ),
                       ),
                       if (message.unreadCount > 0) ...[
-                        const SizedBox(width: 8),
+                        // const SizedBox(width: 8),
                         Container(
                           width: 20,
                           height: 20,
@@ -730,73 +873,101 @@ class _NotificationScreenContentState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Header with back button
-  
-       
-       
-        // Notifications List
-        Expanded(
-          child: Consumer<NotificationController>(
-            builder: (context, notificationController, child) {
-              if (notificationController.isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Color(0xFF9C88FF),
+    final size = MediaQuery.of(context).size;
+    final double horizontalPadding =
+        (size.width * 0.06).clamp(16.0, 24.0);
+
+    return SafeArea(
+      child: Column(
+        children: [
+          // Header with back button
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              size.height * 0.015 + 8,
+              horizontalPadding,
+              16,
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                  onPressed: widget.onBack,
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'Notifications',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
                   ),
-                );
-              }
-
-              final notifications = notificationController.notifications;
-
-              if (notifications.isEmpty) {
-                return const Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.notifications_none,
-                        size: 80,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        'No notifications yet',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'You\'ll see notifications here when you get them',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                );
-              }
-
-              return ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: notifications.length,
-                itemBuilder: (context, index) {
-                  final notification = notifications[index];
-                  return _buildNotificationTile(
-                      context, notification, notificationController);
-                },
-              );
-            },
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 80), // Space for bottom nav
-      ],
+          // Notifications List
+          Expanded(
+            child: Consumer<NotificationController>(
+              builder: (context, notificationController, child) {
+                if (notificationController.isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFF9C88FF),
+                    ),
+                  );
+                }
+
+                final notifications = notificationController.notifications;
+
+                if (notifications.isEmpty) {
+                  return const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.notifications_none,
+                          size: 80,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'No notifications yet',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'You\'ll see notifications here when you get them',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: notifications.length,
+                  itemBuilder: (context, index) {
+                    final notification = notifications[index];
+                    return _buildNotificationTile(
+                        context, notification, notificationController);
+                  },
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 80), // Space for bottom nav
+        ],
+      ),
     );
   }
 
@@ -919,157 +1090,185 @@ class _SettingsScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final size = MediaQuery.of(context).size;
+    final double horizontalPadding =
+        (size.width * 0.06).clamp(16.0, 24.0);
 
-    return Column(
-      children: [
-  
-     
-     
-        Expanded(
-          child: Consumer<SettingsController>(
-            builder: (context, settingsController, child) {
-              final settings = settingsController.settings;
-              final sections = settingsController.getSettingsSections();
-
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    // Profile Section
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                width: 80,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: NetworkImage(settings.profileImage),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  width: 24,
-                                  height: 24,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFF9C88FF),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 14,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            settings.name,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            settings.email,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Settings Sections
-                    ...sections.map((section) =>
-                        _buildSettingsSection(section, settingsController)),
-                    const SizedBox(height: 20),
-                    // Action Buttons
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFFF6B6B),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () {
-                                    _showLogoutDialog(context, authProvider);
-                                  },
-                                  borderRadius: BorderRadius.circular(25),
-                                  child: const Center(
-                                    child: Text(
-                                      'Logout',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: const Color(0xFFFF6B6B)),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () {
-                                    _showDeleteAccountDialog(
-                                        context, settingsController);
-                                  },
-                                  borderRadius: BorderRadius.circular(25),
-                                  child: const Center(
-                                    child: Text(
-                                      'Delete Account',
-                                      style: TextStyle(
-                                        color: Color(0xFFFF6B6B),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 100),
-                  ],
+    return SafeArea(
+      child: Column(
+        children: [
+          // Header with back button
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              size.height * 0.015 + 8,
+              horizontalPadding,
+              16,
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                  onPressed: onBack,
                 ),
-              );
-            },
+                const SizedBox(width: 4),
+                const Text(
+                  'Settings',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 80), // Space for bottom nav
-      ],
+          Expanded(
+            child: Consumer<SettingsController>(
+              builder: (context, settingsController, child) {
+                final settings = settingsController.settings;
+                final sections = settingsController.getSettingsSections();
+
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Profile Section
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Stack(
+                              children: [
+                                Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: NetworkImage(settings.profileImage),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFF9C88FF),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              settings.name,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              settings.email,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Settings Sections
+                      ...sections.map((section) =>
+                          _buildSettingsSection(section, settingsController)),
+                      const SizedBox(height: 20),
+                      // Action Buttons
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFF6B6B),
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      _showLogoutDialog(context, authProvider);
+                                    },
+                                    borderRadius: BorderRadius.circular(25),
+                                    child: const Center(
+                                      child: Text(
+                                        'Logout',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: const Color(0xFFFF6B6B)),
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      _showDeleteAccountDialog(
+                                          context, settingsController);
+                                    },
+                                    borderRadius: BorderRadius.circular(25),
+                                    child: const Center(
+                                      child: Text(
+                                        'Delete Account',
+                                        style: TextStyle(
+                                          color: Color(0xFFFF6B6B),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 100),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 80), // Space for bottom nav
+        ],
+      ),
     );
   }
 
