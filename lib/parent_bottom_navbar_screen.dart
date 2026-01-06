@@ -1,10 +1,11 @@
-
 import 'package:bbpool/views/calendar/parent_calender_screen.dart';
 import 'package:bbpool/views/groups/carpool_groups_screen.dart';
 import 'package:bbpool/views/map/map_screen.dart';
 import 'package:bbpool/views/notifications/notification_screen.dart';
 import 'package:bbpool/views/ride/schedule_child_ride_screen.dart';
+import 'package:bbpool/providers/parent_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ParentNavBarScreen extends StatefulWidget {
   const ParentNavBarScreen({super.key});
@@ -14,18 +15,27 @@ class ParentNavBarScreen extends StatefulWidget {
 }
 
 class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
-  int _selectedIndex = 1; // calendar is selected in your design
+  int _selectedIndex = 0; // calendar is selected in your design
 
-  late final List<Widget> _pages = [
+  @override
+  void initState() {
+    super.initState();
+    // Initialize parent provider when screen loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final parentProvider = Provider.of<ParentProvider>(context, listen: false);
+      parentProvider.initialize();
+    });
+  }
 
-    const ParentCalendarScreen(),
-    const ScheduleChildRideScreen(),
-    const CarpoolGroupsScreen(),
-    const MapScreen(),
-    NotificationScreen(
-      onBack: () => setState(() => _selectedIndex = 0),
-    ),
-  ];
+  List<Widget> get _pages => [
+        const ParentCalendarScreen(),
+        const ScheduleChildRideScreen(),
+        const CarpoolGroupsScreen(),
+        const MapScreen(),
+        NotificationScreen(
+          onBack: () => setState(() => _selectedIndex = 0),
+        ),
+      ];
 
   // Colors from the mock
   static const Color _inactive = Color(0xFF969696); // soft grey
@@ -34,15 +44,7 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: Container(
-      //     decoration: BoxDecoration(
-      //       color: Colors.white,
-      //       borderRadius: BorderRadius.circular(10),
-      //     ),
-      //     child: const Icon(Icons.arrow_back),
-      //   ),
-      // ),
+
       body: _pages[_selectedIndex],
 
       bottomNavigationBar: BottomAppBar(

@@ -77,13 +77,48 @@ class TokenManager {
     return token != null && token.isNotEmpty;
   }
 
+  /// Save child info data to SharedPreferences
+  static Future<void> saveChildInfo(List<Map<String, dynamic>> childInfoList) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    debugPrint('=== SAVING CHILD INFO TO SHARED PREFERENCES ===');
+    debugPrint('Number of children: ${childInfoList.length}');
+    debugPrint('===============================================');
+
+    await prefs.setString('childInfo', jsonEncode(childInfoList));
+    
+    debugPrint('✅ Child info saved successfully to SharedPreferences');
+  }
+
+  /// Get child info data from SharedPreferences
+  static Future<List<Map<String, dynamic>>?> getChildInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? jsonString = prefs.getString('childInfo');
+    if (jsonString == null) return null;
+    
+    try {
+      final List<dynamic> decoded = jsonDecode(jsonString);
+      return decoded.map((item) => item as Map<String, dynamic>).toList();
+    } catch (e) {
+      debugPrint('❌ Error parsing child info: $e');
+      return null;
+    }
+  }
+
+  /// Clear child info data from SharedPreferences
+  static Future<void> clearChildInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('childInfo');
+    debugPrint('✅ Child info cleared from SharedPreferences');
+  }
+
   /// Clear all saved user session data (Logout)
   static Future<bool> clearUserData() async {
   try {
     final prefs = await SharedPreferences.getInstance();
 
     debugPrint('=== CLEARING ALL USER DATA FROM SHARED PREFERENCES ===');
-    debugPrint('Clearing access token, refresh token, user role, user ID, user email, and full backup');
+    debugPrint('Clearing access token, refresh token, user role, user ID, user email, child info, and full backup');
     debugPrint('====================================================');
 
     await prefs.remove(_keyAccessToken);
@@ -92,6 +127,7 @@ class TokenManager {
     await prefs.remove(_keyUserId);
     await prefs.remove(_keyUserEmail);
     await prefs.remove(_keyUserData);
+    await prefs.remove('childInfo'); // Clear child info on logout
 
     debugPrint('✅ All user data cleared successfully from SharedPreferences');
     debugPrint('✅ User is now logged out');

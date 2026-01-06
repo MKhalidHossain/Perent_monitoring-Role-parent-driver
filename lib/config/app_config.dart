@@ -1,6 +1,6 @@
 class AppConfig {
   // API Configuration
-  static const String baseUrl = 'https://api.bbpool.com/v1';
+  // static const String baseUrl = 'https://api.bbpool.com/v1';
   static const String apiVersion = 'v1';
   
   // App Configuration
