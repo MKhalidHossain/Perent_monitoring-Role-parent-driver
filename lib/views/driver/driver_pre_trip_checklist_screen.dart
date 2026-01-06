@@ -1,3 +1,4 @@
+import 'package:bbpool/driver_bottom_navbar_screen.dart';
 import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/config/icon_path.dart';
 import 'package:bbpool/routes/app_routes.dart';
@@ -97,6 +98,44 @@ class _DriverPreTripChecklistScreenState
               _buildSubmitButton(),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: SizedBox(
+        height: 74,
+        child: BottomNavigationBar(
+          currentIndex: 0,
+          onTap: (index) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => DriverNavBarScreen(initialIndex: index),
+              ),
+            );
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: const Color(0xFFF4F4F4),
+          selectedItemColor: const Color(0xFF8E97FD),
+          unselectedItemColor: const Color(0xFFB0B0B0),
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined, size: 28),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_rounded, size: 28),
+              label: 'Calendar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.group_outlined, size: 28),
+              label: 'Groups',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.location_on_outlined, size: 28),
+              label: 'Location',
+            ),
+          ],
         ),
       ),
     );
@@ -208,6 +247,10 @@ class _DriverPreTripChecklistScreenState
         behavior: SnackBarBehavior.floating,
       ),
     );
+
+    if (allChecked) {
+      Navigator.pushNamed(context, AppRoutes.driverRideDetail);
+    }
   }
 }
 

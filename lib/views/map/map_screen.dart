@@ -7,7 +7,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 enum RideChildStatus { waiting, onboard, dropped, absent }
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  const MapScreen({
+    super.key,
+    this.stopName,
+    this.childName,
+  });
+
+  final String? stopName;
+  final String? childName;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -27,6 +34,9 @@ class _MapScreenState extends State<MapScreen> {
     final double horizontalPadding =
         (size.width * 0.04).clamp(16.0, 22.0); // responsive gutters
 
+    final String title = widget.stopName ?? 'Stop 1 - Oak Street';
+    final String childName = widget.childName ?? 'Katie Doe';
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -40,29 +50,31 @@ class _MapScreenState extends State<MapScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // CommonWidgets.buildHeaderSection(
-              //   context: context,
-              //   showBack: true,
-              //   onBackPressed: () => Navigator.pop(context),
-              //   profileImagePath: IconPath.profileIcon,
-              //   chatIconPath: IconPath.chatIcon,
-              //   notificationIconPath: IconPath.notificationIcon,
-              //   settingsIconPath: IconPath.settingsIcon,
-              // ),
-              const SizedBox(height: 8),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4),
-                child: Text(
-                  'Stop 1 - Oak Street',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => Navigator.maybePop(context),
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.black,
+                      size: 20,
+                    ),
                   ),
-                ),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 14),
-              _buildChildCard(),
+              _buildChildCard(childName),
               const SizedBox(height: 18),
               _buildMapSection(size),
             ],
@@ -72,7 +84,7 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  Widget _buildChildCard() {
+  Widget _buildChildCard(String childName) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -104,8 +116,8 @@ class _MapScreenState extends State<MapScreen> {
                   children: [
                     Row(
                       children: [
-                        const Text(
-                          'Katie Doe',
+                        Text(
+                          childName,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,

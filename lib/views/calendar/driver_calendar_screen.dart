@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:bbpool/config/app_colors.dart';
+import 'package:bbpool/routes/app_routes.dart';
 import 'package:bbpool/widgets/carpool_group_card.dart';
 import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
@@ -93,31 +94,29 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Header
-              // DashboardHeader(
-              //   userName: "Jakir Hossain",
-              //   profileImageUrl: null,
-              //   credits: 100,
-              //   onProfileTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.driverProfile);
-              //   },
-              //   onChatTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.messageList);
-              //   },
-              //   onNotificationTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.notifications);
-              //   },
-              //   onSettingsTap: () {
-              //     Navigator.pushNamed(context, AppRoutes.settings);
-              //   },
-              // ),
-              const SizedBox(height: 24),
+              CommonWidgets.buildHeaderSection(
+                context: context,
+                profileImagePath: IconPath.profileIcon,
+                chatIconPath: IconPath.chatIcon,
+                notificationIconPath: IconPath.notificationIcon,
+                settingsIconPath: IconPath.settingsIcon,
+                onProfileTap: () =>
+                    Navigator.pushNamed(context, AppRoutes.driverProfile),
+                onChatPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.messageList),
+                onNotificationPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.notifications),
+                onSettingsPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.settings),
+              ),
+              const SizedBox(height: 16),
 
               // Month Selector and View Options
               Padding(
@@ -149,6 +148,15 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                     ),
 
                     // View Options
+                    Row(
+                      children: [
+                        _buildViewOption(Icons.view_agenda_outlined),
+                        const SizedBox(width: 8),
+                        _buildViewOption(Icons.list_alt_outlined),
+                        const SizedBox(width: 8),
+                        _buildViewOption(Icons.tune),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -195,7 +203,9 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                     ..._scheduledRides.map((ride) => _buildScheduledRideCard(
                         ride,
                         _scheduledRides.indexOf(ride),
-                        _scheduledRides.length)),
+                        _scheduledRides.length,
+                        size
+                        )),
 
                     const SizedBox(height: 20),
 
@@ -332,26 +342,200 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
     );
   }
 
-  Widget _buildScheduledRideCard(RideModel ride, int index, int totalRides) {
-    final bool isDeparture = index == 0;
-
-    // Icons & colors
-    final IconData leadingIcon =
-        isDeparture ? Icons.access_time : Icons.access_time;
-    final Color leadingIconColor = isDeparture ? Colors.grey : Colors.grey;
-    final Color leadingBg =
-        isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
-
+  Widget _buildViewOption(IconData icon) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      width: 36,
+      height: 36,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF4F4F4),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Icon(
+        icon,
+        size: 18,
+        color: Colors.black54,
+      ),
+    );
+  }
+
+ Widget _buildScheduledRideCard(
+  RideModel ride,
+  int index,
+  int totalRides,
+  Size size,
+) {
+  final double w = size.width;
+
+  // Breakpoints (tweak as you like)
+  final bool isTablet = w >= 600;
+  final bool isCompact = w < 420; // small phones
+
+  // Scale function (base design width ~390)
+  double s(double v) => v * (w / 390).clamp(0.85, isTablet ? 1.35 : 1.15);
+
+  final bool isDeparture = index == 0;
+
+  // Icons & colors
+  final IconData leadingIcon = Icons.access_time;
+  final Color leadingIconColor = Colors.grey;
+  final Color leadingBg =
+      isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
+
+  // Sizes
+  final double outerBottom = s(16);
+  final double gap = s(12);
+  final double cardPad = s(isTablet ? 18 : 16);
+
+  final double timelineCircle = s(44); // diameter
+  final double timelineIconSize = s(24);
+  final double connectorH = s(isTablet ? 64 : 50);
+
+  final double vehicleW = s(isTablet ? 140 : 100);
+  final double vehicleH = s(isTablet ? 90 : 70);
+
+  TextStyle labelStyle() => TextStyle(
+        fontSize: s(12),
+        color: Colors.grey,
+        fontWeight: FontWeight.w500,
+      );
+
+  TextStyle valueStyle({bool bold = true}) => TextStyle(
+        fontSize: s(bold ? 16 : 14),
+        fontWeight: bold ? FontWeight.bold : FontWeight.w600,
+        color: Colors.black,
+      );
+
+  Widget infoBlock({
+    required String label,
+    required String value,
+    required String iconPath,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(iconPath, width: s(16), height: s(16)),
+            SizedBox(width: s(4)),
+            Text(label, style: labelStyle()),
+          ],
+        ),
+        SizedBox(height: s(4)),
+        Text(
+          value,
+          style: valueStyle(bold: label.contains('Time')),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
+
+  Widget vehicleImage() {
+    return Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.rotationY(isDeparture ? 0 : pi),
+      child: SizedBox(
+        width: vehicleW,
+        height: vehicleH,
+        child: Image.asset(
+          IconPath.busIcon,
+          fit: BoxFit.contain,
+        ),
+      ),
+    );
+  }
+
+  Widget detailsCompact() {
+    // Image on top, info blocks wrap nicely on small screens
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Center(child: vehicleImage()),
+        SizedBox(height: gap),
+        Wrap(
+          spacing: s(18),
+          runSpacing: s(12),
+          children: [
+            infoBlock(
+              label: isDeparture ? 'Departure Time' : 'Arrival Time',
+              value: isDeparture ? ride.departureTime : ride.arrivalTime,
+              iconPath: IconPath.timeIcon,
+            ),
+            infoBlock(
+              label: 'Driver',
+              value: ride.driverName,
+              iconPath: IconPath.riderIcon,
+            ),
+            infoBlock(
+              label: 'Riders',
+              value: '${ride.ridersCount} Students',
+              iconPath: IconPath.riderIcon,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget detailsWide() {
+    // Image left, details to the right (phones/tablets)
+    return Row(
+      children: [
+        vehicleImage(),
+        SizedBox(width: s(16)),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    infoBlock(
+                      label: isDeparture ? 'Departure Time' : 'Arrival Time',
+                      value: isDeparture ? ride.departureTime : ride.arrivalTime,
+                      iconPath: IconPath.timeIcon,
+                    ),
+                    SizedBox(height: s(10)),
+                    infoBlock(
+                      label: 'Driver',
+                      value: ride.driverName,
+                      iconPath: IconPath.riderIcon,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: s(14)),
+              Flexible(
+                child: infoBlock(
+                  label: 'Riders',
+                  value: '${ride.ridersCount} Students',
+                  iconPath: IconPath.riderIcon,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  return GestureDetector(
+    onTap: () => Navigator.pushNamed(context, AppRoutes.driverRideDetail),
+    child: Container(
+      margin: EdgeInsets.only(bottom: outerBottom),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Timeline column (icon + connector)
           Column(
             children: [
               Container(
-                width: 30,
-                height: 60,
+                width: timelineCircle,
+                height: timelineCircle,
                 decoration: BoxDecoration(
                   color: leadingBg,
                   shape: BoxShape.circle,
@@ -359,171 +543,53 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                 child: Icon(
                   leadingIcon,
                   color: leadingIconColor,
-                  size: 30,
+                  size: timelineIconSize,
                 ),
               ),
               if (index < totalRides - 1)
                 Container(
-                  width: 2,
-                  height: 50,
+                  width: s(2),
+                  height: connectorH,
                   color: Colors.grey[300],
                 ),
             ],
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: s(16)),
 
           // Card
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(cardPad),
               decoration: BoxDecoration(
                 color: const Color(0xFFF4F4F4),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(s(12)),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Colors.grey.withOpacity(0.10),
                     spreadRadius: 1,
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
                 ],
               ),
-              child: Row(
-                children: [
-                  // Vehicle Image - Flipped for arrival time (left to right)
-                  Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.rotationY(
-                        isDeparture ? 0 : pi), // Flip horizontally for arrival
-                    child: SizedBox(
-                      width: 100,
-                      height: 70,
-                      child: Image.asset(
-                        IconPath.busIcon,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-
-                  // Ride Details
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Time block
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  IconPath.timeIcon,
-                                  width: 16,
-                                  height: 16,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  isDeparture
-                                      ? 'Departure Time'
-                                      : 'Arrival Time',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              isDeparture
-                                  ? ride.departureTime
-                                  : ride.arrivalTime,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-
-                            // Driver block
-                            Row(
-                              children: [
-                                Image.asset(
-                                  IconPath
-                                      .riderIcon, // You might want to use a driver icon here
-                                  width: 16,
-                                  height: 16,
-                                ),
-                                const SizedBox(width: 4),
-                                const Text(
-                                  'Driver',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              ride.driverName,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // Riders block
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  IconPath.riderIcon,
-                                  width: 16,
-                                  height: 16,
-                                ),
-                                const SizedBox(width: 4),
-                                const Text(
-                                  'Riders',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              '${ride.ridersCount} Students',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              child: isCompact ? detailsCompact() : detailsWide(),
             ),
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
+
+
+
+
+
+
+
+
+
+
   // Widget _buildCarpoolGroupCard() {
   //   return Container(
 

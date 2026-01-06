@@ -1,4 +1,4 @@
-import 'package:bbpool/bottom_navbar_screen.dart';
+import 'package:bbpool/driver_bottom_navbar_screen.dart';
 import 'package:bbpool/parent_bottom_navbar_screen.dart';
 import 'package:bbpool/services/token_manager.dart';
 import 'package:flutter/material.dart';

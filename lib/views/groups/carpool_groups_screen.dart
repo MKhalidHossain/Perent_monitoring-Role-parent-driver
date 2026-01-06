@@ -1,6 +1,9 @@
 
+import 'package:bbpool/config/icon_path.dart';
+import 'package:bbpool/routes/app_routes.dart';
 import 'package:bbpool/views/driver/driver_ride_detail_screen.dart';
 import 'package:bbpool/widgets/carpool_group_card.dart';
+import 'package:bbpool/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,8 +22,21 @@ class _CarpoolGroupsScreenState extends State<CarpoolGroupsScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header
-            // _buildHeader(),
+            CommonWidgets.buildHeaderSection(
+              context: context,
+              profileImagePath: IconPath.profileIcon,
+              chatIconPath: IconPath.chatIcon,
+              notificationIconPath: IconPath.notificationIcon,
+              settingsIconPath: IconPath.settingsIcon,
+              onProfileTap: () =>
+                  Navigator.pushNamed(context, AppRoutes.driverProfile),
+              onChatPressed: () =>
+                  Navigator.pushNamed(context, AppRoutes.messageList),
+              onNotificationPressed: () =>
+                  Navigator.pushNamed(context, AppRoutes.notifications),
+              onSettingsPressed: () =>
+                  Navigator.pushNamed(context, AppRoutes.settings),
+            ),
 
             // Content
             Expanded(

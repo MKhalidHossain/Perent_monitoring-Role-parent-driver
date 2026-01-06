@@ -1,5 +1,6 @@
 import 'package:bbpool/config/app_colors.dart';
 import 'package:bbpool/config/icon_path.dart';
+import 'package:bbpool/views/map/map_screen.dart' as map;
 import 'package:flutter/material.dart';
 
 enum RideChildStatus { waiting, onboard, dropped, absent }
@@ -330,6 +331,9 @@ class _DriverRideDetailScreenState extends State<DriverRideDetailScreen> {
   }
 
   Widget _buildStopCard(RideStop stop) {
+    final String childName =
+        stop.children.isNotEmpty ? stop.children.first.name : 'Student';
+
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 16),
@@ -369,13 +373,36 @@ class _DriverRideDetailScreenState extends State<DriverRideDetailScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Text(
-                  stop.time,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      stop.time,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => map.MapScreen(
+                              stopName: stop.name,
+                              childName: childName,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Icon(
+                        Icons.location_on_outlined,
+                        size: 18,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
