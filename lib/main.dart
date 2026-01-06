@@ -13,7 +13,7 @@ import 'package:bbpool/config/app_theme.dart';
 import 'package:bbpool/routes/app_routes.dart';
 import 'package:bbpool/providers/onboarding_provider.dart';
 import 'package:bbpool/services/storage_service.dart';
-// new update git
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageService.init();

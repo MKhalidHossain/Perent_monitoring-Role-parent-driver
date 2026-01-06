@@ -146,6 +146,7 @@ class TodayRidesSection extends StatelessWidget {
   final VoidCallback? onFilterTap;
   final VoidCallback? onStartRideTap;
   final VoidCallback? onTrackRideTap;
+  final ValueChanged<RideModel>? onRideTap;
   final bool isDriver;
 
   const TodayRidesSection({
@@ -154,6 +155,7 @@ class TodayRidesSection extends StatelessWidget {
     this.onFilterTap,
     this.onStartRideTap,
     this.onTrackRideTap,
+    this.onRideTap,
     this.isDriver = true,
   });
 
@@ -193,9 +195,28 @@ class TodayRidesSection extends StatelessWidget {
           const SizedBox(height: 20),
           if (rides.isEmpty)
             const Center(
-              child: Text(
-                'No rides scheduled for today',
-                style: TextStyle(color: Colors.grey),
+              child: Column(
+                children: [
+                  SizedBox(height: 8),
+                  Text(
+                    'No Rides Today',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'No rides scheduled. Check again later or contact dispatch.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
               ),
             )
           else
@@ -204,7 +225,10 @@ class TodayRidesSection extends StatelessWidget {
                 ...rides.asMap().entries.map((entry) {
                   final index = entry.key;
                   final ride = entry.value;
-                  return _buildRideCard(ride, index, rides.length);
+                  return GestureDetector(
+                    onTap: onRideTap == null ? null : () => onRideTap!(ride),
+                    child: _buildRideCard(ride, index, rides.length),
+                  );
                 }),
                 const SizedBox(height: 20),
                 // SizedBox(
@@ -232,9 +256,8 @@ class TodayRidesSection extends StatelessWidget {
 
                 CommonWidgets.buildGradientButton(
                   text: isDriver ? 'Start Ride' : 'Track Ride',
-                  onPressed: () async {
-                    // Navigation is now handled in the viewmodel based on user role
-                  },
+                  onPressed: () async =>
+                      (isDriver ? onStartRideTap : onTrackRideTap)?.call(),
                   textColor: AppColors.textWhite,
                   borderRadius: 28,
                 ),
@@ -286,113 +309,138 @@ class TodayRidesSection extends StatelessWidget {
           const SizedBox(width: 16),
           // Card
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF4F4F4),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withValues(alpha: 0.1),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final bool isCompact = constraints.maxWidth < 260;
+                final image = SizedBox(
+                  width: isCompact ? 80 : 100,
+                  height: isCompact ? 60 : 70,
+                  child: Image.asset(
+                    ride.isArrived == true
+                        ? IconPath.busIcon
+                        : IconPath.busIcon2,
+                    fit: BoxFit.cover,
                   ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 100,
-                    height: 70,
-                    child: Image.asset(
-                      ride.isArrived == true
-                          ? IconPath.busIcon
-                          : IconPath.busIcon2,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                );
+
+                final timeBlock = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        // Time block
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  IconPath.timeIcon,
-                                  width: 16,
-                                  height: 16,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  isDeparture
-                                      ? 'Departure Time'
-                                      : 'Arrival Time',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              isDeparture
-                                  ? ride.departureTime
-                                  : ride.arrivalTime,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                          ],
+                        Image.asset(
+                          IconPath.timeIcon,
+                          width: 16,
+                          height: 16,
                         ),
-                        // Riders block
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  IconPath.riderIcon,
-                                  width: 16,
-                                  height: 16,
-                                ),
-                                const SizedBox(width: 4),
-                                const Text(
-                                  'Riders',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            isDeparture ? 'Departure Time' : 'Arrival Time',
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              '${ride.ridersCount} Students',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 4),
+                    Text(
+                      isDeparture ? ride.departureTime : ride.arrivalTime,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                );
+
+                final ridersBlock = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          IconPath.riderIcon,
+                          width: 16,
+                          height: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        const Text(
+                          'Riders',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${ride.ridersCount} Students',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                );
+
+                return Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF4F4F4),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withValues(alpha: 0.1),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                  child: isCompact
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(alignment: Alignment.centerLeft, child: image),
+                            const SizedBox(height: 12),
+                            Wrap(
+                              spacing: 16,
+                              runSpacing: 12,
+                              children: [
+                                timeBlock,
+                                ridersBlock,
+                              ],
+                            ),
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            image,
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(child: timeBlock),
+                                  const SizedBox(width: 12),
+                                  Flexible(child: ridersBlock),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                );
+              },
             ),
           ),
         ],
@@ -425,19 +473,25 @@ class MonthlyStatsSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.6,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-            ),
-            itemCount: stats.length,
-            itemBuilder: (context, index) {
-              final stat = stats[index];
-              return _buildStatCard(stat);
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final bool singleColumn = constraints.maxWidth < 360;
+              final double aspect = singleColumn ? 3.6 : 1.6;
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: singleColumn ? 1 : 2,
+                  childAspectRatio: aspect,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: stats.length,
+                itemBuilder: (context, index) {
+                  final stat = stats[index];
+                  return _buildStatCard(stat);
+                },
+              );
             },
           ),
         ],
@@ -450,12 +504,11 @@ class MonthlyStatsSection extends StatelessWidget {
       padding: const EdgeInsets.all(11),
       decoration: BoxDecoration(
         color: const Color(0xFFF4F4F4),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 4,
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 6,
             offset: const Offset(0, 2),
           ),
         ],
@@ -488,7 +541,7 @@ class MonthlyStatsSection extends StatelessWidget {
           Text(
             stat.value,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -518,5 +571,3 @@ class MonthlyStatsSection extends StatelessWidget {
   }
 
 }
-
-

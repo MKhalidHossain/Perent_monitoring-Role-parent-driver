@@ -23,7 +23,7 @@ import 'package:bbpool/views/test/role_test_screen.dart';
 import 'package:bbpool/views/driver/driver_pre_trip_checklist_screen.dart';
 import 'package:bbpool/views/ride/schedule_child_ride_screen.dart';
 
-import '../bottom_navbar_screen.dart';
+import '../driver_bottom_navbar_screen.dart';
 import '../parent_bottom_navbar_screen.dart';
 
 class AppRoutes {

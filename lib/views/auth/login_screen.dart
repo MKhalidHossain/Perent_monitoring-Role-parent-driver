@@ -299,7 +299,7 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () async {
                     await authProvider.login(context);
                   },
-                  textColor: AppColors.textWhite,
+                  // textColor: AppColors.textWhite,
                   borderRadius: 28,
                 ),
 
@@ -316,7 +316,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.of(context).pushNamed(AppRoutes.signup),
+                      onTap: () => Navigator.of(context).pushNamed(AppRoutes.selectUserType),
                       child: Text(
                         'Sign Up',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
