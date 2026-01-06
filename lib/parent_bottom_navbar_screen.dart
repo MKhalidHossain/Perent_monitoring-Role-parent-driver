@@ -1,6 +1,5 @@
 
 import 'package:bbpool/views/calendar/parent_calender_screen.dart';
-import 'package:bbpool/views/dashboard/parent_dashboard_screen.dart';
 import 'package:bbpool/views/groups/carpool_groups_screen.dart';
 import 'package:bbpool/views/map/map_screen.dart';
 import 'package:bbpool/views/notifications/notification_screen.dart';
@@ -18,9 +17,7 @@ class _ParentNavBarScreenState extends State<ParentNavBarScreen> {
   int _selectedIndex = 1; // calendar is selected in your design
 
   late final List<Widget> _pages = [
-    ParentDashboardScreen(
-      onNotificationTap: () => setState(() => _selectedIndex = 5),
-    ),
+
     const ParentCalendarScreen(),
     const ScheduleChildRideScreen(),
     const CarpoolGroupsScreen(),

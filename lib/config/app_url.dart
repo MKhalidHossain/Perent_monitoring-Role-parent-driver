@@ -1,5 +1,5 @@
 abstract class AppUrl {
-  static const String baseUrl = 'http://localhost:5001/api/v1';
+  static const String baseUrl = 'http://10.10.5.95:5001/api/v1';
   static const String login = '$baseUrl/users/login';
   static const String register = '$baseUrl/users/register';
   static const String sendOtp = '$baseUrl/auth/send-otp';

@@ -134,9 +134,9 @@ class AuthViewModel {
         // Navigate based on user role using helper
         // RoleNavigationHelper.navigateToDashboard(context, response.data!.role);
         if(user.role == 'parent' ){
-          Navigator.pushNamed(context, AppRoutes.parentDashboard);
+          Navigator.pushNamed(context, AppRoutes.parentNavBar);
         } if(user.role == 'driver' ){
-          Navigator.pushNamed(context, AppRoutes.driverDashboard);
+          Navigator.pushNamed(context, AppRoutes.driverNavBar);
         }
       } else {
         _updateModel(_model.copyWith(

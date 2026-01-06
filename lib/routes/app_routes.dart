@@ -18,8 +18,7 @@ import 'package:bbpool/views/auth/signup_screen.dart';
 import 'package:bbpool/views/auth/otp_verification_screen.dart';
 import 'package:bbpool/views/auth/select_user_type_screen.dart';
 import 'package:bbpool/views/auth/auth_wrapper.dart';
-import 'package:bbpool/views/dashboard/driver_dashboard_screen.dart';
-import 'package:bbpool/views/dashboard/parent_dashboard_screen.dart';
+
 import 'package:bbpool/views/test/role_test_screen.dart';
 import 'package:bbpool/views/driver/driver_pre_trip_checklist_screen.dart';
 import 'package:bbpool/views/ride/schedule_child_ride_screen.dart';
@@ -43,8 +42,8 @@ class AppRoutes {
   static const String childHandoffVerification =
       '/child-handoff-verification';
   static const String authWrapper = '/auth-wrapper';
-  static const String driverDashboard = '/driver-dashboard';
-  static const String parentDashboard = '/parent-dashboard';
+  // static const String driverDashboard = '/driver-dashboard';
+  // static const String parentDashboard = '/parent-dashboard';
   static const String calendar = '/calendar';
   static const String groups = '/groups';
   static const String location = '/location';
@@ -69,8 +68,7 @@ class AppRoutes {
     signup: (context) => const SignupScreen(),
     otpVerification: (context) => const OtpVerificationScreen(),
     authWrapper: (context) => const AuthWrapper(),
-    driverDashboard: (context) => const DriverDashboardScreen(),
-    parentDashboard: (context) => const ParentDashboardScreen(),
+
     calendar: (context) => const DriverCalendarScreen(),
     groups: (context) => const CarpoolGroupsScreen(),
     location: (context) =>
