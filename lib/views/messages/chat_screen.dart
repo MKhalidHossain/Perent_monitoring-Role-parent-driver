@@ -238,7 +238,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 Container(
                   width: 44,
                   height: 44,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: AppColors.gradientButton,
                     shape: BoxShape.circle,
                   ),

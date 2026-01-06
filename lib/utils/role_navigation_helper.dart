@@ -10,11 +10,11 @@ class RoleNavigationHelper {
     switch (userRole) {
       case 'driver':
         debugPrint('🚗 RoleNavigationHelper: Navigating to Driver Dashboard');
-        Navigator.of(context).pushReplacementNamed(AppRoutes.driverDashboard);
+        Navigator.of(context).pushReplacementNamed(AppRoutes.driverNavBar);
         break;
       case 'parent':
         debugPrint('👨‍👩‍👧‍👦 RoleNavigationHelper: Navigating to Parent Dashboard');
-        Navigator.of(context).pushReplacementNamed(AppRoutes.parentDashboard);
+        Navigator.of(context).pushReplacementNamed(AppRoutes.parentNavBar);
         break;
       default:
         debugPrint('❌ RoleNavigationHelper: Unknown role: $userRole, navigating to AuthWrapper');

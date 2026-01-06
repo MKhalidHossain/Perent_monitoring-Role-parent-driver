@@ -1,5 +1,4 @@
 import 'package:bbpool/views/calendar/driver_calendar_screen.dart';
-import 'package:bbpool/views/dashboard/driver_dashboard_screen.dart';
 import 'package:bbpool/views/groups/carpool_groups_screen.dart';
 import 'package:bbpool/views/map/map_screen.dart';
 import 'package:bbpool/views/messages/chat_screen.dart';
@@ -32,11 +31,10 @@ class DriverNavBarScreen extends StatefulWidget {
 }
 
 class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
-  int _selectedIndex = 1; // calendar is selected in your design
+  int _selectedIndex = 0; // calendar is selected in your design
   OverlayScreen _overlayScreen = OverlayScreen.none;
 
   final List<Widget> _pages = const [
-    DriverDashboardScreen(),
     DriverCalendarScreen(),
     ScheduleChildRideScreen(),
     CarpoolGroupsScreen(),
