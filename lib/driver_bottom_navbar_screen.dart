@@ -42,37 +42,35 @@ class _DriverNavBarScreenState extends State<DriverNavBarScreen> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: SafeArea(
         top: false,
-        child: SizedBox(
-          height: kBottomNavigationBarHeight + bottomInset,
-          child: BottomNavigationBar(
-            currentIndex: _selectedIndex,
-            onTap: (index) => setState(() => _selectedIndex = index),
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: const Color(0xFFF4F4F4),
-            selectedItemColor: _active,
-            unselectedItemColor: _inactive,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            iconSize: iconSize,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_month_rounded),
-                label: 'Calendar',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.group_outlined),
-                label: 'Groups',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.location_on_outlined),
-                label: 'Location',
-              ),
-            ],
-          ),
+        bottom: false,
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) => setState(() => _selectedIndex = index),
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: const Color(0xFFF4F4F4),
+          selectedItemColor: _active,
+          unselectedItemColor: _inactive,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          iconSize: iconSize,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_rounded),
+              label: 'Calendar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.group_outlined),
+              label: 'Groups',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.location_on_outlined),
+              label: 'Location',
+            ),
+          ],
         ),
       ),
     );
