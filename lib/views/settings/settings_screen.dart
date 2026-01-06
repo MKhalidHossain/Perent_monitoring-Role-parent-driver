@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bbpool/config/icon_path.dart';
 import 'package:bbpool/providers/auth_provider.dart';
 import 'package:bbpool/routes/app_routes.dart';
+import 'package:bbpool/views/profile/profile_setup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bbpool/controllers/settings_controller.dart';
@@ -50,6 +51,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Navigator.pushNamed(
                 context,
                 AppRoutes.childHandoffVerification,
+              );
+            },
+            onProfileSetupTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ParentProfileSetupView(),
+                ),
               );
             },
           );
@@ -106,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        settings.name,
+                       "${settings.name}1",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,

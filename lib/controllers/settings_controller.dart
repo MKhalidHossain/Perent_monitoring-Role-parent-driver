@@ -100,6 +100,7 @@ class SettingsController extends ChangeNotifier {
   List<SettingsSection> getSettingsSections({
     VoidCallback? onEmergencyContactTap,
     VoidCallback? onChildHandoffTap,
+    VoidCallback? onProfileSetupTap,
   }) {
     return [
       SettingsSection(
@@ -210,11 +211,11 @@ class SettingsController extends ChangeNotifier {
         title: 'Account Settings',
         items: [
           SettingsItem(
-            title: 'Change Password',
-            icon: 'password',
+            title: 'Profile setup',
+            icon: 'profile_setup',
             hasArrow: true,
-            onTap: () {
-              // Handle change password
+            onTap: onProfileSetupTap ?? () {
+              // Handle profile setup navigation
             },
           ),
         ],

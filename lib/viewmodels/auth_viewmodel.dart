@@ -2,6 +2,7 @@ import 'package:bbpool/models/auth_model.dart';
 import 'package:bbpool/models/user_model.dart';
 import 'package:bbpool/services/api_service.dart';
 import 'package:bbpool/services/token_manager.dart';
+import 'package:bbpool/services/child_info_service.dart';
 import 'package:bbpool/config/app_config.dart';
 import 'package:bbpool/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -130,6 +131,31 @@ class AuthViewModel {
         ));
 
         debugPrint('✅ Login successful - user data saved to SharedPreferences');
+
+        // Fetch and save child info if user is a parent
+        if (user.role == 'parent') {
+          try {
+            debugPrint('🔄 Fetching child info for parent user...');
+            final childInfoResponse = await ChildInfoService.getChildInfo();
+            
+            if (childInfoResponse.success && childInfoResponse.data != null) {
+              // Convert ChildInfoModel list to Map list for storage
+              final childInfoList = childInfoResponse.data!
+                  .map((child) => child.toJson())
+                  .toList();
+              
+              // Save child info to SharedPreferences
+              await TokenManager.saveChildInfo(childInfoList);
+              
+              debugPrint('✅ Child info saved successfully: ${childInfoList.length} children');
+            } else {
+              debugPrint('⚠️ Failed to fetch child info: ${childInfoResponse.message}');
+            }
+          } catch (e) {
+            debugPrint('❌ Error fetching child info: $e');
+            // Don't block login if child info fetch fails
+          }
+        }
 
         // Navigate based on user role using helper
         // RoleNavigationHelper.navigateToDashboard(context, response.data!.role);
