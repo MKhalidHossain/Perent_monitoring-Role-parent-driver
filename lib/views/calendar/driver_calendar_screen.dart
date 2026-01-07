@@ -127,15 +127,15 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                     // View Options
                     Row(
                       children: [
-                        _buildViewOption(
-                          Icons.view_agenda_outlined,
-                          0,
-                        ),
-                        const SizedBox(width: 8),
-                        _buildViewOption(
-                          Icons.list_alt_outlined,
-                          1,
-                        ),
+                        // _buildViewOption(
+                        //   Icons.view_agenda_outlined,
+                        //   0,
+                        // ),
+                        // const SizedBox(width: 8),
+                        // _buildViewOption(
+                        //   Icons.list_alt_outlined,
+                        //   1,
+                        // ),
                         const SizedBox(width: 8),
                         _buildViewOption(
                           Icons.tune,
@@ -411,7 +411,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
       );
 
   TextStyle valueStyle({bool bold = true}) => TextStyle(
-        fontSize: s(bold ? 16 : 14),
+        fontSize: s(bold ? 14 : 12),
         fontWeight: bold ? FontWeight.bold : FontWeight.w600,
         color: Colors.black,
       );
