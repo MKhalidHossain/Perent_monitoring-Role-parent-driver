@@ -227,7 +227,9 @@ class TodayRidesSection extends StatelessWidget {
                   final ride = entry.value;
                   return GestureDetector(
                     onTap: onRideTap == null ? null : () => onRideTap!(ride),
-                    child: _buildRideCard(ride, index, rides.length),
+                    child: 
+                    
+                    _buildRideCard(ride, index, rides.length),
                   );
                 }),
                 const SizedBox(height: 20),

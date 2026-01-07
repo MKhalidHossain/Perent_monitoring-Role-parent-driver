@@ -19,6 +19,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
  final int currentIndex = 1; // Calendar tab selected
   String _selectedMonth = 'August';
   int _selectedDay = 27;
+  int _selectedView = 0;
 
   final List<String> _months = [
     'January',
@@ -36,37 +37,13 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
   ];
 
   final List<Map<String, dynamic>> _weekDays = [
-    {'day': 'Wed', 'date': 1},
-    {'day': 'Thu', 'date': 2},
-    {'day': 'Fri', 'date': 3},
-    {'day': 'Sat', 'date': 4},
-    {'day': 'Sun', 'date': 5},
-    {'day': 'Mon', 'date': 6},
-    {'day': 'Tue', 'date': 7},
-    {'day': 'Wed', 'date': 8},
-    {'day': 'Thu', 'date': 9},
-    {'day': 'Fri', 'date': 10},
-    {'day': 'Sat', 'date': 11},
-    {'day': 'Sun', 'date': 12},
-    {'day': 'Mon', 'date': 13},
-    {'day': 'Tue', 'date': 14},
-    {'day': 'Wed', 'date': 15},
-    {'day': 'Thu', 'date': 16},
-    {'day': 'Fri', 'date': 17},
-    {'day': 'Sat', 'date': 18},
-    {'day': 'Sun', 'date': 19},
-    {'day': 'Mon', 'date': 20},
-    {'day': 'Tue', 'date': 21},
-    {'day': 'Wed', 'date': 22},
-    {'day': 'Thu', 'date': 23},
-    {'day': 'Fri', 'date': 24},
-    {'day': 'Sat', 'date': 25},
-    {'day': 'Sun', 'date': 26},
-    {'day': 'Mon', 'date': 27},
-    {'day': 'Tue', 'date': 28},
-    {'day': 'Wed', 'date': 29},
-    {'day': 'Thu', 'date': 30},
-    {'day': 'Fri', 'date': 31},
+    {'day': 'Sun', 'date': 25},
+    {'day': 'Mon', 'date': 26},
+    {'day': 'Tue', 'date': 27},
+    {'day': 'Wed', 'date': 28},
+    {'day': 'Thu', 'date': 29},
+    {'day': 'Fri', 'date': 30},
+    {'day': 'Sat', 'date': 31},
   ];
 
   final List<RideModel> _scheduledRides = [
@@ -150,11 +127,20 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                     // View Options
                     Row(
                       children: [
-                        _buildViewOption(Icons.view_agenda_outlined),
+                        _buildViewOption(
+                          Icons.view_agenda_outlined,
+                          0,
+                        ),
                         const SizedBox(width: 8),
-                        _buildViewOption(Icons.list_alt_outlined),
+                        _buildViewOption(
+                          Icons.list_alt_outlined,
+                          1,
+                        ),
                         const SizedBox(width: 8),
-                        _buildViewOption(Icons.tune),
+                        _buildViewOption(
+                          Icons.tune,
+                          2,
+                        ),
                       ],
                     ),
                   ],
@@ -165,20 +151,26 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
               // Week Calendar
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: _weekDays.map((dayData) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: _buildDayItem(
-                          dayData['day'],
-                          dayData['date'],
-                          dayData['date'] == _selectedDay,
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final double itemWidth =
+                        min(46, (constraints.maxWidth - 6 * 6) / 7);
+                    return Row(
+                      children: _weekDays.asMap().entries.map((entry) {
+                        final dayData = entry.value;
+                        final bool isLast = entry.key == _weekDays.length - 1;
+                        return Padding(
+                          padding: EdgeInsets.only(right: isLast ? 0 : 6),
+                          child: _buildDayItem(
+                            dayData['day'],
+                            dayData['date'],
+                            dayData['date'] == _selectedDay,
+                            width: itemWidth,
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 32),
@@ -298,7 +290,8 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
   //
   // }
 
-  Widget _buildDayItem(String day, int date, bool isSelected) {
+  Widget _buildDayItem(String day, int date, bool isSelected,
+      {double width = 46}) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -306,8 +299,8 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
         });
       },
       child: Container(
-        width: 48,
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        width: width,
+        padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           gradient: isSelected
               ? AppColors.buttonGradient // Use the gradient if selected
@@ -322,7 +315,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
             Text(
               day,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 11,
                 color: isSelected ? Colors.white : Colors.grey[600],
                 fontWeight: FontWeight.w500,
               ),
@@ -331,7 +324,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
             Text(
               date.toString(),
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: isSelected ? Colors.white : Colors.black,
               ),
@@ -342,18 +335,37 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
     );
   }
 
-  Widget _buildViewOption(IconData icon) {
-    return Container(
-      width: 36,
-      height: 36,
-      decoration: BoxDecoration(
-        color: const Color(0xFFF4F4F4),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Icon(
-        icon,
-        size: 18,
-        color: Colors.black54,
+  Widget _buildViewOption(IconData icon, int index) {
+    final bool isSelected = _selectedView == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedView = index;
+        });
+      },
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+          border: Border.all(
+            color: isSelected ? const Color(0xFFCFB7F2) : Colors.transparent,
+            width: 1,
+          ),
+        ),
+        child: Icon(
+          icon,
+          size: 18,
+          color: isSelected ? const Color(0xFF7C5BBD) : Colors.black54,
+        ),
       ),
     );
   }
@@ -378,23 +390,22 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
   // Icons & colors
   final IconData leadingIcon = Icons.access_time;
   final Color leadingIconColor = Colors.grey;
-  final Color leadingBg =
-      isDeparture ? Colors.green.withOpacity(0.12) : Colors.transparent;
+  final Color leadingBg = const Color(0xFFF1F1F1);
 
   // Sizes
   final double outerBottom = s(16);
-  final double gap = s(12);
-  final double cardPad = s(isTablet ? 18 : 16);
+  final double gap = s(8);
+  final double cardPad = s(isTablet ? 16 : 12);
 
-  final double timelineCircle = s(44); // diameter
-  final double timelineIconSize = s(24);
+  final double timelineCircle = s(30); // diameter
+  final double timelineIconSize = s(22);
   final double connectorH = s(isTablet ? 64 : 50);
 
-  final double vehicleW = s(isTablet ? 140 : 100);
+  final double vehicleW = s(isTablet ? 140 : 80);
   final double vehicleH = s(isTablet ? 90 : 70);
 
   TextStyle labelStyle() => TextStyle(
-        fontSize: s(12),
+        fontSize: s(10),
         color: Colors.grey,
         fontWeight: FontWeight.w500,
       );
@@ -415,11 +426,18 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(iconPath, width: s(16), height: s(16)),
-            SizedBox(width: s(4)),
-            Text(label, style: labelStyle()),
+            SizedBox(width: s(2)),
+            Flexible(
+              child: Text(
+                label,
+                style: labelStyle(
+                ),
+                overflow: TextOverflow.ellipsis,
+                
+              ),
+            ),
           ],
         ),
         SizedBox(height: s(4)),
@@ -465,13 +483,8 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
               iconPath: IconPath.timeIcon,
             ),
             infoBlock(
-              label: 'Driver',
+              label: 'Assigned Driver',
               value: ride.driverName,
-              iconPath: IconPath.riderIcon,
-            ),
-            infoBlock(
-              label: 'Riders',
-              value: '${ride.ridersCount} Students',
               iconPath: IconPath.riderIcon,
             ),
           ],
@@ -488,31 +501,19 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
         SizedBox(width: s(16)),
         Expanded(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    infoBlock(
-                      label: isDeparture ? 'Departure Time' : 'Arrival Time',
-                      value: isDeparture ? ride.departureTime : ride.arrivalTime,
-                      iconPath: IconPath.timeIcon,
-                    ),
-                    SizedBox(height: s(10)),
-                    infoBlock(
-                      label: 'Driver',
-                      value: ride.driverName,
-                      iconPath: IconPath.riderIcon,
-                    ),
-                  ],
+              Expanded(
+                child: infoBlock(
+                  label: isDeparture ? 'Departure Time' : 'Arrival Time',
+                  value: isDeparture ? ride.departureTime : ride.arrivalTime,
+                  iconPath: IconPath.timeIcon,
                 ),
               ),
               SizedBox(width: s(14)),
-              Flexible(
+              Expanded(
                 child: infoBlock(
-                  label: 'Riders',
-                  value: '${ride.ridersCount} Students',
+                  label: 'Assigned Driver',
+                  value: ride.driverName,
                   iconPath: IconPath.riderIcon,
                 ),
               ),
@@ -539,6 +540,7 @@ class _DriverCalendarScreenState extends State<DriverCalendarScreen> {
                 decoration: BoxDecoration(
                   color: leadingBg,
                   shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFE2E2E2)),
                 ),
                 child: Icon(
                   leadingIcon,
